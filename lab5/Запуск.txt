@@ -1,0 +1,6 @@
+javac18 -cp ./gson.jar:. *.java
+jar cfm lab5.jar MANIFEST.MF ./*
+java18 -jar lab5.jar lab5.json
+
+ssh s264434@helios.cs.ifmo.ru -p 2222
+ssh s264434@se.ifmo.ru -L 5001:localhost:5001 -p 2222
