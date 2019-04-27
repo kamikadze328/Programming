@@ -129,6 +129,9 @@ public class RequestsSender extends Thread {
                     Thread.sleep(1000);
                     System.out.println("Не удается подключиться к серверу. Ожидайте...");
                     socket = SocketChannel.open(socketAddress);
+                    /*Для работы на локальном хосте открывать и закрывать Stream не надо!!
+                    Требуется только если серверная часть находится на helios
+                     */
                     ObjectOutputStream oos = new ObjectOutputStream(socket.socket().getOutputStream());
                     ObjectInputStream ois = new ObjectInputStream(socket.socket().getInputStream());
                     isWorking = true;

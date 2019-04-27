@@ -11,7 +11,8 @@ public class Creature implements Comparable<Creature>, Serializable {
     private OffsetDateTime CurrentTime;
     private String Class;
 
-    class Inventory {
+    class Inventory implements Serializable{
+        private static final long serialVersionUID = -1484983106197509695L;
         LinkedList<Creature> inventory = new LinkedList<>();
         protected void add(Creature a) {
             inventory.add(a);
@@ -23,7 +24,7 @@ public class Creature implements Comparable<Creature>, Serializable {
         }
     }
 
-    transient Creature.Inventory inventory = new Creature.Inventory();
+    Creature.Inventory inventory = new Creature.Inventory();
 
     Creature(String n) {
         name = n;
