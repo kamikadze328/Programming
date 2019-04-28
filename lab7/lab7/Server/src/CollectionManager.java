@@ -107,6 +107,7 @@ class CollectionManager {
     }
 
     String addIfMax(Creature forAction) {
+
         if (forAction.compareTo(Creatures.stream().max(Creature::compareTo).get()) > 0)
             return (add(forAction) + " т.к. является наибольшим");
         else
@@ -123,6 +124,7 @@ class CollectionManager {
         }
     }
     String add(CopyOnWriteArrayList<Creature> Creatures){
+        Creatures.stream().
          return "\tВ коллекцию добалено " + this.Creatures.addAllAbsent(Creatures) + " существ";
     }
 

@@ -32,6 +32,7 @@ public class RequestsSender extends Thread {
             while (!exit) {
                 if(countTryConnect==0) System.out.println("Соединение с сервером(IP address " + ADDR + ", port " + PORT + ")\n");
                 SocketChannel server = connect();
+                countTryConnect=0;
                 isWorking = true;
                 if (server == null) break;
                 try (ObjectOutputStream oos = new ObjectOutputStream(server.socket().getOutputStream());
