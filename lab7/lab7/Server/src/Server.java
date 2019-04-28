@@ -26,7 +26,7 @@ public class Server {
             try (ServerSocket server = new ServerSocket(PORT)) {
                 System.out.println("Сервер запущен");
                 while (true) {
-                    System.out.println("Сервер ожидает клиентов(port = " + PORT + ")");
+                    System.out.println("Сервер работает клиентов(port = " + PORT + ")");
                     Socket client = server.accept();
                     System.out.println("Подключён клиент:" + "" +
                             "\n\taddr = " + client.getInetAddress() + "," +

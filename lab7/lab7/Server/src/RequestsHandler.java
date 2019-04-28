@@ -14,7 +14,6 @@ public class RequestsHandler extends Thread {
         this.client = socket;
         this.manager = manager;
         manager.trueExit();
-        setPriority(NORM_PRIORITY);
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {manager.save(); exit();}));
     }
 
@@ -83,7 +82,8 @@ public class RequestsHandler extends Thread {
                 }).start();
             }
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Клиент отключился");
+            System.out.println(e.getCause().toString());
         }
     }
     private void exit(){

@@ -36,7 +36,6 @@ public class RequestsSender extends Thread {
                 if (server == null) break;
                 try (ObjectOutputStream oos = new ObjectOutputStream(server.socket().getOutputStream());
                      ObjectInputStream ois = new ObjectInputStream(server.socket().getInputStream())) {
-                    System.out.println("localport = " + server.socket().getLocalPort());
                     System.out.println("Сервер доступен и готов принимать команды.");
                     oos.writeObject(new Request("info"));
                     System.out.println("Server:\n" + ois.readObject());
@@ -85,6 +84,7 @@ public class RequestsSender extends Thread {
                         }
                     }
                 } catch (IOException e) {
+                    System.out.println(e.getMessage());
                     if(countTryConnect >4)
                     {
                         System.out.println("Хотите возобновить попытки подключения?(Y/N)");
@@ -118,6 +118,7 @@ public class RequestsSender extends Thread {
         try {
             socket = SocketChannel.open(socketAddress);
             isWorking = true;
+            System.out.println(socket.getLocalAddress());
         } catch (IOException e) {
             if (isWorking) {
                 System.out.println("Не удается подключиться к серверу. Ожидайте...");
@@ -129,11 +130,13 @@ public class RequestsSender extends Thread {
                     Thread.sleep(1000);
                     System.out.println("Не удается подключиться к серверу. Ожидайте...");
                     socket = SocketChannel.open(socketAddress);
-                    ObjectOutputStream oos = new ObjectOutputStream(socket.socket().getOutputStream());
-                    ObjectInputStream ois = new ObjectInputStream(socket.socket().getInputStream());
+                    //ObjectOutputStream oos = new ObjectOutputStream(socket.socket().getOutputStream());
+                    //ObjectInputStream ois = new ObjectInputStream(socket.socket().getInputStream());
+                    System.out.println(socket.getLocalAddress());
                     isWorking = true;
-                    ois.close();
-                    oos.close();
+                    //oos.close();
+                    //ois.close();
+
                     break;
                 } catch (InterruptedException ex) {
                     Thread.currentThread().interrupt();
@@ -167,18 +170,10 @@ public class RequestsSender extends Thread {
                     Gson gson = new Gson();
                     String jsonStr = fullCommand[1];
                     jsonStr = jsonStr.replace(" ", "");
-                    if (jsonStr.contains("\"Class\":\"CloseFriends\""))
-                        forAction = gson.fromJson(jsonStr, CloseFriends.class);
-                    else if (jsonStr.contains("\"Class\":\"MoominFamily\""))
-                        forAction = gson.fromJson(jsonStr, MoominFamily.class);
-                    else if (jsonStr.contains("\"Class\":\"Morra\""))
-                        forAction = gson.fromJson(jsonStr, Morra.class);
-                    else if (jsonStr.contains("\"Class\":\"Hattifatteners\""))
-                        forAction = gson.fromJson(jsonStr, Hattifatteners.class);
-                    else if (jsonStr.contains("\"Class\":\"Creature\""))
+                    if (jsonStr.contains("\"family\"")&& jsonStr.contains("\"name\""))
                         forAction = gson.fromJson(jsonStr, Creature.class);
                     else forAction = null;
-                    if ((forAction == null) || (forAction.getName() == null)) {
+                    if (forAction == null || forAction.getName() == null ||forAction.getClass() ==null) {
                         System.out.println("  Ошибка, элемент задан неверно, возможно вы указали не все значения.");
                         return false;
                     }
@@ -230,19 +225,7 @@ public class RequestsSender extends Thread {
             else if(line.length> 1)line[i] = "{" + line[i] + "}";
             if (line[i].equals("")){
                 continue;
-            }else if (line[i].contains("\"Class\":\"CloseFriends\"")) {
-                count++;
-                BeginCreatures.add(gson.fromJson(line[i], CloseFriends.class));
-            }else if (line[i].contains("\"Class\":\"MoominFamily\"")) {
-                count++;
-                BeginCreatures.add(gson.fromJson(line[i], MoominFamily.class));
-            }else if (line[i].contains("\"Class\":\"Morra\"")){
-                count++;
-                BeginCreatures.add(gson.fromJson(line[i], Morra.class));
-            }else if (line[i].contains("\"Class\":\"Hattifatteners\"")){
-                count++;
-                BeginCreatures.add(gson.fromJson(line[i], Hattifatteners.class));
-            }else if(line[i].contains("\"Class\":\"Creature\"")){
+            }else if((line[i].contains("\"class\""))&&(line[i].contains("\"name\""))){
                 count++;
                 BeginCreatures.add(gson.fromJson(line[i], Creature.class));
             }else {

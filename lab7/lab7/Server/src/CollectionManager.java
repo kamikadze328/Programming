@@ -1,8 +1,10 @@
+
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -12,15 +14,17 @@ class CollectionManager {
 
     private File importFile;
     private CopyOnWriteArrayList<Creature> Creatures;
-    private Date initTime;
+    private OffsetDateTime initTime;
     private boolean exit;
     private String receiver = "";
+    private DataBaseManager DBman;
 
     CollectionManager(File file) {
         importFile = file;
         exit = true;
         Creatures = new CopyOnWriteArrayList<>();
-        initTime = new Date();
+        initTime = OffsetDateTime.now();
+        DBman = new DataBaseManager();
     }
     boolean loadFile(File file){
         try {
@@ -79,19 +83,7 @@ class CollectionManager {
                 else if(line.length> 1)line[i] = "{" + line[i] + "}";
                 if (line[i].equals("")){
                     continue;
-                }else if (line[i].contains("\"Class\":\"CloseFriends\"")) {
-                    count++;
-                    BeginCreatures.add(gson.fromJson(line[i], CloseFriends.class));
-                }else if (line[i].contains("\"Class\":\"MoominFamily\"")) {
-                    count++;
-                    BeginCreatures.add(gson.fromJson(line[i], MoominFamily.class));
-                }else if (line[i].contains("\"Class\":\"Morra\"")){
-                    count++;
-                    BeginCreatures.add(gson.fromJson(line[i], Morra.class));
-                }else if (line[i].contains("\"Class\":\"Hattifatteners\"")){
-                    count++;
-                    BeginCreatures.add(gson.fromJson(line[i], Hattifatteners.class));
-                }else if(line[i].contains("\"Class\":\"Creature\"")){
+                }else if(line[i].contains("\"family\"")&&(line[i].contains("\"name\""))){
                     count++;
                     BeginCreatures.add(gson.fromJson(line[i], Creature.class));
                 }else {
@@ -120,12 +112,15 @@ class CollectionManager {
         else
             return ("\t" + forAction.toString() + " не является наибольшим элементом коллекции");
     }
-//        Creatures.stream().allMatch(((Creature2) -> (forAction.compareTo(Creature2) > 0)));
 
     String add(Creature forAction){
-        if(Creatures.add(forAction))
-            return "\t"+forAction.toString() + " добавлен в коллекцию";
-        else return "\t"+forAction.toString() + " уже есть в коллекции";
+        try{
+            DBman.addCreature(forAction);
+            Creatures.add(forAction);
+            return "\t" + forAction.toString() + " добавлен";
+        } catch (Exception e){
+            return "\n"+ e.getMessage();
+        }
     }
     String add(CopyOnWriteArrayList<Creature> Creatures){
          return "\tВ коллекцию добалено " + this.Creatures.addAllAbsent(Creatures) + " существ";

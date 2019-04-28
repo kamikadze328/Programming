@@ -9,8 +9,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="lab7" />
     <orderEntry type="module" module-name="Common" />
-    <orderEntry type="library" name="gson-2.8.5" level="project" />
     <orderEntry type="module" module-name="Server" />
-    <orderEntry type="library" name="jsch-0.1.55" level="project" />
+    <orderEntry type="library" name="postgresql-42.2.5" level="project" />
+    <orderEntry type="library" name="gson-2.8.51" level="project" />
   </component>
 </module>

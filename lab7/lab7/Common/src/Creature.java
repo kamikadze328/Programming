@@ -4,38 +4,39 @@ import java.util.LinkedList;
 import java.util.Objects;
 
 public class Creature implements Comparable<Creature>, Serializable {
-    private static final long serialVersionUID = 4520157701042133812L;
+    private static final long serialVersionUID = -2308846153109753988L;
     private String name;
     private int hunger;
     private Location location;
-    private OffsetDateTime CurrentTime;
-    private String Class;
+    private OffsetDateTime creationTime;
+    private String family;
 
-    class Inventory {
-        LinkedList<Creature> inventory = new LinkedList<>();
-        protected void add(Creature a) {
+    class Inventory implements Serializable{
+        private static final long serialVersionUID = -1484983106197509695L;
+        LinkedList<String> inventory = new LinkedList<>();
+        protected void add(String a) {
             inventory.add(a);
-            System.out.println(Creature.this.getName() + " поднимает " + a.getName());
+            System.out.println(Creature.this.getName() + " поднимает " + a);
         }
-        protected void remove(Creature a) {
+        protected void remove(String a) {
             inventory.remove(a);
-            System.out.println(Creature.this.getName() + " опускает " + a.getName());
+            System.out.println(Creature.this.getName() + " опускает " + a);
         }
     }
 
-    transient Creature.Inventory inventory = new Creature.Inventory();
+    Creature.Inventory inventory = new Creature.Inventory();
 
     Creature(String n) {
         name = n;
-        CurrentTime = OffsetDateTime.now();
+        creationTime = OffsetDateTime.now();
     }
 
     Creature(String n, Location l){
         name = n;
         location = l;
-        CurrentTime = OffsetDateTime.now();
+        creationTime = OffsetDateTime.now();
     }
-
+    public String getFamily(){return family;}
     public String getName() {
         return name;
     }
@@ -43,16 +44,18 @@ public class Creature implements Comparable<Creature>, Serializable {
         return hunger;
     }
     public Location getLocation() {
+        if (location == null) location = Location.NaN;
         return location;
     }
-    public OffsetDateTime getCurrentTime() {
-        return CurrentTime;
+    public OffsetDateTime getCreationTime() {
+        if(creationTime ==null) creationTime = OffsetDateTime.now();
+        return creationTime;
     }
     public void setLocation(Location l) {
         location = l;
     }
     public void setCurrentTime() {
-        CurrentTime = OffsetDateTime.now();
+        creationTime = OffsetDateTime.now();
     }
 
     public boolean equals(Object otherObject) {
@@ -66,7 +69,7 @@ public class Creature implements Comparable<Creature>, Serializable {
     }
 
     public int hashCode() {
-        return Objects.hash(name, Class);
+        return Objects.hash(name, family);
     }
 
     @Override
@@ -75,6 +78,6 @@ public class Creature implements Comparable<Creature>, Serializable {
     }
 
     public String toString() {
-        return "\n\t" + Class +" "+ getName();
+        return "\n\t" + getFamily() +" "+ getName();
     }
 }
