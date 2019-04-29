@@ -7,8 +7,6 @@ import java.net.SocketAddress;
 import java.nio.channels.SocketChannel;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
 
 public class RequestsSender extends Thread {
     private boolean isWorking = false;
@@ -19,8 +17,8 @@ public class RequestsSender extends Thread {
     private SocketAddress socketAddress;
     private Creature forAction;
     private File file;
-    private CopyOnWriteArrayList<Creature> creatures = new CopyOnWriteArrayList<>();
     private int countTryConnect = 0;
+    private String jsonStr = "";
 
     RequestsSender() {
         this.socketAddress = new InetSocketAddress(HOST, PORT);
@@ -30,9 +28,10 @@ public class RequestsSender extends Thread {
         try {
             System.out.println("Добро пожаловать на сторону клиента");
             while (!exit) {
-                if(countTryConnect==0) System.out.println("Соединение с сервером(IP address " + ADDR + ", port " + PORT + ")\n");
+                if (countTryConnect == 0)
+                    System.out.println("Соединение с сервером(IP address " + ADDR + ", port " + PORT + ")\n");
                 SocketChannel server = connect();
-                countTryConnect=0;
+                countTryConnect = 0;
                 isWorking = true;
                 if (server == null) break;
                 try (ObjectOutputStream oos = new ObjectOutputStream(server.socket().getOutputStream());
@@ -67,7 +66,7 @@ public class RequestsSender extends Thread {
 
                             // Сейчас Иван и Александр требуют просто пересылку содержимого файла(import) в виде строки
                             case "import":
-                                oos.writeObject(new Request(fullCommand[0], creatures));
+                                oos.writeObject(new Request(fullCommand[0], getJsonStr()));
                                 System.out.println("Server:\n" + ois.readObject());
                                 break;
 
@@ -86,8 +85,7 @@ public class RequestsSender extends Thread {
                     }
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
-                    if(countTryConnect >4)
-                    {
+                    if (countTryConnect > 4) {
                         System.out.println("Хотите возобновить попытки подключения?(Y/N)");
                         try {
                             Scanner scanner = new Scanner(System.in);
@@ -99,7 +97,7 @@ public class RequestsSender extends Thread {
                             exit = true;
                             break;
                         }
-                    }else {
+                    } else {
                         countTryConnect++;
                         if (isWorking) System.out.println("Не удается подключиться к серверу. Ожидайте...");
                         Thread.sleep(1000);
@@ -109,7 +107,7 @@ public class RequestsSender extends Thread {
                     System.out.println(e.getMessage());
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getCause().toString());
         }
     }
@@ -144,7 +142,8 @@ public class RequestsSender extends Thread {
                 } catch (IOException ex) {
                     if (countTryConnect > 4) {
                         System.out.println("Хотите возобновить попытки подключения?(Y/N)");
-                        try {Scanner scanner = new Scanner(System.in);
+                        try {
+                            Scanner scanner = new Scanner(System.in);
                             String command = scanner.nextLine();
                             if (command.equals("Y")) countTryConnect = 0;
                             else throw new NoSuchElementException();
@@ -171,10 +170,10 @@ public class RequestsSender extends Thread {
                     Gson gson = new Gson();
                     String jsonStr = fullCommand[1];
                     jsonStr = jsonStr.replace(" ", "");
-                    if (jsonStr.contains("\"family\"")&& jsonStr.contains("\"name\""))
+                    if (jsonStr.contains("\"family\"") && jsonStr.contains("\"name\""))
                         forAction = gson.fromJson(jsonStr, Creature.class);
                     else forAction = null;
-                    if (forAction == null || forAction.getName() == null ||forAction.getClass() ==null) {
+                    if (forAction == null || forAction.getName() == null || forAction.getFamily() == null) {
                         System.out.println("  Ошибка, элемент задан неверно, возможно вы указали не все значения.");
                         return false;
                     }
@@ -198,12 +197,10 @@ public class RequestsSender extends Thread {
                 throw new FileNotFoundException("404. Файл нот фаунд. Добавьте элементы вручную или импортируйте из другого файла");
             if (!file.canRead())
                 throw new SecurityException("Охраняемая территория!! Вход запрещён! Добавьте элементы вручную или импортируйте из другого файла");
-            String jsonStr = "";
-            String line ="";
+            String line;
             while ((line = r.readLine()) != null) jsonStr += line;
             jsonStr = jsonStr.substring(1, jsonStr.length() - 1);
-            System.out.println("Файл клиента успешно считан");
-            return parser((jsonStr).split("},\\{"));
+            return true;
         } catch (NullPointerException | FileNotFoundException | SecurityException ex) {
             System.out.println(ex.getMessage());
             return false;
@@ -211,37 +208,6 @@ public class RequestsSender extends Thread {
             System.out.println("Не удалось считать файл");
             return false;
         }
-    }
-
-    private boolean parser(String[] line) throws JsonSyntaxException{
-        CopyOnWriteArrayList<Creature> BeginCreatures = new CopyOnWriteArrayList<>();
-        boolean oneParse = false;
-        if (line.length==1) oneParse = true;
-        int noInit=0;
-        int count =-1;
-        Gson gson = new Gson();
-        for (int i = 0; i < line.length; i++) {
-            if(i==0&&!oneParse) line[i] = line[i] + "}";
-            else if(i==line.length-1&&!oneParse) line[i] = "{" + line[i];
-            else if(line.length> 1)line[i] = "{" + line[i] + "}";
-            if (line[i].equals("")){
-                continue;
-            }else if((line[i].contains("\"class\""))&&(line[i].contains("\"name\""))){
-                count++;
-                BeginCreatures.add(gson.fromJson(line[i], Creature.class));
-            }else {
-                noInit++;
-                continue;
-            }
-            if (count >= 0 && BeginCreatures.get(count).getName() != null && !BeginCreatures.get(count).getName().equals("")&& !BeginCreatures.get(count).getName().trim().equals(""))
-                creatures.add(BeginCreatures.get(count));
-        }
-        creatures = creatures.stream()
-                .sorted(Creature::compareTo)
-                .collect(Collectors.toCollection(CopyOnWriteArrayList::new));
-        int finalCount = ++count;
-        System.out.println("Удачно инициализированно " + finalCount + " существ, неудачно " + noInit  + "\n");
-        return true;
     }
 
     private String[] readAndParseCommand() {
@@ -275,5 +241,11 @@ public class RequestsSender extends Thread {
             fullCommand[0] = "exit";
         }
         return fullCommand;
+    }
+
+    private String getJsonStr() {
+        String res = jsonStr;
+        jsonStr = "";
+        return res;
     }
 }

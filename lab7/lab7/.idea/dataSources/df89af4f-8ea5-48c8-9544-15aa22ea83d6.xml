@@ -14,12 +14,12 @@
       <ObjectId>16600</ObjectId>
       <StateNumber>704</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>773</IntrospectionStateNumber>
+      <IntrospectionStateNumber>836</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
       <Relations>sequence|table|16635|16637|1
-sequence|table|16710|16712|6
 sequence|table|16735|16737|1
+sequence|table|16786|16788|6
 </Relations>
     </database>
     <role id="4" parent="1" name="pg_execute_server_program">
@@ -105,7 +105,7 @@ sequence|table|16735|16737|1
       <Comment>standard public schema</Comment>
       <StateNumber>360</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>774</IntrospectionStateNumber>
+      <IntrospectionStateNumber>837</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
@@ -166,8 +166,8 @@ sequence|table|16735|16737|1
       <SchemaId>11</SchemaId>
     </extension>
     <sequence id="26" parent="18" name="creatures_creature_id_seq">
-      <ObjectId>16710</ObjectId>
-      <StateNumber>764</StateNumber>
+      <ObjectId>16786</ObjectId>
+      <StateNumber>835</StateNumber>
       <Owner>postgres</Owner>
       <SequenceIdentity>1..2147483647</SequenceIdentity>
       <CacheSize>1</CacheSize>
@@ -205,9 +205,9 @@ NaN</Labels>
       <SubCategory>enum</SubCategory>
     </object-type>
     <table id="30" parent="18" name="creatures">
-      <ObjectId>16712</ObjectId>
+      <ObjectId>16788</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>765</StateNumber>
+      <StateNumber>835</StateNumber>
     </table>
     <table id="31" parent="18" name="inventory">
       <ObjectId>16737</ObjectId>
@@ -223,67 +223,67 @@ NaN</Labels>
       <Position>1</Position>
       <DataType>varchar(30)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>764</StateNumber>
+      <StateNumber>835</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="34" parent="30" name="hunger">
       <Position>2</Position>
       <DataType>integer|0s</DataType>
-      <StateNumber>764</StateNumber>
+      <StateNumber>835</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="35" parent="30" name="location">
       <Position>3</Position>
       <DataType>location|0s</DataType>
-      <StateNumber>764</StateNumber>
+      <StateNumber>835</StateNumber>
       <TypeId>16610</TypeId>
     </column>
     <column id="36" parent="30" name="creation_time">
       <Position>4</Position>
-      <DataType>timestamp with time zone|0s</DataType>
-      <StateNumber>764</StateNumber>
-      <TypeId>1184</TypeId>
+      <DataType>timestamp|0s</DataType>
+      <StateNumber>835</StateNumber>
+      <TypeId>1114</TypeId>
     </column>
     <column id="37" parent="30" name="family">
       <Position>5</Position>
       <DataType>varchar(30)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>764</StateNumber>
+      <StateNumber>835</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="38" parent="30" name="creature_id">
       <Position>6</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>764</StateNumber>
+      <StateNumber>835</StateNumber>
       <DefaultExpression>nextval(&apos;creatures_creature_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
     <index id="39" parent="30" name="creatures_pkey">
-      <ObjectId>16716</ObjectId>
-      <StateNumber>764</StateNumber>
+      <ObjectId>16792</ObjectId>
+      <StateNumber>835</StateNumber>
       <ColNames>name
 family</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
     <index id="40" parent="30" name="creatures_creature_id_key">
-      <ObjectId>16718</ObjectId>
-      <StateNumber>764</StateNumber>
+      <ObjectId>16794</ObjectId>
+      <StateNumber>835</StateNumber>
       <ColNames>creature_id</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="41" parent="30" name="creatures_pkey">
-      <ObjectId>16717</ObjectId>
-      <StateNumber>764</StateNumber>
+      <ObjectId>16793</ObjectId>
+      <StateNumber>835</StateNumber>
       <ColNames>name
 family</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>creatures_pkey</UnderlyingIndexName>
     </key>
     <key id="42" parent="30" name="creatures_creature_id_key">
-      <ObjectId>16719</ObjectId>
-      <StateNumber>764</StateNumber>
+      <ObjectId>16795</ObjectId>
+      <StateNumber>835</StateNumber>
       <ColNames>creature_id</ColNames>
       <UnderlyingIndexName>creatures_creature_id_key</UnderlyingIndexName>
     </key>
@@ -301,18 +301,7 @@ family</ColNames>
       <StateNumber>772</StateNumber>
       <TypeId>1015</TypeId>
     </column>
-    <foreign-key id="45" parent="31" name="inventory_creature_id_fkey">
-      <ObjectId>16744</ObjectId>
-      <StateNumber>772</StateNumber>
-      <ColNames>creature_id</ColNames>
-      <RefTableId>16712</RefTableId>
-      <RefColPositions>6</RefColPositions>
-      <RefTableName>creatures</RefTableName>
-      <RefKeyName>creatures_creature_id_key</RefKeyName>
-      <RefColNames>creature_id</RefColNames>
-      <OnDelete>cascade</OnDelete>
-    </foreign-key>
-    <column id="46" parent="32" name="user_id">
+    <column id="45" parent="32" name="user_id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
@@ -320,26 +309,26 @@ family</ColNames>
       <DefaultExpression>nextval(&apos;users_user_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="47" parent="32" name="login">
+    <column id="46" parent="32" name="login">
       <Position>2</Position>
       <DataType>varchar(30)|0s</DataType>
       <StateNumber>722</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="48" parent="32" name="password">
+    <column id="47" parent="32" name="password">
       <Position>3</Position>
       <DataType>varchar(30)|0s</DataType>
       <StateNumber>722</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <index id="49" parent="32" name="users_pkey">
+    <index id="48" parent="32" name="users_pkey">
       <ObjectId>16641</ObjectId>
       <StateNumber>722</StateNumber>
       <ColNames>user_id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <key id="50" parent="32" name="users_pkey">
+    <key id="49" parent="32" name="users_pkey">
       <ObjectId>16642</ObjectId>
       <StateNumber>722</StateNumber>
       <ColNames>user_id</ColNames>

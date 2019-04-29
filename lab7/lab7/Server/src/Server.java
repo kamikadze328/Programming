@@ -12,9 +12,9 @@ public class Server {
             if (args.length == 0)
                 throw new ArrayIndexOutOfBoundsException("\tимя файла должно передаваться программе с помощью аргумента командной строки.");
             manager = new CollectionManager(new File(args[0]));
-            if (manager.loadFile(new File(args[0]))) System.out.println(manager.getReceiver());
+            if (manager.loadFile(new File(args[0]))) System.out.println(Receiver.get());
             else {
-                System.out.println(manager.getReceiver());
+                System.out.println(Receiver.get());
                 System.exit(1);
             }
         } catch (ArrayIndexOutOfBoundsException e) {

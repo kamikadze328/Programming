@@ -1,11 +1,10 @@
-
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -14,148 +13,137 @@ class CollectionManager {
 
     private File importFile;
     private CopyOnWriteArrayList<Creature> Creatures;
-    private OffsetDateTime initTime;
+    private String initTime;
     private boolean exit;
-    private String receiver = "";
     private DataBaseManager DBman;
 
     CollectionManager(File file) {
         importFile = file;
         exit = true;
         Creatures = new CopyOnWriteArrayList<>();
-        initTime = OffsetDateTime.now();
+        OffsetDateTime d = OffsetDateTime.now();
+        initTime = d.format(DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm:ssX"));
         DBman = new DataBaseManager();
     }
-    boolean loadFile(File file){
+
+    boolean loadFile(File file) {
         try {
             if (file == null)
-                throw new NullPointerException("\tВместо файла передано ничего. Добавьте элементы вручную или импортируйте из другого файла");
+                throw new NullPointerException("Вместо файла передано ничего. Добавьте элементы вручную или импортируйте из другого файла");
             if (!(file.isFile()))
-                throw new FileNotFoundException("\tОй, а это не файл. Добавьте элементы вручную или импортируйте из другого файла");
+                throw new FileNotFoundException("Ой, а это не файл. Добавьте элементы вручную или импортируйте из другого файла");
             if (!(file.exists()))
-                throw new FileNotFoundException("\t404. Файл нот фаунд. Добавьте элементы вручную или импортируйте из другого файла");
+                throw new FileNotFoundException("404. Файл нот фаунд. Добавьте элементы вручную или импортируйте из другого файла");
             if (!file.canRead())
-                throw new SecurityException("\tОхраняемая территория!! Вход запрещён! Добавьте элементы вручную или импортируйте из другого файла");
+                throw new SecurityException("Охраняемая территория!! Вход запрещён! Добавьте элементы вручную или импортируйте из другого файла");
             String JsonString = readFromFile(file);
-            receiver = "\tФайл сервера считан\n";
+            Receiver.add("Файл сервера считан\n");
             return load(JsonString);
-        }catch(NullPointerException | FileNotFoundException | SecurityException ex){
-            receiver = ex.getMessage();
+        } catch (NullPointerException | FileNotFoundException | SecurityException ex) {
+            Receiver.add(ex.getMessage());
             return false;
-        } catch (IOException ex){
-            receiver = "\tПроизошла ошибка при чтении с файла.";
+        } catch (IOException ex) {
+            Receiver.add("Произошла ошибка при чтении с файла.");
             return false;
         }
     }
 
-     boolean load(String JsonString){
+    boolean load(String JsonString) {
         try {
-            Creatures = parser(JsonString.split("},\\{"));
+            parser(JsonString.split("},\\{"));
             return true;
-        }catch (JsonSyntaxException ex) {
-            receiver = "\tJSON строки исписаны неразборчивым подчерком";
+        } catch (JsonSyntaxException ex) {
+            Receiver.add("JSON строки исписаны неразборчивым подчерком");
             return false;
         }
-     }
-
-    private String readFromFile(File file) throws  IOException{
-            String jsonStr = "";
-            BufferedReader r = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(file))));
-            String line;
-            while ((line = r.readLine()) != null) jsonStr += line;
-            jsonStr = jsonStr.substring(1, jsonStr.length()-1);
-            receiver += "\n\tФайл успешно считан";
-            return jsonStr;
     }
 
-     private CopyOnWriteArrayList<Creature> parser(String[] line) throws JsonSyntaxException{
-        ArrayList<Creature> BeginCreatures= new ArrayList<>();
-        CopyOnWriteArrayList<Creature> FinalCreatures = new CopyOnWriteArrayList<>();
+    private String readFromFile(File file) throws IOException {
+        String jsonStr = "";
+        BufferedReader r = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(file))));
+        String line;
+        while ((line = r.readLine()) != null) jsonStr += line;
+        jsonStr = jsonStr.substring(1, jsonStr.length() - 1);
+        Receiver.add("\nФайл успешно считан");
+        return jsonStr;
+    }
+
+    private void parser(String[] line) throws JsonSyntaxException {
         boolean oneParse = false;
-        if (line.length==1) oneParse = true;
-        int beginCountCreature = FinalCreatures.size();
-        int noInit=0;
-        int count =-1;
+        if (line.length == 1) oneParse = true;
+        int beginCountCreatures = Creatures.size();
+        int noInit = 0;
+        int count = -1;
         Gson gson = new Gson();
-            for (int i = 0; i < line.length; i++) {
-                if(i==0&&!oneParse) line[i] = line[i] + "}";
-                else if(i==line.length-1&&!oneParse) line[i] = "{" + line[i];
-                else if(line.length> 1)line[i] = "{" + line[i] + "}";
-                if (line[i].equals("")){
-                    continue;
-                }else if(line[i].contains("\"family\"")&&(line[i].contains("\"name\""))){
-                    count++;
-                    BeginCreatures.add(gson.fromJson(line[i], Creature.class));
-                }else {
-                    noInit++;
-                    continue;
-                }
-                if (count >= 0 && BeginCreatures.get(count).getName() != null && !BeginCreatures.get(count).getName().equals("")&& !BeginCreatures.get(count).getName().trim().equals(""))
-                    FinalCreatures.add(BeginCreatures.get(count));
-                }
-            int finalCount = ++count;
-            int addCountCreature = FinalCreatures.size() - beginCountCreature;
-            receiver += ("\tУдачно инициализированно " + finalCount + " существ, неудачно " + noInit +
-                    "\n\tВ коллекцию добавлено " + addCountCreature + " из них.\n");
-            return FinalCreatures;
-    }
-
-    String remove(Creature forAction) {
-        if(Creatures.remove(forAction))
-            return "\t"+forAction.toString() + " удалён из коллекции.";
-        else return "\t"+forAction.toString() + " в коллекции не было.";
-    }
-
-    String addIfMax(Creature forAction) {
-
-        if (forAction.compareTo(Creatures.stream().max(Creature::compareTo).get()) > 0)
-            return (add(forAction) + " т.к. является наибольшим");
-        else
-            return ("\t" + forAction.toString() + " не является наибольшим элементом коллекции");
-    }
-
-    String add(Creature forAction){
-        try{
-            DBman.addCreature(forAction);
-            Creatures.add(forAction);
-            return "\t" + forAction.toString() + " добавлен";
-        } catch (Exception e){
-            return "\n"+ e.getMessage();
+        for (int i = 0; i < line.length; i++) {
+            if (i == 0 && !oneParse) line[i] = line[i] + "}";
+            else if (i == line.length - 1 && !oneParse) line[i] = "{" + line[i];
+            else if (line.length > 1) line[i] = "{" + line[i] + "}";
+            if (line[i].equals("")) {
+            } else if (line[i].contains("\"family\"") && (line[i].contains("\"name\""))) {
+                count++;
+                Creature forAction = gson.fromJson(line[i], Creature.class);
+                add(forAction);
+            } else noInit++;
         }
-    }
-    String add(CopyOnWriteArrayList<Creature> Creatures){
-        Creatures.stream().
-         return "\tВ коллекцию добалено " + this.Creatures.addAllAbsent(Creatures) + " существ";
-    }
-
-    String info() {
-        return("\tКоллекция типа " + Creatures.getClass().getSimpleName() + " содержит объекты класса Creature(и подклассов)" +
-                "\n\tДата инициализации:  " + initTime +
-                "\n\tСейчас содержит " + Creatures.size() + " существ." +
-                "\n\n\tДля помощи введите команду help.");
+        int finalCount = ++count;
+        int addCountCreature = Creatures.size() - beginCountCreatures;
+        Receiver.add(("\nУдачно инициализированно " + finalCount + " существ, неудачно " + noInit +
+                "\nВ коллекцию добавлено " + addCountCreature + " из них.\n"));
     }
 
-    String help(){
-        return("\tadd {element}: добавить новое существо в коллекцию;\n" +
-                "\tremove {element}: удалить существо из коллекции;\n" +
-                "\tadd_if_max {element}: добавить новое существо в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции);\n" +
-                "\tshow: вывести в System.out все элементы коллекции в строковом представлении;\n" +
-                "\tclear: очистить коллекцию;\n" +
-                "\tinfo: вывести информацию о коллекции (тип, дата инициализации, количество элементов);\n" +
-                "\tload путь_к_файлу: считать коллекцию из файла сервера;\n" +
-                "\timport путь_к_файлу: считать коллекцию из файла клиента;\n" +
-                "\tsave: сохранить коллекцию в файл на сервере;\n" +
-                "\texit: завершает работу клиента;\n" +
-                "\thelp: вывести помощь по всем командам.");
+    void remove(Creature forAction) {
+        if (DBman.removeCreature(forAction)) {
+            Creatures.remove(forAction);
+            Receiver.add(forAction.toString() + " удалён из коллекции.");
+        } else Receiver.add(forAction.toString() + " в коллекции не было.");
     }
 
-    synchronized String save() {
+    void addIfMax(Creature forAction) {
+        if (DBman.addIfMax(forAction)) {
+            Creatures.add(forAction);
+            Receiver.add((forAction.toString() + " добавлен, т.к. является наибольшим"));
+        } else
+            Receiver.add(forAction.toString() + " не является наибольшим элементом коллекции");
+    }
+
+    void add(Creature forAction) {
+        if (DBman.addCreature(forAction)) {
+            Creatures.add(forAction);
+            Receiver.add(forAction.toString() + " добавлен");
+        } /*else addReceiver(forAction.toString() + " уже существует\n");*/
+    }
+
+    void info() {
+        DBman.info();
+        Receiver.add("Коллекция типа " + Creatures.getClass().getSimpleName() + " содержит объекты класса Creature" +
+                "\nДата инициализации:  " + initTime +
+                "\nСейчас содержит " + Creatures.size() + " существ." +
+                "\n\nДля помощи введите команду help.");
+    }
+
+    void help() {
+        Receiver.add("add {element}: добавить новое существо;\n" +
+                "remove {element}: удалить существо;\n" +
+                "add_if_max {element}: добавить новое существо, если его значение превышает значение наибольшего элемента;\n" +
+                "show: вывести в System.out все строки в строковом представлении;\n" +
+                "clear: очистить коллекцию;\n" +
+                "info: вывести информацию о коллекции (тип, дата инициализации, количество элементов);\n" +
+                "load путь_к_файлу: считать коллекцию из файла сервера;\n" +
+                "import путь_к_файлу: считать коллекцию из файла клиента;\n" +
+                "save: сохранить коллекцию в файл на сервере;\n" +
+                "exit: завершает работу клиента;\n" +
+                "help: вывести помощь по всем командам.");
+    }
+
+    synchronized void save() {
         File saveFile = importFile;
         Gson gson = new Gson();
         try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(saveFile, false))) {
+
             osw.write(gson.toJson(Creatures));
             osw.flush();
-            return ("\tКоллекция сохранена в файл сервера " + saveFile.getAbsolutePath());
+            Receiver.add("Коллекция сохранена в файл сервера " + saveFile.getAbsolutePath());
         } catch (IOException | NullPointerException e) {
             Date d = new Date();
             SimpleDateFormat formater = new SimpleDateFormat("MM.dd_hh:mm:ss");
@@ -163,31 +151,27 @@ class CollectionManager {
             try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(saveFile, true))) {
                 osw.write(gson.toJson(Creatures));
                 osw.flush();
-                return ("\tКоллекция сохранена в файл " + saveFile.getAbsolutePath());
+                Receiver.add("Коллекция сохранена в файл " + saveFile.getAbsolutePath());
             } catch (IOException ex) {
-                return ("\tСохранение коллекции не удалось");
+                Receiver.add("Сохранение коллекции не удалось");
             }
         }
     }
 
-     String getReceiver() {
-        String str = receiver;
-        receiver = "";
-         return str;
-     }
+    String show() {
+        return "\t" + Creatures.toString();
+    }
 
-     String show() {
-         return "\t" + Creatures.toString();
-     }
+    boolean isExit() {
+        return exit;
+    }
 
-     boolean isExit() {
-         return exit;
-     }
-     void trueExit(){
+    void trueExit() {
         exit = true;
-     }
-     String clear(){
-        Creatures.clear();
-        return "\tКоллекция очищена";
+    }
+
+    void clear() {
+        if (DBman.clearCreature())
+            Creatures.clear();
     }
 }

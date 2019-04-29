@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class RequestsHandler extends Thread {
     private Socket client;
@@ -14,7 +13,10 @@ public class RequestsHandler extends Thread {
         this.client = socket;
         this.manager = manager;
         manager.trueExit();
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {manager.save(); exit();}));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            manager.save();
+            exit();
+        }));
     }
 
     @Override
@@ -33,45 +35,53 @@ public class RequestsHandler extends Thread {
                 String command = request.command;
                 Creature creature = request.creature;
                 File file = request.file;
-                CopyOnWriteArrayList<Creature> creatures = request.creatures;
+                String jsonStr = request.jsonStr;
 
                 new Thread(() -> {
                     try {
                         switch (command) {
                             case ("info"):
-                                oos.writeObject(manager.info());
+                                manager.info();
+                                oos.writeObject(Receiver.get());
                                 break;
                             case "help":
-                                oos.writeObject(manager.help());
+                                manager.help();
+                                oos.writeObject(Receiver.get());
                                 break;
                             case "show":
                                 oos.writeObject(manager.show());
                                 break;
                             case "clear":
-                                oos.writeObject(manager.clear());
+                                manager.clear();
+                                oos.writeObject(Receiver.get());
                                 break;
                             case "add":
-                                oos.writeObject(manager.add(creature));
+                                manager.add(creature);
+                                oos.writeObject(Receiver.get());
                                 break;
                             case "remove":
-                                oos.writeObject(manager.remove(creature));
+                                manager.remove(creature);
+                                oos.writeObject(Receiver.get());
                                 break;
                             case "add_if_max":
-                                oos.writeObject(manager.addIfMax(creature));
+                                manager.addIfMax(creature);
+                                oos.writeObject(Receiver.get());
                                 break;
                             case "import":
-                                oos.writeObject(manager.add(creatures));
+                                manager.load(jsonStr);
+                                oos.writeObject(Receiver.get());
                                 break;
                             case "load":
                                 manager.loadFile(file);
-                                oos.writeObject(manager.getReceiver());
+                                oos.writeObject(Receiver.get());
                                 break;
                             case "save":
-                                oos.writeObject(manager.save());
+                                manager.save();
+                                oos.writeObject(Receiver.get());
                                 break;
-
                             case "exit":
-                                oos.writeObject(manager.save());
+                                manager.save();
+                                oos.writeObject(Receiver.get());
                                 client.close();
                                 exit();
                                 break;
@@ -83,10 +93,12 @@ public class RequestsHandler extends Thread {
             }
         } catch (IOException e) {
             System.out.println("Клиент отключился");
+            //Надо убрать
             System.out.println(e.getCause().toString());
         }
     }
-    private void exit(){
+
+    private void exit() {
         exit = true;
     }
 }
