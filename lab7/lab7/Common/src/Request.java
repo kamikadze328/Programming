@@ -6,24 +6,37 @@ public class Request implements Serializable {
     public String command;
     public Creature creature;
     public File file;
-    public String jsonStr;
+    public String token;
+    //Для файла сервера или логина
+    public String str;
+    public String password;
 
-    public Request(String command) {
+    public Request(String command, String token) {
         this.command = command;
+        this.token = token;
     }
 
-    public Request(String command, Creature creature) {
+    public Request(String command, Creature creature, String token) {
         this.command = command;
         this.creature = creature;
+        this.token = token;
     }
 
-    public Request(String command, File file) {
+    public Request(String command, File file, String token) {
         this.command = command;
         this.file = file;
+        this.token = token;
     }
 
-    public Request(String command, String jsonStr) {
+    public Request(String command, String str, String token) {
         this.command = command;
-        this.jsonStr = jsonStr;
+        this.str = str;
+        this.token = token;
+    }
+    public Request(String command, String login, String password, String token) {
+        this.command = command;
+        this.str = login;
+        this.password = password;
+        this.token = token;
     }
 }

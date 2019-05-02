@@ -9,6 +9,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Common" />
     <orderEntry type="library" name="postgresql-42.2.5" level="project" />
-    <orderEntry type="library" name="gson-2.8.51" level="project" />
+    <orderEntry type="library" name="javax.mail" level="application" />
+    <orderEntry type="library" name="gson" level="application" />
+    <orderEntry type="library" name="bcprov-jdk15on-161" level="application" />
   </component>
 </module>

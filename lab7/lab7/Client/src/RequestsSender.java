@@ -1,32 +1,39 @@
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import org.bouncycastle.crypto.generators.SCrypt;
 
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.channels.SocketChannel;
+import java.util.Base64;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class RequestsSender extends Thread {
-    private boolean isWorking = false;
-    private boolean exit = false;
+public class RequestsSender {
     private final int PORT = 5001;
     private final String HOST = "localhost";
     private final String ADDR = "127.0.0.1";
+    private boolean isWorking = false;
+    private boolean exit = false;
     private SocketAddress socketAddress;
     private Creature forAction;
     private File file;
     private int countTryConnect = 0;
     private String jsonStr = "";
+    private boolean isLogIn;
+    private String token;
+    private String login;
 
     RequestsSender() {
         this.socketAddress = new InetSocketAddress(HOST, PORT);
+        isLogIn = true;
     }
 
-    public void run() {
+    public void work() {
         try {
-            System.out.println("Добро пожаловать на сторону клиента");
+            isLogIn = false;
+            System.out.println("Добро пожаловать " + login);
             while (!exit) {
                 if (countTryConnect == 0)
                     System.out.println("Соединение с сервером(IP address " + ADDR + ", port " + PORT + ")\n");
@@ -37,7 +44,7 @@ public class RequestsSender extends Thread {
                 try (ObjectOutputStream oos = new ObjectOutputStream(server.socket().getOutputStream());
                      ObjectInputStream ois = new ObjectInputStream(server.socket().getInputStream())) {
                     System.out.println("Сервер доступен и готов принимать команды.");
-                    oos.writeObject(new Request("info"));
+                    oos.writeObject(new Request("info", token));
                     System.out.println("Server:\n" + ois.readObject());
                     while (isWorking) {
                         String[] fullCommand = readAndParseCommand();
@@ -48,33 +55,34 @@ public class RequestsSender extends Thread {
                             case "show":
                             case "clear":
                             case "save":
-                                oos.writeObject(new Request(fullCommand[0]));
+                                oos.writeObject(new Request(fullCommand[0], token));
                                 System.out.println("Server:\n" + ois.readObject());
                                 break;
 
                             case "add":
                             case "remove":
                             case "add_if_max":
-                                oos.writeObject(new Request(fullCommand[0], forAction));
+                                oos.writeObject(new Request(fullCommand[0], forAction, token));
                                 System.out.println("Server:" + ois.readObject());
                                 break;
 
                             case "load":
-                                oos.writeObject(new Request(fullCommand[0], file));
+                                oos.writeObject(new Request(fullCommand[0], file, token));
                                 System.out.println("Server:\n" + ois.readObject());
                                 break;
 
                             // Сейчас Иван и Александр требуют просто пересылку содержимого файла(import) в виде строки
                             case "import":
-                                oos.writeObject(new Request(fullCommand[0], getJsonStr()));
+                                oos.writeObject(new Request(fullCommand[0], getJsonStr(), token));
                                 System.out.println("Server:\n" + ois.readObject());
                                 break;
 
                             case "exit":
                                 isWorking = false;
                                 exit = true;
-                                oos.writeObject(new Request(fullCommand[0]));
-                                System.out.println("Server: \n" + ois.readObject());
+                                System.out.println("Выход" + "\n");
+                                /*oos.writeObject(new Request(fullCommand[0]));
+                                System.out.println("Server: \n" + ois.readObject());*/
                                 server.close();
                                 break;
 
@@ -84,6 +92,7 @@ public class RequestsSender extends Thread {
                         }
                     }
                 } catch (IOException e) {
+                    isLogIn = true;
                     System.out.println(e.getMessage());
                     if (countTryConnect > 4) {
                         System.out.println("Хотите возобновить попытки подключения?(Y/N)");
@@ -93,7 +102,7 @@ public class RequestsSender extends Thread {
                             if (command.equals("Y")) countTryConnect = 0;
                             else throw new NoSuchElementException();
                         } catch (NoSuchElementException error) {
-                            System.out.println("Программа завершена");
+                            System.out.println("Выход");
                             exit = true;
                             break;
                         }
@@ -117,6 +126,7 @@ public class RequestsSender extends Thread {
         try {
             socket = SocketChannel.open(socketAddress);
             isWorking = true;
+            if(!isLogIn)
             System.out.println(socket.getLocalAddress());
         } catch (IOException e) {
             if (isWorking) {
@@ -135,7 +145,7 @@ public class RequestsSender extends Thread {
                     isWorking = true;
                     //oos.close();
                     //ois.close();
-
+                    countTryConnect = 0;
                     break;
                 } catch (InterruptedException ex) {
                     Thread.currentThread().interrupt();
@@ -247,5 +257,74 @@ public class RequestsSender extends Thread {
         String res = jsonStr;
         jsonStr = "";
         return res;
+    }
+
+    boolean checkLogin(String login, int code) {
+        try (SocketChannel server = connect();
+             ObjectOutputStream oos = new ObjectOutputStream(server.socket().getOutputStream());
+             ObjectInputStream ois = new ObjectInputStream(server.socket().getInputStream())) {
+            oos.writeObject(new Request("checkLogin", login, token));
+            String input = (String) ois.readObject();
+            if (input.equals("1")) {
+                if(code == 1)
+                return true;
+                else {
+                    System.out.println(input);
+                    return true;
+                }
+            } else if(code ==1){
+                System.out.println(input);
+                return false;
+            }else
+                return false;
+
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+    boolean signUp(String login, String password){
+        String hashPassword = generate(password);
+        try (SocketChannel server = connect();
+             ObjectOutputStream oos = new ObjectOutputStream(server.socket().getOutputStream());
+             ObjectInputStream ois = new ObjectInputStream(server.socket().getInputStream())) {
+            oos.writeObject(new Request("signUp", login, hashPassword, token));
+            String input = (String) ois.readObject();
+            if (input.equals("1")) {
+                return true;
+            } else {
+                System.out.println(input);
+                return false;
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+    String generate(String password) {
+        byte[] hashByte = SCrypt.generate(password.getBytes(), "salt".getBytes(), 8, 8, 8, 30);
+        return Base64.getEncoder().encodeToString(hashByte);
+    }
+
+    boolean logIn(String login, String password){
+        String hashPassword = generate(password);
+        String input;
+        try (SocketChannel server = connect();
+             ObjectOutputStream oos = new ObjectOutputStream(server.socket().getOutputStream());
+             ObjectInputStream ois = new ObjectInputStream(server.socket().getInputStream())) {
+            oos.writeObject(new Request("logIn", login, hashPassword, token));
+            input = (String) ois.readObject();
+            if (input.length() == 30) {
+                this.login = login;
+                token = input;
+                return true;
+            } else {
+                System.out.println(input);
+                return false;
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

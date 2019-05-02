@@ -6,28 +6,12 @@ import java.util.Objects;
 
 public class Creature implements Comparable<Creature>, Serializable {
     private static final long serialVersionUID = -2308846153109753988L;
+    Creature.Inventory inventory = new Creature.Inventory();
     private String name;
     private int hunger;
     private Location location;
     private OffsetDateTime creationTime;
     private String family;
-
-    class Inventory implements Serializable {
-        private static final long serialVersionUID = -1484983106197509695L;
-        LinkedList<String> inventory = new LinkedList<>();
-
-        protected void add(String a) {
-            inventory.add(a);
-            System.out.println(Creature.this.getName() + " поднимает " + a);
-        }
-
-        protected void remove(String a) {
-            inventory.remove(a);
-            System.out.println(Creature.this.getName() + " опускает " + a);
-        }
-    }
-
-    Creature.Inventory inventory = new Creature.Inventory();
 
     Creature(String n) {
         name = n;
@@ -57,14 +41,14 @@ public class Creature implements Comparable<Creature>, Serializable {
         return location;
     }
 
+    public void setLocation(Location l) {
+        location = l;
+    }
+
     public String getCreationTime() {
         if (creationTime == null) creationTime = OffsetDateTime.now();
         String dateFormat = creationTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm:ssX"));
         return dateFormat;
-    }
-
-    public void setLocation(Location l) {
-        location = l;
     }
 
     public void setCurrentTime() {
@@ -92,5 +76,20 @@ public class Creature implements Comparable<Creature>, Serializable {
 
     public String toString() {
         return "" + getFamily() + " " + getName();
+    }
+
+    class Inventory implements Serializable {
+        private static final long serialVersionUID = -1484983106197509695L;
+        LinkedList<String> inventory = new LinkedList<>();
+
+        protected void add(String a) {
+            inventory.add(a);
+            System.out.println(Creature.this.getName() + " поднимает " + a);
+        }
+
+        protected void remove(String a) {
+            inventory.remove(a);
+            System.out.println(Creature.this.getName() + " опускает " + a);
+        }
     }
 }

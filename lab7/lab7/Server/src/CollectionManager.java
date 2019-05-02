@@ -17,13 +17,13 @@ class CollectionManager {
     private boolean exit;
     private DataBaseManager DBman;
 
-    CollectionManager(File file) {
+    CollectionManager(File file, DataBaseManager DBman) {
         importFile = file;
         exit = true;
         Creatures = new CopyOnWriteArrayList<>();
         OffsetDateTime d = OffsetDateTime.now();
         initTime = d.format(DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm:ssX"));
-        DBman = new DataBaseManager();
+        this.DBman = DBman;
     }
 
     boolean loadFile(File file) {
@@ -37,7 +37,7 @@ class CollectionManager {
             if (!file.canRead())
                 throw new SecurityException("Охраняемая территория!! Вход запрещён! Добавьте элементы вручную или импортируйте из другого файла");
             String JsonString = readFromFile(file);
-            Receiver.add("Файл сервера считан\n");
+            Receiver.add("Файл сервера считан");
             return load(JsonString);
         } catch (NullPointerException | FileNotFoundException | SecurityException ex) {
             Receiver.add(ex.getMessage());
@@ -158,8 +158,8 @@ class CollectionManager {
         }
     }
 
-    String show() {
-        return "\t" + Creatures.toString();
+    void show() {
+        Receiver.add(Creatures.toString());
     }
 
     boolean isExit() {

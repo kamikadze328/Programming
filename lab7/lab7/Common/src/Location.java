@@ -7,4 +7,4 @@ public enum Location {
     FootPath,
     Seamark,
     NaN
-    }
+}
