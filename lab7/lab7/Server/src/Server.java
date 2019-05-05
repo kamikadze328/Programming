@@ -2,21 +2,25 @@ import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Server {
-    static int countUsers;
-    public static void main(String[] args) {
 
+    static ArrayList<Receiver> clients = new ArrayList<>();
+
+    public static void main(String[] args) {
+        int id = 0;
         final int PORT = 5001;
         CollectionManager manager = null;
         DataBaseManager DBman = new DataBaseManager();
+        Receiver receiver = new Receiver(id);
         try {
             if (args.length == 0)
                 throw new ArrayIndexOutOfBoundsException("\tимя файла должно передаваться программе с помощью аргумента командной строки.");
             manager = new CollectionManager(new File(args[0]), DBman);
-            if (manager.loadFile(new File(args[0]))) System.out.println(Receiver.get());
+            if (manager.loadFile(new File(args[0]), receiver)) System.out.println(receiver.get());
             else {
-                System.out.println(Receiver.get());
+                System.out.println(receiver.get());
                 System.exit(1);
             }
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -30,15 +34,27 @@ public class Server {
                 System.out.println("Сервер работает клиентов(port = " + PORT + ")");
                 while (true) {
                     Socket client = server.accept();
-                    countUsers++;
-                    /*System.out.println("Подключён клиент:" + "" +
-                            "\n\taddr = " + client.getInetAddress() + "," +
-                            "\n\tport = " + client.getPort() + ".");*/
-                    new Thread(new RequestsHandler(client, manager, DBman)).start();
+                    id++;
+                    new Thread(new RequestsHandler(client, manager, DBman, id)).start();
                 }
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    static void add(Receiver client) {
+        clients.add(client);
+    }
+
+    static void remove(Receiver client) {
+        clients.remove(client);
+    }
+
+    static void sendToAll(String message, Receiver sender) {
+        for (Receiver receiver : clients) {
+            if (!sender.equals(receiver))
+                receiver.add(message);
         }
     }
 }

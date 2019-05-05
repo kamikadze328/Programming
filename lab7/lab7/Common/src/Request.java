@@ -10,6 +10,7 @@ public class Request implements Serializable {
     //Для файла сервера или логина
     public String str;
     public String password;
+    boolean sucsess;
 
     public Request(String command, String token) {
         this.command = command;

@@ -1,14 +1,28 @@
 class Receiver {
-    private static String message = "";
+    private String message = "";
+    private int id;
+    Receiver(int id){
+        this.id = id;
+    }
 
-    static String get() {
+
+    String get() {
         String str = message;
         message = "";
         return str;
     }
 
-    static void add(String additive) {
+    void add(String additive) {
         if (message.equals("")) message += additive;
         else message = message + "\n" + additive;
+    }
+
+    @Override
+    public boolean equals(Object otherObject) {
+        if (this == otherObject) return true;
+        if (otherObject == null) return false;
+        if (getClass() != otherObject.getClass()) return false;
+        Receiver other = (Receiver) otherObject;
+        return id==other.id;
     }
 }

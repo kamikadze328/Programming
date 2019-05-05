@@ -1,6 +1,5 @@
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -45,10 +44,10 @@ public class Creature implements Comparable<Creature>, Serializable {
         location = l;
     }
 
-    public String getCreationTime() {
+    public OffsetDateTime getCreationTime() {
         if (creationTime == null) creationTime = OffsetDateTime.now();
-        String dateFormat = creationTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm:ssX"));
-        return dateFormat;
+        //String dateFormat = creationTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm:ssX"));
+        return creationTime;
     }
 
     public void setCurrentTime() {
@@ -61,8 +60,7 @@ public class Creature implements Comparable<Creature>, Serializable {
         if (getClass() != otherObject.getClass()) return false;
         Creature other = (Creature) otherObject;
         return getName().equals(other.getName());
-                /*&& getHunger() == other.getHunger()
-                && getLocation() == other.getLocation();*/
+
     }
 
     public int hashCode() {

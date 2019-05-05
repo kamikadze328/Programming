@@ -9,24 +9,24 @@ public class RequestsHandler extends Thread {
     private CollectionManager manager;
     private DataBaseManager DBman;
     private boolean exit = false;
-    private boolean logIn =false;
-    private String token;
-    int userId;
+    private boolean logIn = false;
+    private Receiver receiver;
+    private String login;
 
-    RequestsHandler(Socket socket, CollectionManager manager, DataBaseManager DBman) {
+    RequestsHandler(Socket socket, CollectionManager manager, DataBaseManager DBman, int id) {
         this.client = socket;
         this.manager = manager;
         this.DBman = DBman;
+        receiver = new Receiver(id);
         manager.trueExit();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            manager.save();
+            manager.save(receiver);
             exit();
         }));
     }
 
     @Override
     public void run() {
-
         try (ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
              ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream())) {
             Request request;
@@ -46,132 +46,114 @@ public class RequestsHandler extends Thread {
                 String token = request.token;
 
                 new Thread(() -> {
-                    try {
-                        switch (command) {
-                            case ("info"):
-                                if(DBman.checkToken(token) > 0)
-                                    manager.info();
-                                else{
-                                    oos.writeObject(Receiver.get());
-                                    client.close();
-                                }
-                                break;
-                            case "help":
-                                if(DBman.checkToken(token) > 0)
-                                    manager.help();
-                                else{
-                                    oos.writeObject(Receiver.get());
-                                    client.close();
-                                }
-                                break;
-                            case "show":
-                                if(DBman.checkToken(token) > 0)
-                                    manager.show();
-                                else{
-                                    oos.writeObject(Receiver.get());
-                                    client.close();
-                                }
-                                break;
-                            case "clear":
-                                userId = DBman.checkToken(token);
-                                if(userId > 0)
-                                    manager.clear();
-                                else{
-                                    oos.writeObject(Receiver.get());
-                                    client.close();
-                                }
-                                break;
-                            case "add":
-                                userId = DBman.checkToken(token);
-                                if(userId > 0)
-                                    manager.add(creature);
-                                else{
-                                    oos.writeObject(Receiver.get());
-                                    client.close();
-                                }
-                                break;
-                            case "remove":
-                                userId = DBman.checkToken(token);
-                                if(userId > 0)
-                                    manager.remove(creature);
-                                else{
-                                    oos.writeObject(Receiver.get());
-                                    client.close();
-                                }
-                                break;
-                            case "add_if_max":
-                                userId = DBman.checkToken(token);
-                                if(userId > 0)
-                                    manager.addIfMax(creature);
-                                else{
-                                    oos.writeObject(Receiver.get());
-                                    client.close();
-                                }
-                                break;
-                            case "import":
-                                userId = DBman.checkToken(token);
-                                if(userId > 0)
-                                    manager.load(str);
-                                else{
-                                    oos.writeObject(Receiver.get());
-                                    client.close();
-                                }
-                                break;
-                            case "load":
-                                userId = DBman.checkToken(token);
-                                if(userId > 0)
-                                    manager.loadFile(file);
-                                else{
-                                    oos.writeObject(Receiver.get());
-                                    client.close();
-                                }
-                                break;
-                            case "save":
-                                userId = DBman.checkToken(token);
-                                if(userId > 0)
-                                    manager.save();
-                                else{
-                                    oos.writeObject(Receiver.get());
-                                    client.close();
-                                }
-                                break;
-                            case "exit":
-                                manager.save();
-                                oos.writeObject(Receiver.get());
-                                client.close();
-                                exit();
-                                break;
 
-                            case "checkLogin":
+                    try {
+                        if (token != null) {
+                            login = DBman.checkToken(token, receiver);
+                            if (login != null && login.equals("-1")) {
+                                oos.writeObject(receiver.get());
+                                exit();
+//                                client.close();
                                 logIn = true;
-                                if(DBman.checkLogin(str)){
-                                    Receiver.add("1");
-                                }else Receiver.add("Логин занят");
-                                break;
-                            case "signUp":
+                                throw new IOException();
+                            } else if (login != null) {
+                                oos.writeObject(receiver.get());
+                                System.out.println(login + " отключён по таймауту");
+
+                                exit();
+//                                client.close();
                                 logIn = true;
-                                if(DBman.signUp(str, password)){
-                                    Receiver.add("1");
-                                }else Receiver.add("Не удалось зарегестрироваться");
-                                break;
-                            case "logIn":
-                                logIn = true;
-                                DBman.logIn(str, password);
+                                throw new IOException();
+                            } else {
+                                switch (command) {
+                                    case ("info"):
+                                        manager.info(receiver);
+                                        break;
+                                    case "help":
+                                        manager.help(receiver);
+                                        break;
+                                    case "show":
+                                        manager.show(receiver);
+                                        break;
+                                    case "clear":
+                                        manager.clear(receiver);
+                                        break;
+                                    case "add":
+                                        manager.add(creature, receiver);
+                                        break;
+                                    case "remove":
+                                        manager.remove(creature, receiver);
+                                        break;
+                                    case "add_if_max":
+                                        manager.addIfMax(creature, receiver);
+                                        break;
+                                    case "import":
+                                        manager.load(str, receiver);
+                                        break;
+                                    case "load":
+                                        manager.loadFile(file, receiver);
+                                        break;
+                                    case "save":
+                                        manager.save(receiver);
+                                        break;
+                                    case "exit":
+                                        logIn();
+                                        String login = DBman.getLogin(token, receiver);
+                                        if (login != null) {
+                                            System.out.println(login + " отключился");
+                                            Server.sendToAll(str + " подключился", receiver);
+                                            receiver.add("0");
+                                        } else {
+                                            Server.sendToAll("Кто-то подключился", receiver);
+                                            System.out.println("Кто-то отключился");
+                                        }
+                                        oos.writeObject(receiver.get());
+//                                        client.close();
+                                        exit();
+                                        break;
+                                }
+                                if (!exit) oos.writeObject(receiver.get());
+                            }
+                        } else {
+                            switch (command) {
+                                case "checkLogin":
+                                    logIn();
+                                    if (DBman.checkLogin(str, receiver)) {
+                                        receiver.add("1");
+                                    } else receiver.add("Логин занят");
+                                    break;
+                                case "signUp":
+                                    logIn();
+                                    if (DBman.signUp(str, password, receiver)) {
+                                        receiver.add("1");
+                                    } else receiver.add("Не удалось зарегестрироваться");
+                                    break;
+                                case "logIn":
+                                    logIn();
+                                    if (DBman.logIn(str, password, receiver)) {
+                                        System.out.println(str + " подключился");
+                                        Server.sendToAll(str + " подключился", receiver);
+                                        Server.add(receiver);
+                                    }
+                            }
+                            if (!exit) oos.writeObject(receiver.get());
                         }
-                        if (!exit) oos.writeObject(Receiver.get());
-                    } catch (IOException e) {
-                        System.out.println(e.getMessage());
+                    } catch (IOException ignored) {
                     }
                 }).start();
             }
-        } catch (IOException e) {
-            if(!logIn) {
-                System.out.println("Клиент отключился");
-                logIn = false;
-            }
+            client.close();
+        } catch (IOException ignored) {
         }
     }
+
     private void exit() {
+        Server.sendToAll(login + " отключился по таймауту", receiver);
+        Server.remove(receiver);
         exit = true;
+    }
+
+    private void logIn() {
+        logIn = true;
     }
 }
