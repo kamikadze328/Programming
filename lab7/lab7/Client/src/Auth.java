@@ -13,6 +13,7 @@ class Auth {
     private String password;
     private Scanner scanner;
     private String token;
+    private Request request;
 
     Auth() {
         scanner = new Scanner(System.in);
@@ -21,18 +22,24 @@ class Auth {
     void signUp() throws IOException {
         System.out.println("Введите почту:");
         login = scanner.nextLine();
-        if (checkLogin(login, 1)) {
-            System.out.println("Придумайте и введите пароль:");
-            password = scanner.nextLine();
-            if (signUp(login, password))
-                System.out.println("Вы удачно зарегестированны!");
+        System.out.println("Ожидайте");
+        if (checkLogin(1) && sendToken()) {
+            System.out.println("Введите токен, отправленный на " + login + ":");
+            String mailToken = scanner.nextLine();
+            if (checkToken(mailToken)) {
+                System.out.println("Придумайте и введите пароль:");
+                password = scanner.nextLine();
+                if (signUp(login, password))
+                    System.out.println("Вы удачно зарегестированны!");
+            }
         }
     }
+
 
     void logIn() throws IOException {
         System.out.println("Введите почту:");
         login = scanner.nextLine();
-        if (!checkLogin(login, 2)) {
+        if (!checkLogin(2)) {
             System.out.println("Введите пароль:");
             password = scanner.nextLine();
             if (logIn(login, password)) {
@@ -43,52 +50,79 @@ class Auth {
         }
     }
 
-    private boolean checkLogin(String login, int code) throws IOException {
+    private boolean checkToken(String mailToken) throws IOException {
         try {
-            connect();
-            oos.writeObject(new Request("checkLogin", login, null));
-            String input = (String) ois.readObject();
-            if (input.equals("1")) {
-                if (code == 1)
-                    return true;
-                else {
-                    System.out.println(input);
-                    return true;
-                }
-            } else if (code == 1) {
+            oos.writeObject(new Request("checkEmail", mailToken, null));
+            request = (Request) ois.readObject();
+            String input = request.str;
+            if (input.length() > 0) {
                 System.out.println(input);
                 return false;
-            } else
+            }
+            if (!request.success) {
+                System.out.println("Токен не верный");
                 return false;
+            } else return true;
         } catch (ClassNotFoundException e) {
             System.out.println(e.getMessage());
             return false;
         }
     }
 
-    private boolean signUp(String login, String password) {
+    private boolean sendToken() throws IOException {
         try {
-            oos.writeObject(new Request("signUp", login, password, null));
-            String input = (String) ois.readObject();
-            if (input.equals("1")) {
-                return true;
-            } else {
-                System.out.println(input);
-                return false;
-            }
-        } catch (IOException | ClassNotFoundException e) {
+            oos.writeObject(new Request("sendToken", login, null));
+            request = (Request) ois.readObject();
+            String input = request.str;
+            if (!request.success) System.out.println(input);
+            return request.success;
+        } catch (ClassNotFoundException e) {
             System.out.println(e.getMessage());
             return false;
         }
     }
 
+    private boolean checkLogin(int code) throws IOException {
+        try {
+            connect();
+            oos.writeObject(new Request("checkLogin", login, null));
+            request = (Request) ois.readObject();
+            String input = request.str;
+            if (input.length() > 0) {
+                System.out.println(input);
+                return code != 1;
+            } else if (code == 2 && request.success) {
+                System.out.println("Пользователя с такой почтой не существует");
+            } else if (code == 1 && !request.success)
+                System.out.println("Логин занят");
+            return request.success;
+        } catch (ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
 
-    private boolean logIn(String login, String password) {
-        String input;
+    private boolean signUp(String login, String password) throws IOException {
+        try {
+            oos.writeObject(new Request("signUp", login, password, null));
+            request = (Request) ois.readObject();
+            String input = request.str;
+            if (input.length() > 0 || !request.success) {
+                System.out.println(input);
+                return false;
+            } else return true;
+        } catch (ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    private boolean logIn(String login, String password) throws IOException {
         try {
             oos.writeObject(new Request("logIn", login, password, null));
-            input = (String) ois.readObject();
-            if (input.length() == 30) {
+            request = (Request) ois.readObject();
+            String input = request.str;
+            if (request.success) {
                 this.login = login;
                 token = input;
                 return true;
@@ -96,12 +130,11 @@ class Auth {
                 System.out.println(input);
                 return false;
             }
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.out.println(e.getMessage());
             return false;
         }
     }
-
 
     private void connect() throws IOException {
         server = SocketChannel.open(new InetSocketAddress("localhost", 5001));
@@ -115,7 +148,6 @@ class Auth {
             ois.close();
             server.close();
         } catch (IOException ignored) {
-
         }
     }
 }

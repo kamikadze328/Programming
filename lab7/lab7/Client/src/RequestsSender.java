@@ -30,19 +30,24 @@ class RequestsSender {
             while (!exit) {
                 String ADDR = "127.0.0.1";
                 if (countTryConnect == 0)
-                    System.out.println("Соединение с сервером(IP address " + ADDR + ", port " + PORT + ")\n");
+                    System.out.println("Соединение с сервером(IP address " + ADDR + ", port " + PORT + ")");
                 SocketChannel server = connect();
                 countTryConnect = 0;
                 isWorking = true;
                 if (server == null) break;
                 try (ObjectOutputStream oos = Auth.oos;
                      ObjectInputStream ois = Auth.ois) {
-                    System.out.println("Сервер доступен и готов принимать команды.");
+                    System.out.println("Сервер доступен и готов принимать команды.\n");
                     oos.writeObject(new Request("info", token));
-                    System.out.println("Server:\n" + ois.readObject());
+                    String input = (String) ois.readObject();
+                    if(isTimeOut(input)){
+                        server.close();
+                        continue;
+                    }
+                    System.out.println("Server:\n" + input);
                     while (isWorking) {
                         String[] fullCommand = readAndParseCommand();
-                        String answer= "";
+                        String answer = "";
                         if (!parse(fullCommand)) continue;
                         boolean error = false;
                         switch (fullCommand[0]) {
@@ -53,11 +58,8 @@ class RequestsSender {
                             case "save":
                                 oos.writeObject(new Request(fullCommand[0], token));
                                 answer = (String) ois.readObject();
-                                if(answer.equals("Вас не было слишком долго")){
-                                    exit = true;
-                                    System.out.println(answer+ "\nВыход");
+                                if (isTimeOut(answer))
                                     server.close();
-                                }
                                 break;
 
                             case "add":
@@ -65,31 +67,22 @@ class RequestsSender {
                             case "add_if_max":
                                 oos.writeObject(new Request(fullCommand[0], forAction, token));
                                 answer = (String) ois.readObject();
-                                if(answer.equals("Вас не было слишком долго")){
-                                    exit = true;
-                                    System.out.println(answer+ "\nВыход");
+                                if (isTimeOut(answer))
                                     server.close();
-                                }
                                 break;
 
                             case "load":
                                 oos.writeObject(new Request(fullCommand[0], file, token));
                                 answer = (String) ois.readObject();
-                                if(answer.equals("Вас не было слишком долго")){
-                                    exit = true;
-                                    System.out.println(answer+ "\nВыход");
+                                if (isTimeOut(answer))
                                     server.close();
-                                }
                                 break;
 
                             case "import":
                                 oos.writeObject(new Request(fullCommand[0], getJsonStr(), token));
                                 answer = (String) ois.readObject();
-                                if(answer.equals("Вас не было слишком долго")){
-                                    exit = true;
-                                    System.out.println(answer+ "\nВыход");
+                                if (isTimeOut(answer))
                                     server.close();
-                                }
                                 break;
 
                             case "exit":
@@ -97,7 +90,7 @@ class RequestsSender {
                                 exit = true;
                                 oos.writeObject(new Request(fullCommand[0], token));
                                 answer = (String) ois.readObject();
-                                if(!answer.equals("0")) System.out.println(answer);
+                                if (answer.length() > 0) System.out.println(answer);
                                 System.out.println("Выход");
                                 server.close();
                                 break;
@@ -106,12 +99,11 @@ class RequestsSender {
                                 error = true;
                                 System.out.println("\tОшибка, Неизвестная команда\n" +
                                         "\tДля помощи введите команду help.");
-                        } if(!error&& !exit)
+                        }
+                        if (!error && !exit)
                             System.out.println("Server:\n" + answer);
-
                     }
                 } catch (IOException e) {
-                    System.out.println(e.getMessage());
                     if (countTryConnect > 4) {
                         System.out.println("Хотите возобновить попытки подключения?(Y/N)");
                         try {
@@ -126,8 +118,6 @@ class RequestsSender {
                         }
                     } else {
                         countTryConnect++;
-                        if (isWorking) System.out.println("Не удается подключиться к серверу. Ожидайте...");
-                        Thread.sleep(1000);
                         isWorking = false;
                     }
                 } catch (ClassNotFoundException e) {
@@ -143,7 +133,11 @@ class RequestsSender {
         SocketChannel socket;
         try {
             socket = SocketChannel.open(socketAddress);
+            ObjectOutputStream oos = new ObjectOutputStream(socket.socket().getOutputStream());
+            ObjectInputStream ois = new ObjectInputStream(socket.socket().getInputStream());
             isWorking = true;
+            Auth.ois = ois;
+            Auth.oos = oos;
         } catch (IOException e) {
             if (isWorking) {
                 System.out.println("Не удается подключиться к серверу. Ожидайте...");
@@ -155,17 +149,19 @@ class RequestsSender {
                     Thread.sleep(1000);
                     System.out.println("Не удается подключиться к серверу. Ожидайте...");
                     socket = SocketChannel.open(socketAddress);
-                    //ObjectOutputStream oos = new ObjectOutputStream(socket.socket().getOutputStream());
-                    //ObjectInputStream ois = new ObjectInputStream(socket.socket().getInputStream());
+                    ObjectOutputStream oos = new ObjectOutputStream(socket.socket().getOutputStream());
+                    ObjectInputStream ois = new ObjectInputStream(socket.socket().getInputStream());
                     isWorking = true;
                     //oos.close();
+                    Auth.ois = ois;
+                    Auth.oos = oos;
                     //ois.close();
                     countTryConnect = 0;
                     break;
                 } catch (InterruptedException ex) {
                     Thread.currentThread().interrupt();
                 } catch (IOException ex) {
-                    if (countTryConnect > 4) {
+                    if (countTryConnect > 5) {
                         System.out.println("Хотите возобновить попытки подключения?(Y/N)");
                         try {
                             Scanner scanner = new Scanner(System.in);
@@ -272,5 +268,15 @@ class RequestsSender {
         String res = jsonStr;
         jsonStr = "";
         return res;
+    }
+
+    private boolean isTimeOut(String answer) {
+        if (answer.contains("Ваше время истекло")) {
+            exit = true;
+            isWorking = false;
+            System.out.println(answer + "\nВыход");
+            return true;
+        }
+        return false;
     }
 }

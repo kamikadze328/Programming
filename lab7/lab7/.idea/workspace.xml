@@ -13,23 +13,9 @@
     <list default="true" id="f85ff96e-cdfa-429b-a99f-4c22a8851cf9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/df89af4f-8ea5-48c8-9544-15aa22ea83d6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/df89af4f-8ea5-48c8-9544-15aa22ea83d6.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/df89af4f-8ea5-48c8-9544-15aa22ea83d6/storage_v2/_src_/database/test.kkQ2AA/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/df89af4f-8ea5-48c8-9544-15aa22ea83d6/storage_v2/_src_/database/test.kkQ2AA/schema/public.abK9xQ.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/Client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Client.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/Auth.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/Auth.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/RequestsSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/RequestsSender.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/Common.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/src/Creature.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/src/Location.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/src/Request.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/Server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Server.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/CollectionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/CollectionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/DataBaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/DataBaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/Receiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/Receiver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/RequestsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/RequestsHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/TokenFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/TokenFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lab7.iml" beforeDir="false" afterPath="$PROJECT_DIR$/lab7.iml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -132,7 +118,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Client/src/Request.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="166">
@@ -205,11 +191,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server/src/RequestsHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="42">
-              <caret line="96" column="66" selection-start-line="96" selection-start-column="66" selection-end-line="96" selection-end-column="66" />
+            <state relative-caret-position="1989">
+              <caret line="117" column="42" lean-forward="true" selection-start-line="117" selection-start-column="42" selection-end-line="117" selection-end-column="42" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#7810#7811#0" expanded="true" />
@@ -536,7 +522,7 @@
       <workItem from="1557045049260" duration="12802000" />
       <workItem from="1557146305120" duration="197000" />
       <workItem from="1557146514980" duration="21857000" />
-      <workItem from="1557606294341" duration="3732000" />
+      <workItem from="1557606294341" duration="3987000" />
     </task>
     <task id="LOCAL-00001" summary="Добавлена lab7(ведётся работа)">
       <created>1556126978996</created>
@@ -573,14 +559,22 @@
       <option name="project" value="LOCAL" />
       <updated>1557064130286</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Исправлена отправка сообщений о подключении/отключении&#10;Добавлена регистрация с подтверждением по почте">
+      <created>1557610290098</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1557610290098</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="523638000" />
+    <option name="totallyTimeSpent" value="523893000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.19463088" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -591,12 +585,12 @@
       <window_info id="Image Layers" order="6" />
       <window_info anchor="bottom" id="Database Console" order="0" sideWeight="0.49597314" weight="0.329429" />
       <window_info anchor="bottom" id="Duplicate detector" order="1" weight="0.3286119" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.46308726" weight="0.8389458" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.46375838" visible="true" weight="0.7423133" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.46174496" visible="true" weight="0.1420205" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.46308726" weight="0.7423133" />
       <window_info anchor="bottom" id="Version Control" order="4" sideWeight="0.49932885" weight="0.329429" />
       <window_info anchor="bottom" id="Terminal" order="5" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5362416" side_tool="true" visible="true" weight="0.7423133" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.53825504" side_tool="true" visible="true" weight="0.1420205" />
       <window_info anchor="bottom" id="Message" order="8" />
       <window_info anchor="bottom" id="Find" order="9" weight="0.32796487" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
@@ -661,7 +655,8 @@
     <MESSAGE value="Почти полностью добавлена работа коллекции с БД" />
     <MESSAGE value="Добавлены токены" />
     <MESSAGE value="Улучшена авторизация, информация о подключённых/отключённых клиентах рассылается всем.&#10;Множество мелких улучшений" />
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="Исправлена отправка сообщений о подключении/отключении&#10;Добавлена регистрация с подтверждением по почте" />
+    <option name="LAST_COMMIT_MESSAGE" value="Исправлена отправка сообщений о подключении/отключении&#10;Добавлена регистрация с подтверждением по почте" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -921,13 +916,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/Request.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Client/src/RequestsSender.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -1008,13 +996,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Server/src/RequestsHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="42">
-          <caret line="96" column="66" selection-start-line="96" selection-start-column="66" selection-end-line="96" selection-end-column="66" />
+        <state relative-caret-position="1989">
+          <caret line="117" column="42" lean-forward="true" selection-start-line="117" selection-start-column="42" selection-end-line="117" selection-end-column="42" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#7810#7811#0" expanded="true" />
             <element signature="e#7841#7842#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/src/Request.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="166">
+          <caret line="22" selection-start-line="22" selection-end-line="22" />
         </state>
       </provider>
     </entry>
