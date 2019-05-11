@@ -3,26 +3,18 @@ import com.google.gson.JsonSyntaxException;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.concurrent.CopyOnWriteArrayList;
-
 
 class CollectionManager {
 
     private File importFile;
     private CopyOnWriteArrayList<Creature> Creatures;
-    private String initTime;
-    private boolean exit;
     private DataBaseManager DBman;
 
     CollectionManager(File file, DataBaseManager DBman) {
         importFile = file;
-        exit = true;
         Creatures = new CopyOnWriteArrayList<>();
-        OffsetDateTime d = OffsetDateTime.now();
-        initTime = d.format(DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm:ssX"));
         this.DBman = DBman;
     }
 
@@ -96,7 +88,7 @@ class CollectionManager {
     }
 
     void addIfMax(Creature forAction, Receiver receiver) {
-        if (DBman.addIfMax(forAction,receiver)) {
+        if (DBman.addIfMax(forAction, receiver)) {
             Creatures.add(forAction);
             receiver.add((forAction.toString() + " добавлен, т.к. является наибольшим"));
         } else
@@ -112,10 +104,10 @@ class CollectionManager {
 
     void info(Receiver receiver) {
         DBman.info(receiver);
-        receiver.add("Коллекция типа " + Creatures.getClass().getSimpleName() + " содержит объекты класса Creature" +
+        receiver.add(/*"Коллекция типа " + Creatures.getClass().getSimpleName() + " содержит объекты класса Creature" +
                 "\nДата инициализации:  " + initTime +
-                "\nСейчас содержит " + Creatures.size() + " существ." +
-                "\n\nДля помощи введите команду help.");
+                "\nСейчас содержит " + Creatures.size() + " существ." +*/
+                "\nДля помощи введите команду help.");
     }
 
     void help(Receiver receiver) {
@@ -156,14 +148,6 @@ class CollectionManager {
 
     void show(Receiver receiver) {
         receiver.add(Creatures.toString());
-    }
-
-    boolean isExit() {
-        return exit;
-    }
-
-    void trueExit() {
-        exit = true;
     }
 
     void clear(Receiver receiver) {

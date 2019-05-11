@@ -7,7 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Common" />
+    <orderEntry type="module" module-name="lab7" />
     <orderEntry type="library" name="postgresql-42.2.5" level="project" />
     <orderEntry type="library" name="javax.mail" level="application" />
     <orderEntry type="library" name="gson" level="application" />

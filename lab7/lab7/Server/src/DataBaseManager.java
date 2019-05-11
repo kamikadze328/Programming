@@ -129,7 +129,7 @@ class DataBaseManager {
                     } else {
                         rs.next();
                         count = rs.getInt(1);
-                        receiver.add("Содержит " + count + " существ\n");
+                        receiver.add("Содержит " + count + " существ");
                     }
                     isMoreResult = pst.getMoreResults();
                 }
@@ -158,11 +158,11 @@ class DataBaseManager {
     }
 
     boolean signUp(String login, String password, Receiver receiver) {
-        String query = "INSERT INTO Users(login, password) VALUES(?, ?)";
+        String query = "UPDATE Users SET password = ? WHERE login = ?";
         try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
              PreparedStatement pst = connection.prepareStatement(query)) {
-            pst.setString(1, login);
-            pst.setString(2, generate(password));
+            pst.setString(1, generate(password));
+            pst.setString(2, login);
             int row = pst.executeUpdate();
             return row > 0;
         } catch (SQLException e) {
@@ -180,8 +180,7 @@ class DataBaseManager {
             try (ResultSet rs = pst.getResultSet()) {
                 rs.next();
                 if (generate(password).equals(rs.getString(1))) {
-                    this.updateToken(login, receiver);
-                    return true;
+                    return updateToken(login, receiver);
                 } else {
                     receiver.add("Пароль неверный");
                     return false;
@@ -193,23 +192,37 @@ class DataBaseManager {
         }
     }
 
-    boolean sendMessage(String login, String token, Receiver receiver) {
+    boolean sendToken(String login, Receiver receiver) {
+        String token = tokenFactory.nextString();
+        if (sendMessage(login, token, receiver)) {
+            String query = "INSERT INTO Users(login, token, time) VALUES(?, ?, ?)";
+            try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+                 PreparedStatement pst = connection.prepareStatement(query)) {
+                pst.setString(1, login);
+                pst.setString(2, generate(token));
+                pst.setLong(3, System.currentTimeMillis());
+                int row = pst.executeUpdate();
+                return row > 0;
+            } catch (SQLException e) {
+                receiver.add(e.getMessage());
+                return false;
+            }
+        }
+        return false;
+    }
+
+    private boolean sendMessage(String login, String token, Receiver receiver) {
         String from = "adalei.vy@0hcow.com";
         String host = "mail.0hcow.com";
-
         Properties properties = System.getProperties();
         properties.setProperty("mail.smtp.host", host);
         Session session = Session.getDefaultInstance(properties);
-
         try {
             MimeMessage message = new MimeMessage(session);
-
             message.setFrom(new InternetAddress(from));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(login));
-
             message.setSubject("Your secret token");
-            message.setText("Token:" + token);
-
+            message.setText("Token:\t" + token);
             Transport.send(message);
             return true;
         } catch (MessagingException mex) {
@@ -219,11 +232,11 @@ class DataBaseManager {
         }
     }
 
-    String checkToken(String token,Receiver receiver) {
+    String checkToken(String token, Receiver receiver) {
         String query = "SELECT time, login from users where token = ?";
         try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
              PreparedStatement pst = connection.prepareStatement(query)) {
-            pst.setString(1, token);
+            pst.setString(1, generate(token));
             pst.execute();
             try (ResultSet rs = pst.getResultSet()) {
                 rs.next();
@@ -233,13 +246,41 @@ class DataBaseManager {
                     this.updateTime(login, receiver);
                     return null;
                 } else {
-                    receiver.add("Вас не было слишком долго");
+                    receiver.add("Ваше время истекло");
                     return login;
                 }
             }
         } catch (SQLException e) {
             receiver.add(e.getMessage());
             return "-1";
+        }
+    }
+
+    void deleteDeadUsers() {
+        String query = "Delete from users where password is null";
+        try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+             PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.execute();
+        } catch (SQLException ignored) {
+
+        }
+    }
+
+    boolean checkEmail(String token, Receiver receiver) {
+        String login = checkToken(token, receiver);
+        if (login == null) {
+            return true;
+        } else {
+            String query = "DELETE FROM Users where token = ?";
+            try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+                 PreparedStatement pst = connection.prepareStatement(query)) {
+                pst.setString(1, generate(token));
+                pst.executeUpdate();
+                return false;
+            } catch (SQLException e) {
+                receiver.add(e.getMessage());
+                return false;
+            }
         }
     }
 
@@ -256,24 +297,26 @@ class DataBaseManager {
         }
     }
 
-    private void updateToken(String login, Receiver receiver) {
+    private boolean updateToken(String login, Receiver receiver) {
         String token = tokenFactory.nextString();
         long time = System.currentTimeMillis();
         try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
              PreparedStatement pst = connection.prepareStatement("UPDATE Users set token = ?, time = ? where login = ?")
         ) {
-            pst.setString(1, token);
+            pst.setString(1, generate(token));
             pst.setLong(2, time);
             pst.setString(3, login);
             pst.execute();
             receiver.add(token);
+            return true;
         } catch (SQLException e) {
-            receiver.add("Неудачно");
+            receiver.add(e.getMessage());
+            return false;
         }
     }
 
-    String generate(String password) {
-        byte[] hashByte = SCrypt.generate(password.getBytes(), "salt".getBytes(), 8, 8, 8, 30);
+    private String generate(String password) {
+        byte[] hashByte = SCrypt.generate(password.getBytes(), "salt".getBytes(), 8, 8, 8, 7);
         return Base64.getEncoder().encodeToString(hashByte);
     }
 
@@ -281,7 +324,7 @@ class DataBaseManager {
         String query = "SELECT login from users where token = ?";
         try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
              PreparedStatement pst = connection.prepareStatement(query)) {
-            pst.setString(1, token);
+            pst.setString(1, generate(token));
             pst.execute();
             try (ResultSet rs = pst.getResultSet()) {
                 rs.next();

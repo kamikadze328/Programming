@@ -3,10 +3,11 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 public class Server {
 
-    static ArrayList<Receiver> clients = new ArrayList<>();
+    private static ArrayList<Receiver> clients = new ArrayList<>();
 
     public static void main(String[] args) {
         int id = 0;
@@ -35,7 +36,9 @@ public class Server {
                 while (true) {
                     Socket client = server.accept();
                     id++;
-                    new Thread(new RequestsHandler(client, manager, DBman, id)).start();
+                    RequestsHandler kek = new RequestsHandler(client, manager, DBman, id);
+                    new Thread(kek).start();
+                    Server.add(kek.getReceiver());
                 }
             }
         } catch (IOException e) {
@@ -52,9 +55,11 @@ public class Server {
     }
 
     static void sendToAll(String message, Receiver sender) {
-        for (Receiver receiver : clients) {
-            if (!sender.equals(receiver))
-                receiver.add(message);
-        }
+        try {
+            for (Receiver receiver : clients) {
+                if (!sender.equals(receiver))
+                    receiver.addFromServer(message);
+            }
+        }catch (ConcurrentModificationException ignored){}
     }
 }

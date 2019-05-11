@@ -9,7 +9,6 @@ public class RequestsHandler extends Thread {
     private CollectionManager manager;
     private DataBaseManager DBman;
     private boolean exit = false;
-    private boolean logIn = false;
     private Receiver receiver;
     private String login;
 
@@ -18,10 +17,11 @@ public class RequestsHandler extends Thread {
         this.manager = manager;
         this.DBman = DBman;
         receiver = new Receiver(id);
-        manager.trueExit();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             manager.save(receiver);
-            exit();
+            try {
+                exit();
+            }catch(InterruptedException ignored){}
         }));
     }
 
@@ -35,7 +35,7 @@ public class RequestsHandler extends Thread {
                     request = (Request) ois.readObject();
                 } catch (ClassNotFoundException e) {
                     System.out.println(e.getMessage());
-                    request = new Request("", "0");
+                    request = new Request("", null);
                 }
 
                 String command = request.command;
@@ -46,23 +46,17 @@ public class RequestsHandler extends Thread {
                 String token = request.token;
 
                 new Thread(() -> {
-
                     try {
                         if (token != null) {
                             login = DBman.checkToken(token, receiver);
                             if (login != null && login.equals("-1")) {
                                 oos.writeObject(receiver.get());
-                                exit();
-//                                client.close();
-                                logIn = true;
+                                exit = true;
                                 throw new IOException();
                             } else if (login != null) {
                                 oos.writeObject(receiver.get());
                                 System.out.println(login + " отключён по таймауту");
-
                                 exit();
-//                                client.close();
-                                logIn = true;
                                 throw new IOException();
                             } else {
                                 switch (command) {
@@ -97,48 +91,57 @@ public class RequestsHandler extends Thread {
                                         manager.save(receiver);
                                         break;
                                     case "exit":
-                                        logIn();
                                         String login = DBman.getLogin(token, receiver);
                                         if (login != null) {
                                             System.out.println(login + " отключился");
-                                            Server.sendToAll(str + " подключился", receiver);
-                                            receiver.add("0");
+                                            Server.sendToAll(login + " отключился", receiver);
                                         } else {
-                                            Server.sendToAll("Кто-то подключился", receiver);
+                                            Server.sendToAll("Кто-то отключился", receiver);
                                             System.out.println("Кто-то отключился");
+                                            receiver.add("Кажется вы замешаны в какой-то подозрительной активности");
                                         }
-                                        oos.writeObject(receiver.get());
-//                                        client.close();
-                                        exit();
+                                        justExit();
                                         break;
                                 }
-                                if (!exit) oos.writeObject(receiver.get());
+                                oos.writeObject(receiver.get());
                             }
                         } else {
+                            Request answer = null;
                             switch (command) {
+
                                 case "checkLogin":
-                                    logIn();
+                                    DBman.deleteDeadUsers();
                                     if (DBman.checkLogin(str, receiver)) {
-                                        receiver.add("1");
-                                    } else receiver.add("Логин занят");
-                                    break;
-                                case "signUp":
-                                    logIn();
-                                    if (DBman.signUp(str, password, receiver)) {
-                                        receiver.add("1");
-                                    } else receiver.add("Не удалось зарегестрироваться");
+                                        answer = new Request(receiver.get(), true);
+                                    } else
+                                        answer = new Request(receiver.get(), false);
                                     break;
                                 case "logIn":
-                                    logIn();
                                     if (DBman.logIn(str, password, receiver)) {
                                         System.out.println(str + " подключился");
                                         Server.sendToAll(str + " подключился", receiver);
-                                        Server.add(receiver);
+                                        answer = new Request(receiver.get(), true);
+                                    } else
+                                        answer = new Request(receiver.get(), false);
+                                    break;
+                                case "checkEmail":
+                                    answer = new Request(receiver.get(), DBman.checkEmail(str, receiver));
+                                    break;
+                                case "sendToken":
+                                    answer = new Request(receiver.get(), DBman.sendToken(str, receiver));
+                                    break;
+                                case "signUp":
+                                    if (DBman.signUp(str, password, receiver)) {
+                                        answer = new Request(receiver.get(), true);
+                                    } else {
+                                        receiver.add("Не удалось зарегестрироваться");
+                                        answer = new Request(receiver.get(), false);
                                     }
+                                    break;
                             }
-                            if (!exit) oos.writeObject(receiver.get());
+                            if (!exit) oos.writeObject(answer);
                         }
-                    } catch (IOException ignored) {
+                    } catch (IOException | InterruptedException ignored) {
                     }
                 }).start();
             }
@@ -147,13 +150,17 @@ public class RequestsHandler extends Thread {
         }
     }
 
-    private void exit() {
+    private void exit() throws InterruptedException{
         Server.sendToAll(login + " отключился по таймауту", receiver);
-        Server.remove(receiver);
-        exit = true;
+        justExit();
     }
 
-    private void logIn() {
-        logIn = true;
+    private void justExit() throws InterruptedException{
+        Server.remove(receiver);
+        Thread.sleep(1000);
+        exit = true;
+    }
+    public Receiver getReceiver(){
+        return receiver;
     }
 }
