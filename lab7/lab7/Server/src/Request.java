@@ -12,10 +12,11 @@ class Request implements Serializable {
     String password;
     boolean success;
 
-    Request(String result, boolean success){
+    Request(String result, boolean success) {
         this.str = result;
         this.success = success;
     }
+
     Request(String command, String token) {
         this.command = command;
         this.token = token;
@@ -38,6 +39,7 @@ class Request implements Serializable {
         this.str = str;
         this.token = token;
     }
+
     Request(String command, String login, String password, String token) {
         this.command = command;
         this.str = login;

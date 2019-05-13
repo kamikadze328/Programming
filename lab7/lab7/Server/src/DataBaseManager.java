@@ -61,7 +61,7 @@ class DataBaseManager {
             pst.setTimestamp(4, Timestamp.valueOf(LocalDateTime.ofInstant(time.toInstant(), ZoneOffset.UTC)));
             pst.setString(5, (String) cr[4]);
             Long userId = getUserId(token);
-            if(userId==null) pst.setLong(6, 1);
+            if (userId == null) pst.setLong(6, 1);
             else pst.setLong(6, userId);
             int row = pst.executeUpdate();
             addInventory(forAction.getInventory(), (String) cr[0], (String) cr[4]);
@@ -71,7 +71,8 @@ class DataBaseManager {
             return false;
         }
     }
-    private void addInventory(LinkedList<String> inventory, String name, String family) throws SQLException{
+
+    private void addInventory(LinkedList<String> inventory, String name, String family) throws SQLException {
         String query = "INSERT INTO Inventory(creature_id, inventory) VALUES(?, ?)";
         try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
              PreparedStatement pst = connection.prepareStatement(query)) {
@@ -82,7 +83,8 @@ class DataBaseManager {
             pst.executeUpdate();
         }
     }
-    private Long getCreatureId(String name, String family) throws SQLException{
+
+    private Long getCreatureId(String name, String family) throws SQLException {
         String query = "SELECT creature_id from creatures where name = ? AND family = ?";
         try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
              PreparedStatement pst = connection.prepareStatement(query)) {
@@ -95,6 +97,7 @@ class DataBaseManager {
             }
         }
     }
+
     boolean removeCreature(Creature forAction, Receiver receiver, String token) {
         String query = "SELECT user_id from Creatures where name = ? AND family = ?";
         try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
@@ -104,13 +107,13 @@ class DataBaseManager {
             pst.setString(1, name);
             pst.setString(2, family);
             pst.execute();
-            try(ResultSet rs = pst.getResultSet()){
+            try (ResultSet rs = pst.getResultSet()) {
                 rs.next();
-                if(getUserId(token) == rs.getLong(1)){
-                    try(PreparedStatement pst1 = connection.prepareStatement("DELETE FROM Creatures where name = ? AND family = ?")){
+                if (getUserId(token) == rs.getLong(1)) {
+                    try (PreparedStatement pst1 = connection.prepareStatement("DELETE FROM Creatures where name = ? AND family = ?")) {
                         pst1.setString(1, name);
                         pst1.setString(2, family);
-                        return  pst1.executeUpdate() > 0;
+                        return pst1.executeUpdate() > 0;
                     }
                 } else {
                     receiver.add("ОШИБКА: Существо не пренадлежит вам!");
@@ -373,8 +376,9 @@ class DataBaseManager {
             return null;
         }
     }
-    private Long getUserId(String token) throws SQLException{
-        if(token==null) return null;
+
+    private Long getUserId(String token) throws SQLException {
+        if (token == null) return null;
         String query = "SELECT user_id from Users where token = ?";
         try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
              PreparedStatement pst = connection.prepareStatement(query)) {
@@ -412,7 +416,8 @@ class DataBaseManager {
             return new CopyOnWriteArrayList<>();
         }
     }
-    private Creature initFromDataBase(String name, int hunger, String locationStr, Timestamp timestamp, String family, Long userId) throws SQLException{
+
+    private Creature initFromDataBase(String name, int hunger, String locationStr, Timestamp timestamp, String family, Long userId) throws SQLException {
         Location location;
         String[] inventory;
         switch (locationStr) {
@@ -455,9 +460,10 @@ class DataBaseManager {
         }
         return creature;
     }
-    private String sqlException(String exception){
+
+    private String sqlException(String exception) {
         String[] message = exception.split("Подробности: ");
-        if(message.length>1) return "ОШИБКА:" + message[1];
+        if (message.length > 1) return "ОШИБКА:" + message[1];
         else return message[0];
     }
 }

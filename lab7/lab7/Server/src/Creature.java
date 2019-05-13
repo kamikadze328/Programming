@@ -43,18 +43,10 @@ public class Creature implements Comparable<Creature>, Serializable {
         return location;
     }
 
-    void setLocation(Location l) {
-        location = l;
-    }
-
     OffsetDateTime getCreationTime() {
         if (creationTime == null) creationTime = OffsetDateTime.now();
         //String dateFormat = creationTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm:ssX"));
         return creationTime;
-    }
-
-    void setCurrentTime() {
-        creationTime = OffsetDateTime.now();
     }
 
     public boolean equals(Object otherObject) {
@@ -95,7 +87,8 @@ public class Creature implements Comparable<Creature>, Serializable {
             return inventory;
         }
     }
-    public LinkedList<String> getInventory() {
+
+    LinkedList<String> getInventory() {
         if (inventory == null) inventory = new Inventory();
         return inventory.getInventory();
     }

@@ -11,7 +11,7 @@ public class Server {
 
     public static void main(String[] args) {
         Runtime.getRuntime().addShutdownHook(new Thread(() ->
-            System.out.println("Выход")
+                System.out.println("Выход")
         ));
         int id = 0;
         final int PORT = 5001;
@@ -64,6 +64,7 @@ public class Server {
                 if (!sender.equals(receiver))
                     receiver.addFromServer(message);
             }
-        }catch (ConcurrentModificationException ignored){}
+        } catch (ConcurrentModificationException ignored) {
+        }
     }
 }

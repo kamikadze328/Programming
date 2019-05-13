@@ -157,7 +157,8 @@ public class RequestsHandler extends Thread {
         Server.remove(receiver);
         exit = true;
     }
-    Receiver getReceiver(){
+
+    Receiver getReceiver() {
         return receiver;
     }
 }

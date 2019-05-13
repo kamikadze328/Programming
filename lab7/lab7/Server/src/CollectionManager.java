@@ -78,11 +78,11 @@ class CollectionManager {
             } else if (line[i].contains("\"family\"") && (line[i].contains("\"name\""))) {
                 count++;
                 Creature forAction = gson.fromJson(line[i], Creature.class);
-                if(add(forAction, receiver, token)) added++;
+                if (add(forAction, receiver, token)) added++;
             } else noInit++;
         }
         int finalCount = ++count;
-        receiver.add("\nУдачно инициализированно " + finalCount + " существ, неудачно " + noInit + ",\nДобавлено " + added +".\n");
+        receiver.add("\nУдачно инициализированно " + finalCount + " существ, неудачно " + noInit + ",\nДобавлено " + added + ".\n");
     }
 
     void remove(Creature forAction, Receiver receiver, String token) {
@@ -160,6 +160,6 @@ class CollectionManager {
     void clear(Receiver receiver, String token) {
         if (DBman.clearCreature(receiver, token))
             Creatures.clear();
-            Creatures = DBman.synchronize(receiver);
+        Creatures = DBman.synchronize(receiver);
     }
 }
