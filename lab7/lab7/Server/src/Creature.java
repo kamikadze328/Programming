@@ -12,9 +12,12 @@ public class Creature implements Comparable<Creature>, Serializable {
     private OffsetDateTime creationTime;
     private String family;
 
-    Creature(String n) {
-        name = n;
-        creationTime = OffsetDateTime.now();
+    Creature(String name, int hunger, Location location, OffsetDateTime creationTime, String family) {
+        this.name = name;
+        this.hunger = hunger;
+        this.location = location;
+        this.creationTime = creationTime;
+        this.family = family;
     }
 
     Creature(String n, Location l) {
@@ -23,34 +26,34 @@ public class Creature implements Comparable<Creature>, Serializable {
         creationTime = OffsetDateTime.now();
     }
 
-    public String getFamily() {
+    String getFamily() {
         return family;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public int getHunger() {
+    int getHunger() {
         return hunger;
     }
 
-    public Location getLocation() {
+    Location getLocation() {
         if (location == null) location = Location.NaN;
         return location;
     }
 
-    public void setLocation(Location l) {
+    void setLocation(Location l) {
         location = l;
     }
 
-    public OffsetDateTime getCreationTime() {
+    OffsetDateTime getCreationTime() {
         if (creationTime == null) creationTime = OffsetDateTime.now();
         //String dateFormat = creationTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm:ssX"));
         return creationTime;
     }
 
-    public void setCurrentTime() {
+    void setCurrentTime() {
         creationTime = OffsetDateTime.now();
     }
 
@@ -73,21 +76,27 @@ public class Creature implements Comparable<Creature>, Serializable {
     }
 
     public String toString() {
-        return "" + getFamily() + " " + getName();
+        return "\n" + getFamily() + " " + getName();
     }
 
     class Inventory implements Serializable {
         private static final long serialVersionUID = -1484983106197509695L;
         LinkedList<String> inventory = new LinkedList<>();
 
-        protected void add(String a) {
+        void add(String a) {
             inventory.add(a);
-            System.out.println(Creature.this.getName() + " поднимает " + a);
         }
 
-        protected void remove(String a) {
+        void remove(String a) {
             inventory.remove(a);
-            System.out.println(Creature.this.getName() + " опускает " + a);
         }
+
+        LinkedList<String> getInventory() {
+            return inventory;
+        }
+    }
+    public LinkedList<String> getInventory() {
+        if (inventory == null) inventory = new Inventory();
+        return inventory.getInventory();
     }
 }

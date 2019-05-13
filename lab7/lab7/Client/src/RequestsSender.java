@@ -97,13 +97,14 @@ class RequestsSender {
 
                             default:
                                 error = true;
-                                System.out.println("\tОшибка, Неизвестная команда\n" +
-                                        "\tДля помощи введите команду help.");
+                                System.out.println("ОШИБКА: Неизвестная команда\n" +
+                                        "Для помощи введите команду help.");
                         }
                         if (!error && !exit)
                             System.out.println("Server:\n" + answer);
                     }
                 } catch (IOException e) {
+                    if(countTryConnect==0) System.out.println("Сервер временно недоступен");
                     if (countTryConnect > 4) {
                         System.out.println("Хотите возобновить попытки подключения?(Y/N)");
                         try {
@@ -191,8 +192,11 @@ class RequestsSender {
                     Gson gson = new Gson();
                     String jsonStr = fullCommand[1];
                     jsonStr = jsonStr.replace(" ", "");
-                    if (jsonStr.contains("\"family\"") && jsonStr.contains("\"name\""))
+                    if (jsonStr.contains("\"family\"") && jsonStr.contains("\"name\"")){
                         forAction = gson.fromJson(jsonStr, Creature.class);
+//                        forAction.inventory
+                    }
+
                     else forAction = null;
                     if (forAction == null || forAction.getName() == null || forAction.getFamily() == null) {
                         System.out.println("  Ошибка, элемент задан неверно, возможно вы указали не все значения.");

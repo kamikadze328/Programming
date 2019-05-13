@@ -5,6 +5,6 @@ public enum Location {
     Hill,
     Hangar,
     FootPath,
-    Seamark,
+    LightHouse,
     NaN
 }

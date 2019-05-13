@@ -10,6 +10,9 @@ public class Server {
     private static ArrayList<Receiver> clients = new ArrayList<>();
 
     public static void main(String[] args) {
+        Runtime.getRuntime().addShutdownHook(new Thread(() ->
+            System.out.println("Выход")
+        ));
         int id = 0;
         final int PORT = 5001;
         CollectionManager manager = null;
@@ -18,8 +21,8 @@ public class Server {
         try {
             if (args.length == 0)
                 throw new ArrayIndexOutOfBoundsException("\tимя файла должно передаваться программе с помощью аргумента командной строки.");
-            manager = new CollectionManager(new File(args[0]), DBman);
-            if (manager.loadFile(new File(args[0]), receiver)) System.out.println(receiver.get());
+            manager = new CollectionManager(new File(args[0]), DBman, receiver);
+            if (manager.loadFile(new File(args[0]), receiver, null)) System.out.println(receiver.get());
             else {
                 System.out.println(receiver.get());
                 System.exit(1);
@@ -28,6 +31,7 @@ public class Server {
             System.out.println(e.getMessage());
             System.exit(1);
         }
+
 
         try {
             try (ServerSocket server = new ServerSocket(PORT)) {
@@ -46,7 +50,7 @@ public class Server {
         }
     }
 
-    static void add(Receiver client) {
+    private static void add(Receiver client) {
         clients.add(client);
     }
 

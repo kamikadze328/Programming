@@ -7,11 +7,11 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.sql.*;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.time.*;
 import java.util.Base64;
+import java.util.LinkedList;
 import java.util.Properties;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 class DataBaseManager {
@@ -24,7 +24,7 @@ class DataBaseManager {
         tokenFactory = new TokenFactory();
     }
 
-    boolean addIfMax(Creature forAction, Receiver receiver) {
+    boolean addIfMax(Creature forAction, Receiver receiver, String token) {
         int lengthName = forAction.getName().length();
         boolean add = false;
         String query = "Select name from Creatures";
@@ -41,44 +41,85 @@ class DataBaseManager {
                     isResult = pst.getMoreResults();
                 }
             } while (isResult && add);
-            if (add) addCreature(forAction, receiver);
+            if (add) addCreature(forAction, receiver, token);
             return add;
         } catch (SQLException e) {
-            receiver.add(e.getMessage());
+            receiver.add(sqlException(e.getMessage()));
             return false;
         }
     }
 
-    boolean addCreature(Creature forAction, Receiver receiver) {
-        Object[] cr = Initialization(forAction);
-        String query = "INSERT INTO Creatures(name, hunger, location, creation_time, family) VALUES(?, ?, ?, ?, ?)";
+    boolean addCreature(Creature forAction, Receiver receiver, String token) {
+        String query = "INSERT INTO Creatures(name, hunger, location, creation_time, family, user_id) VALUES(?, ?, ?, ?, ?, ?)";
         try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
              PreparedStatement pst = connection.prepareStatement(query)) {
+            Object[] cr = Initialization(forAction);
             pst.setString(1, (String) cr[0]);
             pst.setInt(2, (int) cr[1]);
             pst.setObject(3, cr[2], Types.OTHER);
-            pst.setString(5, (String) cr[4]);
             OffsetDateTime time = (OffsetDateTime) cr[3];
             pst.setTimestamp(4, Timestamp.valueOf(LocalDateTime.ofInstant(time.toInstant(), ZoneOffset.UTC)));
+            pst.setString(5, (String) cr[4]);
+            Long userId = getUserId(token);
+            if(userId==null) pst.setLong(6, 1);
+            else pst.setLong(6, userId);
             int row = pst.executeUpdate();
+            addInventory(forAction.getInventory(), (String) cr[0], (String) cr[4]);
             return row > 0;
         } catch (SQLException e) {
-            receiver.add(e.getMessage());
+            receiver.add(sqlException(e.getMessage()));
             return false;
         }
     }
-
-    boolean removeCreature(Creature forAction, Receiver receiver) {
-        Object[] cr = Initialization(forAction);
-        String query = "DELETE FROM Creatures where name = ? AND family = ?";
+    private void addInventory(LinkedList<String> inventory, String name, String family) throws SQLException{
+        String query = "INSERT INTO Inventory(creature_id, inventory) VALUES(?, ?)";
         try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
              PreparedStatement pst = connection.prepareStatement(query)) {
-            pst.setString(1, (String) cr[0]);
-            pst.setString(2, (String) cr[4]);
-            int row = pst.executeUpdate();
-            return row > 0;
+            pst.setLong(1, getCreatureId(name, family));
+            final String[] data = inventory.toArray(new String[0]);
+            final java.sql.Array sqlArray = connection.createArrayOf("varchar", data);
+            pst.setArray(2, sqlArray);
+            pst.executeUpdate();
+        }
+    }
+    private Long getCreatureId(String name, String family) throws SQLException{
+        String query = "SELECT creature_id from creatures where name = ? AND family = ?";
+        try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+             PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setString(1, name);
+            pst.setString(2, family);
+            pst.execute();
+            try (ResultSet rs = pst.getResultSet()) {
+                rs.next();
+                return rs.getLong(1);
+            }
+        }
+    }
+    boolean removeCreature(Creature forAction, Receiver receiver, String token) {
+        String query = "SELECT user_id from Creatures where name = ? AND family = ?";
+        try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+             PreparedStatement pst = connection.prepareStatement(query)) {
+            String name = forAction.getName();
+            String family = forAction.getFamily();
+            pst.setString(1, name);
+            pst.setString(2, family);
+            pst.execute();
+            try(ResultSet rs = pst.getResultSet()){
+                rs.next();
+                if(getUserId(token) == rs.getLong(1)){
+                    try(PreparedStatement pst1 = connection.prepareStatement("DELETE FROM Creatures where name = ? AND family = ?")){
+                        pst1.setString(1, name);
+                        pst1.setString(2, family);
+                        return  pst1.executeUpdate() > 0;
+                    }
+                } else {
+                    receiver.add("ОШИБКА: Существо не пренадлежит вам!");
+                    return false;
+                }
+            }
         } catch (SQLException e) {
-            receiver.add(e.getMessage());
+            e.printStackTrace();
+            receiver.add("ОШИБКА: Такого существа не существует!");
             return false;
         }
     }
@@ -93,15 +134,16 @@ class DataBaseManager {
         return creature;
     }
 
-    boolean clearCreature(Receiver receiver) {
-        String query = "DELETE FROM Creatures";
+    boolean clearCreature(Receiver receiver, String token) {
+        String query = "DELETE FROM Creatures where user_id = ?";
         try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
              PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setLong(1, getUserId(token));
             int rows = pst.executeUpdate();
             receiver.add("Удалено " + rows + " Существ");
             return rows > 0;
         } catch (SQLException e) {
-            receiver.add(e.getMessage());
+            receiver.add(sqlException(e.getMessage()));
             return false;
         }
     }
@@ -135,7 +177,7 @@ class DataBaseManager {
                 }
             } while (isMoreResult);
         } catch (SQLException e) {
-            receiver.add(e.getMessage());
+            receiver.add(sqlException(e.getMessage()));
         }
     }
 
@@ -152,7 +194,7 @@ class DataBaseManager {
                 return count <= 0;
             }
         } catch (SQLException e) {
-            receiver.add(e.getMessage());
+            receiver.add(sqlException(e.getMessage()));
             return false;
         }
     }
@@ -166,7 +208,7 @@ class DataBaseManager {
             int row = pst.executeUpdate();
             return row > 0;
         } catch (SQLException e) {
-            receiver.add(e.getMessage());
+            receiver.add(sqlException(e.getMessage()));
             return false;
         }
     }
@@ -187,7 +229,7 @@ class DataBaseManager {
                 }
             }
         } catch (SQLException e) {
-            receiver.add(e.getMessage());
+            receiver.add(sqlException(e.getMessage()));
             return false;
         }
     }
@@ -204,7 +246,7 @@ class DataBaseManager {
                 int row = pst.executeUpdate();
                 return row > 0;
             } catch (SQLException e) {
-                receiver.add(e.getMessage());
+                receiver.add(sqlException(e.getMessage()));
                 return false;
             }
         }
@@ -251,7 +293,7 @@ class DataBaseManager {
                 }
             }
         } catch (SQLException e) {
-            receiver.add(e.getMessage());
+            receiver.add(sqlException(e.getMessage()));
             return "-1";
         }
     }
@@ -278,7 +320,7 @@ class DataBaseManager {
                 pst.executeUpdate();
                 return false;
             } catch (SQLException e) {
-                receiver.add(e.getMessage());
+                receiver.add(sqlException(e.getMessage()));
                 return false;
             }
         }
@@ -297,21 +339,17 @@ class DataBaseManager {
         }
     }
 
-    private boolean updateToken(String login, Receiver receiver) {
+    private boolean updateToken(String login, Receiver receiver) throws SQLException {
         String token = tokenFactory.nextString();
         long time = System.currentTimeMillis();
         try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
-             PreparedStatement pst = connection.prepareStatement("UPDATE Users set token = ?, time = ? where login = ?")
-        ) {
+             PreparedStatement pst = connection.prepareStatement("UPDATE Users set token = ?, time = ? where login = ?")) {
             pst.setString(1, generate(token));
             pst.setLong(2, time);
             pst.setString(3, login);
             pst.execute();
             receiver.add(token);
             return true;
-        } catch (SQLException e) {
-            receiver.add(e.getMessage());
-            return false;
         }
     }
 
@@ -331,9 +369,96 @@ class DataBaseManager {
                 return rs.getString(1);
             }
         } catch (SQLException e) {
-            receiver.add(e.getMessage());
+            receiver.add(sqlException(e.getMessage()));
             return null;
         }
+    }
+    private Long getUserId(String token) throws SQLException{
+        if(token==null) return null;
+        String query = "SELECT user_id from Users where token = ?";
+        try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+             PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setString(1, generate(token));
+            pst.execute();
+            try (ResultSet rs = pst.getResultSet()) {
+                rs.next();
+                return rs.getLong(1);
+            }
+        }
+    }
+
+    CopyOnWriteArrayList<Creature> synchronize(Receiver receiver) {
+        String query = "SELECT * from Creatures";
+        CopyOnWriteArrayList<Creature> Creatures;
+        try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+             PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.execute();
+            try (ResultSet rs = pst.getResultSet()) {
+                Creatures = new CopyOnWriteArrayList<>();
+                while (rs.next()) {
+                    String name = rs.getString(1);
+                    int hunger = rs.getInt(2);
+                    String location = rs.getString(3);
+                    Timestamp time = rs.getTimestamp(4);
+                    String family = rs.getString(5);
+                    Long userId = rs.getLong(7);
+                    Creatures.add(initFromDataBase(name, hunger, location, time, family, userId));
+                }
+            }
+            System.out.println("Коллекция синхронизирована с базой данных");
+            return Creatures;
+        } catch (SQLException e) {
+            receiver.add(sqlException(e.getMessage()));
+            return new CopyOnWriteArrayList<>();
+        }
+    }
+    private Creature initFromDataBase(String name, int hunger, String locationStr, Timestamp timestamp, String family, Long userId) throws SQLException{
+        Location location;
+        String[] inventory;
+        switch (locationStr) {
+            case "TopFloor":
+                location = Location.TopFloor;
+                break;
+            case "GroudFloor":
+                location = Location.GroudFloor;
+                break;
+            case "Yard":
+                location = Location.Yard;
+                break;
+            case "Hill":
+                location = Location.Hill;
+                break;
+            case "Hangar":
+                location = Location.Hangar;
+                break;
+            case "FootPath":
+                location = Location.FootPath;
+                break;
+            case "LightHouse":
+                location = Location.LightHouse;
+                break;
+            default:
+                location = Location.NaN;
+        }
+        OffsetDateTime time = OffsetDateTime.ofInstant(Instant.ofEpochMilli(timestamp.getTime()), ZoneId.of("UTC"));
+        Creature creature = new Creature(name, hunger, location, time, family);
+        String query1 = "SELECT inventory from Inventory where creature_id = ?";
+        try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+             PreparedStatement pst = connection.prepareStatement(query1)) {
+            pst.setLong(1, userId);
+            pst.execute();
+            try (ResultSet rs1 = pst.getResultSet()) {
+                rs1.next();
+                inventory = (String[]) rs1.getArray(1).getArray();
+                for (String s : inventory) creature.inventory.add(s);
+            }
+        }
+        return creature;
+    }
+    private String sqlException(String exception){
+        String[] message = exception.split("Подробности: ");
+        if(message.length>1) return "ОШИБКА:" + message[1];
+        else return message[0];
     }
 }
 

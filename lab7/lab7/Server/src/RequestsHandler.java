@@ -19,9 +19,7 @@ public class RequestsHandler extends Thread {
         receiver = new Receiver(id);
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             manager.save(receiver);
-            try {
-                exit();
-            }catch(InterruptedException ignored){}
+            exit();
         }));
     }
 
@@ -70,22 +68,22 @@ public class RequestsHandler extends Thread {
                                         manager.show(receiver);
                                         break;
                                     case "clear":
-                                        manager.clear(receiver);
+                                        manager.clear(receiver, token);
                                         break;
                                     case "add":
-                                        manager.add(creature, receiver);
+                                        manager.add(creature, receiver, token);
                                         break;
                                     case "remove":
-                                        manager.remove(creature, receiver);
+                                        manager.remove(creature, receiver, token);
                                         break;
                                     case "add_if_max":
-                                        manager.addIfMax(creature, receiver);
+                                        manager.addIfMax(creature, receiver, token);
                                         break;
                                     case "import":
-                                        manager.load(str, receiver);
+                                        manager.load(str, receiver, token);
                                         break;
                                     case "load":
-                                        manager.loadFile(file, receiver);
+                                        manager.loadFile(file, receiver, token);
                                         break;
                                     case "save":
                                         manager.save(receiver);
@@ -141,7 +139,7 @@ public class RequestsHandler extends Thread {
                             }
                             if (!exit) oos.writeObject(answer);
                         }
-                    } catch (IOException | InterruptedException ignored) {
+                    } catch (IOException ignored) {
                     }
                 }).start();
             }
@@ -150,17 +148,16 @@ public class RequestsHandler extends Thread {
         }
     }
 
-    private void exit() throws InterruptedException{
+    private void exit() {
         Server.sendToAll(login + " отключился по таймауту", receiver);
         justExit();
     }
 
-    private void justExit() throws InterruptedException{
+    private void justExit() {
         Server.remove(receiver);
-        Thread.sleep(1000);
         exit = true;
     }
-    public Receiver getReceiver(){
+    Receiver getReceiver(){
         return receiver;
     }
 }

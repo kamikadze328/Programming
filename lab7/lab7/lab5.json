@@ -1,1 +1,16 @@
-[]
+[{"inventory":{"inventory":["scarf", "cake"]},"name":"kek","hunger":0,"location":"NaN","creationTime":
+{"dateTime":
+	{"date":
+		{"year":2019,"month":5,"day":13},
+	"time":
+		{"hour":17,"minute":44,"second":20,"nano":793000000}
+	},
+ "offset":
+	{"totalSeconds":0}
+	},
+"family":"lol"},
+{"inventory":{"inventory":["carrot"]},"name":"Sniff","hunger":0,"location":"TopFloor","creationTime":{"dateTime":{"date":{"year":2019,"month":5,"day":14},"time":{"hour":0,"minute":13,"second":50,"nano":649000000}},"offset":{"totalSeconds":10800}},"family":"CloseFriends"},
+{"inventory":{"inventory":["book"]},"name":"Snork","hunger":0,"location":"TopFloor","creationTime":{"dateTime":{"date":{"year":2019,"month":5,"day":14},"time":{"hour":0,"minute":13,"second":50,"nano":983000000}},"offset":{"totalSeconds":10800}},"family":"CloseFriends"}
+,{"inventory":{"inventory":["hat"]},"name":"Moomin","hunger":0,"location":"TopFloor","creationTime":{"dateTime":{"date":{"year":2019,"month":5,"day":14},"time":{"hour":0,"minute":13,"second":51,"nano":289000000}},"offset":{"totalSeconds":10800}},"family":"MoominFamily"},
+{"inventory":{"inventory":["cucucmber"]},"name":"Khemul","hunger":0,"location":"Hill","creationTime":{"dateTime":{"date":{"year":2019,"month":5,"day":14},"time":{"hour":0,"minute":13,"second":51,"nano":639000000}},"offset":{"totalSeconds":10800}},"family":"CloseFriends"},
+{"inventory":{"inventory":["hat", "coat", "fish"]},"name":"Snusmumrik","hunger":0,"location":"TopFloor","creationTime":{"dateTime":{"date":{"year":2019,"month":5,"day":14},"time":{"hour":0,"minute":13,"second":51,"nano":987000000}},"offset":{"totalSeconds":10800}},"family":"CloseFriends"}]
