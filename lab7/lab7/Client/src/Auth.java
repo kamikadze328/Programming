@@ -22,15 +22,18 @@ class Auth {
     void signUp() throws IOException {
         System.out.println("Введите почту:");
         login = scanner.nextLine();
-        System.out.println("Ожидайте");
-        if (checkLogin(1) && sendToken()) {
-            System.out.println("Введите токен, отправленный на " + login + ":");
-            String mailToken = scanner.nextLine();
-            if (checkToken(mailToken)) {
-                System.out.println("Придумайте и введите пароль:");
-                password = scanner.nextLine();
-                if (signUp(login, password))
-                    System.out.println("Вы удачно зарегестированны!");
+        System.out.println("Ожидайте\nКормим почтовую сову");
+        if (checkLogin(1)) {
+            System.out.println("Даём сове последние указания");
+            if(sendToken()) {
+                System.out.println("Сова отправлена\nВведите токен, отправленный на " + login + ":");
+                String mailToken = scanner.nextLine();
+                if (checkToken(mailToken)) {
+                    System.out.println("С вас пароль, с нас доступ к секретным хранилищам:");
+                    password = scanner.nextLine();
+                    if (signUp(login, password))
+                        System.out.println("Теперь у вас есть доступ к важнейшим знаниям человечества!");
+                }
             }
         }
     }
@@ -39,12 +42,15 @@ class Auth {
     void logIn() throws IOException {
         System.out.println("Введите почту:");
         login = scanner.nextLine();
+        System.out.println("Наши гномы ищут вас в своих списках");
         if (!checkLogin(2)) {
+            System.out.println("Отлично!");
             System.out.println("Введите пароль:");
             password = scanner.nextLine();
+            System.out.println("Звездосчёты проводят сложные вычисления");
             if (logIn(login, password)) {
                 RequestsSender sender = new RequestsSender(token);
-                System.out.println("Добро пожаловать " + login);
+                System.out.println("Добро пожаловать " + login + ", чувствуйте себя как дома");
                 sender.work();
             }
         }
@@ -60,7 +66,7 @@ class Auth {
                 return false;
             }
             if (!request.success) {
-                System.out.println("Токен не верный");
+                System.out.println("Токен не соответствует нашим ожиданиям, старайтесь больше");
                 return false;
             } else return true;
         } catch (ClassNotFoundException e) {
@@ -92,9 +98,9 @@ class Auth {
                 System.out.println(input);
                 return code != 1;
             } else if (code == 2 && request.success) {
-                System.out.println("Пользователя с такой почтой не существует");
+                System.out.println("Хорошее имя! Но видимо от какого-то другого сайта");
             } else if (code == 1 && !request.success)
-                System.out.println("Логин занят");
+                System.out.println("Хорошее имя! Но у нас уже один такой.");
             return request.success;
         } catch (ClassNotFoundException e) {
             System.out.println(e.getMessage());

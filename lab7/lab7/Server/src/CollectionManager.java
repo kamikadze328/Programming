@@ -88,22 +88,22 @@ class CollectionManager {
     void remove(Creature forAction, Receiver receiver, String token) {
         if (DBman.removeCreature(forAction, receiver, token)) {
             Creatures.remove(forAction);
-            receiver.add(forAction.toString() + " удалён.");
+            receiver.add(forAction.toString().replace("\n", "") + " удалён.");
         }
     }
 
     void addIfMax(Creature forAction, Receiver receiver, String token) {
         if (DBman.addIfMax(forAction, receiver, token)) {
             Creatures.add(forAction);
-            receiver.add((forAction.toString() + " добавлен, т.к. является наибольшим"));
+            receiver.add((forAction.toString().replace("\n", "") + " добавлен, т.к. является наибольшим"));
         } else
-            receiver.add(forAction.toString() + " не является наибольшим элементом коллекции");
+            receiver.add(forAction.toString().replace("\n", "") + " не является наибольшим");
     }
 
     boolean add(Creature forAction, Receiver receiver, String token) {
         if (DBman.addCreature(forAction, receiver, token)) {
             Creatures.add(forAction);
-            receiver.add(forAction.toString() + " добавлен");
+            receiver.add(forAction.toString().replace("\n", "") + " добавлен");
             return true;
         }
         return false;
@@ -121,11 +121,11 @@ class CollectionManager {
         receiver.add("add {element}: добавить существо;\n" +
                 "remove {element}: удалить существо;\n" +
                 "add_if_max {element}: добавить существо, если его имя длинее всех остальных имён;\n" +
-                "show: показать текущее содержимое коллекции;\n" +
-                "clear: очистить коллекцию;\n" +
-                "info: вывести информацию о баззе данных и коллекции;\n" +
-                "load путь_к_файлу: считать существ из файла сервера;\n" +
-                "import путь_к_файлу: считать существ из файла клиента;\n" +
+                "show: показать текущих существ;\n" +
+                "clear: удалить всех существ(или нет);\n" +
+                "info: вывести информацию о базе данных и коллекции;\n" +
+                "load путь_к_файлу: загрузить существ из файла сервера;\n" +
+                "import путь_к_файлу: загрузить существ из файла клиента;\n" +
                 "save: сохранить существ в файл на сервере;\n" +
                 "exit: завершить работу;\n" +
                 "help: вывести помощь по всем командам.");
@@ -138,7 +138,7 @@ class CollectionManager {
 
             osw.write(gson.toJson(Creatures));
             osw.flush();
-            receiver.add("Коллекция сохранена в файл сервера " + saveFile.getAbsolutePath());
+            receiver.add("Существа сохранены в файл сервера " + saveFile.getAbsolutePath());
         } catch (IOException | NullPointerException e) {
             Date d = new Date();
             SimpleDateFormat formater = new SimpleDateFormat("MM.dd_hh:mm:ss");
@@ -146,9 +146,9 @@ class CollectionManager {
             try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(saveFile, true))) {
                 osw.write(gson.toJson(Creatures));
                 osw.flush();
-                receiver.add("Коллекция сохранена в файл " + saveFile.getAbsolutePath());
+                receiver.add("Существа сохранены в файл " + saveFile.getAbsolutePath());
             } catch (IOException ex) {
-                receiver.add("Сохранение коллекции не удалось");
+                receiver.add("Сохранение прошло неудачно");
             }
         }
     }

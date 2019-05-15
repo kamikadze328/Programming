@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Class-Path: bcprov-jdk15on-161.jar postgresql-42.2.5.jar javax.mail.ja
+ r gson.jar
+Main-Class: Server
+

@@ -20,7 +20,7 @@ public class Server {
         Receiver receiver = new Receiver(id);
         try {
             if (args.length == 0)
-                throw new ArrayIndexOutOfBoundsException("\tимя файла должно передаваться программе с помощью аргумента командной строки.");
+                throw new ArrayIndexOutOfBoundsException("Имя файла должно передаваться программе с помощью аргумента командной строки.");
             manager = new CollectionManager(new File(args[0]), DBman, receiver);
             if (manager.loadFile(new File(args[0]), receiver, null)) System.out.println(receiver.get());
             else {

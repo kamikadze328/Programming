@@ -1,5 +1,4 @@
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalTime;
 
 class Receiver {
     private String message = "";
@@ -17,9 +16,9 @@ class Receiver {
     }
 
     void addFromServer(String additive) {
-        String time = (new SimpleDateFormat("hh:mm:ss").format(new Date())) + "\t";
-        if (message.equals("")) message = time + additive;
-        else message = message + "\n" + time + additive;
+        String time = LocalTime.now().withNano(0).toString();
+        if (message.equals("")) message = time + " " + additive;
+        else message = message + "\n" + time + " " + additive;
     }
 
     void add(String additive) {

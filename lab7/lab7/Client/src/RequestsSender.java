@@ -18,117 +18,116 @@ class RequestsSender {
     private int countTryConnect = 0;
     private String jsonStr = "";
     private String token;
+    private String HOST = "localhost";
 
     RequestsSender(String token) {
         this.token = token;
-        String HOST = "localhost";
+
         this.socketAddress = new InetSocketAddress(HOST, PORT);
     }
 
     void work() {
-        try {
-            while (!exit) {
-                String ADDR = "127.0.0.1";
-                if (countTryConnect == 0)
-                    System.out.println("Соединение с сервером(IP address " + ADDR + ", port " + PORT + ")");
-                SocketChannel server = connect();
-                countTryConnect = 0;
-                isWorking = true;
-                if (server == null) break;
-                try (ObjectOutputStream oos = Auth.oos;
-                     ObjectInputStream ois = Auth.ois) {
-                    System.out.println("Сервер доступен и готов принимать команды.\n");
-                    oos.writeObject(new Request("info", token));
-                    String input = (String) ois.readObject();
-                    if(isTimeOut(input)){
-                        server.close();
-                        continue;
-                    }
-                    System.out.println("Server:\n" + input);
-                    while (isWorking) {
-                        String[] fullCommand = readAndParseCommand();
-                        String answer = "";
-                        if (!parse(fullCommand)) continue;
-                        boolean error = false;
-                        switch (fullCommand[0]) {
-                            case "info":
-                            case "help":
-                            case "show":
-                            case "clear":
-                            case "save":
-                                oos.writeObject(new Request(fullCommand[0], token));
-                                answer = (String) ois.readObject();
-                                if (isTimeOut(answer))
-                                    server.close();
-                                break;
-
-                            case "add":
-                            case "remove":
-                            case "add_if_max":
-                                oos.writeObject(new Request(fullCommand[0], forAction, token));
-                                answer = (String) ois.readObject();
-                                if (isTimeOut(answer))
-                                    server.close();
-                                break;
-
-                            case "load":
-                                oos.writeObject(new Request(fullCommand[0], file, token));
-                                answer = (String) ois.readObject();
-                                if (isTimeOut(answer))
-                                    server.close();
-                                break;
-
-                            case "import":
-                                oos.writeObject(new Request(fullCommand[0], getJsonStr(), token));
-                                answer = (String) ois.readObject();
-                                if (isTimeOut(answer))
-                                    server.close();
-                                break;
-
-                            case "exit":
-                                isWorking = false;
-                                exit = true;
-                                oos.writeObject(new Request(fullCommand[0], token));
-                                answer = (String) ois.readObject();
-                                if (answer.length() > 0) System.out.println(answer);
-                                System.out.println("Выход");
+        while (!exit) {
+            if (countTryConnect == 0)
+                System.out.println("Соединение с сервером(IP address " + HOST + ", port " + PORT + ")");
+            SocketChannel server = connect();
+            countTryConnect = 0;
+            isWorking = true;
+            if (server == null) break;
+            try (ObjectOutputStream oos = Auth.oos;
+                 ObjectInputStream ois = Auth.ois) {
+                System.out.println("Сервер доступен и готов принимать команды.\n");
+                oos.writeObject(new Request("info", token));
+                String input = (String) ois.readObject();
+                if (isTimeOut(input)) {
+                    server.close();
+                    continue;
+                }
+                System.out.println("Server:\n" + input);
+                while (isWorking) {
+                    String[] fullCommand = readAndParseCommand();
+                    String answer = "";
+                    if (!parse(fullCommand)) continue;
+                    boolean error = false;
+                    switch (fullCommand[0]) {
+                        case "info":
+                        case "help":
+                        case "show":
+                        case "clear":
+                        case "save":
+                            oos.writeObject(new Request(fullCommand[0], token));
+                            answer = (String) ois.readObject();
+                            if (isTimeOut(answer))
                                 server.close();
-                                break;
+                            break;
 
-                            default:
-                                error = true;
-                                System.out.println("ОШИБКА: Неизвестная команда\n" +
-                                        "Для помощи введите команду help.");
-                        }
-                        if (!error && !exit)
-                            System.out.println("Server:\n" + answer);
+                        case "add":
+                        case "remove":
+                        case "add_if_max":
+                            oos.writeObject(new Request(fullCommand[0], forAction, token));
+                            answer = (String) ois.readObject();
+                            if (isTimeOut(answer))
+                                server.close();
+                            break;
+
+                        case "load":
+                            oos.writeObject(new Request(fullCommand[0], file, token));
+                            answer = (String) ois.readObject();
+                            if (isTimeOut(answer))
+                                server.close();
+                            break;
+
+                        case "import":
+                            oos.writeObject(new Request(fullCommand[0], jsonStr, token));
+                            answer = (String) ois.readObject();
+                            if (isTimeOut(answer))
+                                server.close();
+                            break;
+
+                        case "exit":
+                            isWorking = false;
+                            exit = true;
+                            oos.writeObject(new Request(fullCommand[0], token));
+                            answer = (String) ois.readObject();
+                            if (answer.length() > 0) System.out.println(answer);
+                            System.out.println("Выход");
+                            server.close();
+                            break;
+
+                        default:
+                            error = true;
+                            System.out.println("ОШИБКА: Неизвестная команда\n" +
+                                    "Для помощи введите команду help.");
                     }
-                } catch (IOException e) {
-                    if(countTryConnect==0) System.out.println("Сервер временно недоступен");
-                    if (countTryConnect > 4) {
+                    if (!error && !exit)
+                        System.out.println("Server:\n" + answer);
+                }
+            } catch (IOException e) {
+                if (countTryConnect == 0) System.out.println("Сервер временно недоступен(подключаюсь)");
+                if (countTryConnect > 4) {
+                    Scanner scanner = new Scanner(System.in);
+                    while (true) {
                         System.out.println("Хотите возобновить попытки подключения?(Y/N)");
-                        try {
-                            Scanner scanner = new Scanner(System.in);
-                            String command = scanner.nextLine();
-                            if (command.equals("Y")) countTryConnect = 0;
-                            else throw new NoSuchElementException();
-                        } catch (NoSuchElementException error) {
+                        String command = scanner.nextLine();
+                        if (command.equalsIgnoreCase("Y")) {
+                            countTryConnect = 0;
+                            break;
+                        } else if (command.equalsIgnoreCase("N")) {
                             System.out.println("Выход");
                             exit = true;
                             break;
                         }
-                    } else {
-                        countTryConnect++;
-                        isWorking = false;
                     }
-                } catch (ClassNotFoundException e) {
-                    System.out.println(e.getMessage());
+                } else {
+                    countTryConnect++;
+                    isWorking = false;
                 }
+            } catch (ClassNotFoundException e) {
+                System.out.println(e.getMessage());
             }
-        } catch (Exception e) {
-            System.out.println(e.getCause().toString());
         }
     }
+
 
     private SocketChannel connect() {
         SocketChannel socket;
@@ -150,28 +149,26 @@ class RequestsSender {
                     Thread.sleep(1000);
                     System.out.println("Не удается подключиться к серверу. Ожидайте...");
                     socket = SocketChannel.open(socketAddress);
-                    ObjectOutputStream oos = new ObjectOutputStream(socket.socket().getOutputStream());
-                    ObjectInputStream ois = new ObjectInputStream(socket.socket().getInputStream());
+                    Auth.oos = new ObjectOutputStream(socket.socket().getOutputStream());
+                    Auth.ois = new ObjectInputStream(socket.socket().getInputStream());
                     isWorking = true;
-                    //oos.close();
-                    Auth.ois = ois;
-                    Auth.oos = oos;
-                    //ois.close();
                     countTryConnect = 0;
                     break;
                 } catch (InterruptedException ex) {
                     Thread.currentThread().interrupt();
                 } catch (IOException ex) {
                     if (countTryConnect > 5) {
-                        System.out.println("Хотите возобновить попытки подключения?(Y/N)");
-                        try {
-                            Scanner scanner = new Scanner(System.in);
+                        Scanner scanner = new Scanner(System.in);
+                        while (true) {
+                            System.out.println("Хотите возобновить попытки подключения?(Y/N)");
                             String command = scanner.nextLine();
-                            if (command.equals("Y")) countTryConnect = 0;
-                            else throw new NoSuchElementException();
-                        } catch (NoSuchElementException error) {
-                            System.out.println("Программа завершена");
-                            return null;
+                            if (command.equalsIgnoreCase("Y")) {
+                                countTryConnect = 1;
+                                break;
+                            } else if (command.equalsIgnoreCase("N")) {
+                                System.out.println("Программа завершена");
+                                return null;
+                            }
                         }
                     }
                 }
@@ -192,12 +189,9 @@ class RequestsSender {
                     Gson gson = new Gson();
                     String jsonStr = fullCommand[1];
                     jsonStr = jsonStr.replace(" ", "");
-                    if (jsonStr.contains("\"family\"") && jsonStr.contains("\"name\"")){
+                    if (jsonStr.contains("\"family\"") && jsonStr.contains("\"name\"")) {
                         forAction = gson.fromJson(jsonStr, Creature.class);
-//                        forAction.inventory
-                    }
-
-                    else forAction = null;
+                    } else forAction = null;
                     if (forAction == null || forAction.getName() == null || forAction.getFamily() == null) {
                         System.out.println("  Ошибка, элемент задан неверно, возможно вы указали не все значения.");
                         return false;
@@ -208,7 +202,7 @@ class RequestsSender {
                     file = new File(fullCommand[1].replace(" ", ""));
             }
         } catch (JsonSyntaxException e) {
-            System.out.println("  Ошибка в формате аргумента");
+            System.out.println("Ошибка в формате аргумента");
             return false;
         }
         return true;
@@ -223,6 +217,7 @@ class RequestsSender {
             if (!file.canRead())
                 throw new SecurityException("Охраняемая территория!! Вход запрещён! Добавьте элементы вручную или импортируйте из другого файла");
             String line;
+            jsonStr = "";
             while ((line = r.readLine()) != null) jsonStr += line;
             jsonStr = jsonStr.substring(1, jsonStr.length() - 1);
             return true;
@@ -236,11 +231,11 @@ class RequestsSender {
     }
 
     private String[] readAndParseCommand() {
-        Scanner consoleScanner = new Scanner(System.in);
         String command;
         String[] fullCommand;
         int count = 0;
         try {
+            Scanner consoleScanner = new Scanner(System.in);
             System.out.print("\nВведите команду:\n>");
             command = consoleScanner.nextLine();
             fullCommand = command.trim().split(" ", 2);
@@ -266,12 +261,6 @@ class RequestsSender {
             fullCommand[0] = "exit";
         }
         return fullCommand;
-    }
-
-    private String getJsonStr() {
-        String res = jsonStr;
-        jsonStr = "";
-        return res;
     }
 
     private boolean isTimeOut(String answer) {

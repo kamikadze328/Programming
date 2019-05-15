@@ -3,18 +3,21 @@ import java.util.Scanner;
 
 public class Client {
     public static void main(String[] args) {
+        Runtime.getRuntime().addShutdownHook(new Thread(() ->
+                System.out.println("\nУходим")
+        ));
         try {
             while (true) {
                 try {
-                    System.out.println("Первый раз здесь?(Y/N/exit)");
                     Scanner scanner = new Scanner(System.in);
+                    System.out.println("Первый раз здесь?(Y/N/exit)");
                     String answer = scanner.nextLine();
                     Auth auth = new Auth();
-                    switch (answer) {
-                        case "Y":
+                    switch (answer.toLowerCase()) {
+                        case "y":
                             auth.signUp();
                             continue;
-                        case "N":
+                        case "n":
                             auth.logIn();
                             auth.disconnect();
                             continue;
@@ -27,7 +30,8 @@ public class Client {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Произошла ошибка, выход");
+            e.printStackTrace();
+            System.out.println("Произошла ошибка, ухожу");
         }
     }
 }

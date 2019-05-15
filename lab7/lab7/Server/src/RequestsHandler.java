@@ -105,8 +105,8 @@ public class RequestsHandler extends Thread {
                             }
                         } else {
                             Request answer = null;
+                            boolean success;
                             switch (command) {
-
                                 case "checkLogin":
                                     DBman.deleteDeadUsers();
                                     if (DBman.checkLogin(str, receiver)) {
@@ -123,10 +123,12 @@ public class RequestsHandler extends Thread {
                                         answer = new Request(receiver.get(), false);
                                     break;
                                 case "checkEmail":
-                                    answer = new Request(receiver.get(), DBman.checkEmail(str, receiver));
+                                    success = DBman.checkEmail(str, receiver);
+                                    answer = new Request(receiver.get(), success);
                                     break;
                                 case "sendToken":
-                                    answer = new Request(receiver.get(), DBman.sendToken(str, receiver));
+                                    success = DBman.sendToken(str, receiver);
+                                    answer = new Request(receiver.get(), success);
                                     break;
                                 case "signUp":
                                     if (DBman.signUp(str, password, receiver)) {

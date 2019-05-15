@@ -34,11 +34,15 @@ class DataBaseManager {
             pst.execute();
             do {
                 try (ResultSet rs = pst.getResultSet()) {
-                    while (rs.next()) {
-                        if (rs.getString(1).length() < lengthName)
-                            add = true;
+                    if (rs.isBeforeFirst()) {
+                        while (rs.next()) {
+                            if (rs.getString(1).length() < lengthName)
+                                add = true;
+                        }
+                        isResult = pst.getMoreResults();
+                    } else {
+                        isResult = false;
                     }
-                    isResult = pst.getMoreResults();
                 }
             } while (isResult && add);
             if (add) addCreature(forAction, receiver, token);
@@ -108,21 +112,25 @@ class DataBaseManager {
             pst.setString(2, family);
             pst.execute();
             try (ResultSet rs = pst.getResultSet()) {
-                rs.next();
-                if (getUserId(token) == rs.getLong(1)) {
-                    try (PreparedStatement pst1 = connection.prepareStatement("DELETE FROM Creatures where name = ? AND family = ?")) {
-                        pst1.setString(1, name);
-                        pst1.setString(2, family);
-                        return pst1.executeUpdate() > 0;
+                if (rs.isBeforeFirst()) {
+                    rs.next();
+                    if (getUserId(token) == rs.getLong(1)) {
+                        try (PreparedStatement pst1 = connection.prepareStatement("DELETE FROM Creatures where name = ? AND family = ?")) {
+                            pst1.setString(1, name);
+                            pst1.setString(2, family);
+                            return pst1.executeUpdate() > 0;
+                        }
+                    } else {
+                        receiver.add("ОШИБКА: Существо не пренадлежит вам!");
+                        return false;
                     }
                 } else {
-                    receiver.add("ОШИБКА: Существо не пренадлежит вам!");
+                    receiver.add("ОШИБКА: Такого существа не существует!");
                     return false;
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            receiver.add("ОШИБКА: Такого существа не существует!");
+            receiver.add(sqlException(e.getMessage()));
             return false;
         }
     }
@@ -249,7 +257,7 @@ class DataBaseManager {
                 int row = pst.executeUpdate();
                 return row > 0;
             } catch (SQLException e) {
-                receiver.add(sqlException(e.getMessage()));
+                receiver.add(sqlException(e.getLocalizedMessage()));
                 return false;
             }
         }
@@ -257,7 +265,7 @@ class DataBaseManager {
     }
 
     private boolean sendMessage(String login, String token, Receiver receiver) {
-        String from = "adalei.vy@0hcow.com";
+        String from = "your.father@0hcow.com";
         String host = "mail.0hcow.com";
         Properties properties = System.getProperties();
         properties.setProperty("mail.smtp.host", host);
@@ -266,13 +274,15 @@ class DataBaseManager {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(login));
-            message.setSubject("Your secret token");
-            message.setText("Token:\t" + token);
+            message.setSubject("New mems");
+            message.setText("Blin-blinskiy, new mems are over, zato tyt est` kakoy-to Token:   " + token);
             Transport.send(message);
             return true;
         } catch (MessagingException mex) {
-            receiver.add(mex.getMessage());
-            mex.printStackTrace();
+            String message = mex.getMessage();
+            if (message.contains("Invalid Addresses"))
+                receiver.add("Неверный почтовый адрес");
+            else receiver.add(message);
             return false;
         }
     }
@@ -284,19 +294,21 @@ class DataBaseManager {
             pst.setString(1, generate(token));
             pst.execute();
             try (ResultSet rs = pst.getResultSet()) {
-                rs.next();
-                long time = rs.getLong(1);
-                String login = rs.getString(2);
-                if (System.currentTimeMillis() - time < 90000) {
-                    this.updateTime(login, receiver);
-                    return null;
-                } else {
-                    receiver.add("Ваше время истекло");
-                    return login;
-                }
+                if (rs.isBeforeFirst()) {
+                    rs.next();
+                    long time = rs.getLong(1);
+                    String login = rs.getString(2);
+                    if (System.currentTimeMillis() - time < 90000) {
+                        this.updateTime(login, receiver);
+                        return null;
+                    } else {
+                        receiver.add("Ваше время истекло");
+                        return login;
+                    }
+                } else return "-1";
             }
         } catch (SQLException e) {
-            receiver.add(sqlException(e.getMessage()));
+            receiver.add(sqlException(e.getLocalizedMessage()));
             return "-1";
         }
     }
@@ -399,17 +411,18 @@ class DataBaseManager {
             pst.execute();
             try (ResultSet rs = pst.getResultSet()) {
                 Creatures = new CopyOnWriteArrayList<>();
-                while (rs.next()) {
-                    String name = rs.getString(1);
-                    int hunger = rs.getInt(2);
-                    String location = rs.getString(3);
-                    Timestamp time = rs.getTimestamp(4);
-                    String family = rs.getString(5);
-                    Long userId = rs.getLong(7);
-                    Creatures.add(initFromDataBase(name, hunger, location, time, family, userId));
+                if (rs.isBeforeFirst()) {
+                    while (rs.next()) {
+                        String name = rs.getString(1);
+                        int hunger = rs.getInt(2);
+                        String location = rs.getString(3);
+                        Timestamp time = rs.getTimestamp(4);
+                        String family = rs.getString(5);
+                        Long userId = rs.getLong(7);
+                        Creatures.add(initFromDataBase(name, hunger, location, time, family, userId));
+                    }
                 }
             }
-            System.out.println("Коллекция синхронизирована с базой данных");
             return Creatures;
         } catch (SQLException e) {
             receiver.add(sqlException(e.getMessage()));

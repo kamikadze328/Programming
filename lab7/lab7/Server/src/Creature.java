@@ -45,7 +45,6 @@ public class Creature implements Comparable<Creature>, Serializable {
 
     OffsetDateTime getCreationTime() {
         if (creationTime == null) creationTime = OffsetDateTime.now();
-        //String dateFormat = creationTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm:ssX"));
         return creationTime;
     }
 
