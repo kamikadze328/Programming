@@ -22,7 +22,6 @@ class RequestsSender {
 
     RequestsSender(String token) {
         this.token = token;
-
         this.socketAddress = new InetSocketAddress(HOST, PORT);
     }
 
@@ -124,6 +123,9 @@ class RequestsSender {
                 }
             } catch (ClassNotFoundException e) {
                 System.out.println(e.getMessage());
+            }
+            catch (NoSuchElementException e){
+                break;
             }
         }
     }

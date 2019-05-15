@@ -6,10 +6,10 @@
         <element id="module-output" name="Server" />
         <element id="module-output" name="lab7" />
       </element>
-      <element id="library" level="application" name="bcprov-jdk15on-161" />
+      <element id="library" level="project" name="javax.mail" />
+      <element id="library" level="project" name="gson" />
       <element id="library" level="project" name="postgresql-42.2.5" />
-      <element id="library" level="application" name="javax.mail" />
-      <element id="library" level="application" name="gson" />
+      <element id="library" level="project" name="bcprov-jdk15on-161" />
     </root>
   </artifact>
 </component>

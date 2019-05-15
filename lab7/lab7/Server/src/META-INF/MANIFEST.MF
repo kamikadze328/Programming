@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Class-Path: bcprov-jdk15on-161.jar postgresql-42.2.5.jar javax.mail.ja
- r gson.jar
+Class-Path: javax.mail.jar postgresql-42.2.5.jar gson.jar postgresql-4
+ 2.2.5.jar bcprov-jdk15on-161.jar
 Main-Class: Server
 

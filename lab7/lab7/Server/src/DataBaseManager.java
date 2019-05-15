@@ -15,6 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 class DataBaseManager {
+
     private final String URL = "jdbc:postgresql://localhost:5432/test";
     private final String LOGIN = "postgres";
     private final String PASSWORD = "postgresql";

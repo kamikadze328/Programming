@@ -1,12 +1,11 @@
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Client {
     public static void main(String[] args) {
-        Runtime.getRuntime().addShutdownHook(new Thread(() ->
-                System.out.println("\nУходим")
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> System.out.println("\nУходим")
         ));
-        try {
             while (true) {
                 try {
                     Scanner scanner = new Scanner(System.in);
@@ -27,11 +26,9 @@ public class Client {
                     }
                 } catch (IOException e) {
                     System.out.println("Сервер недоступен");
+                }catch (NoSuchElementException e){
+                    break;
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Произошла ошибка, ухожу");
-        }
     }
 }

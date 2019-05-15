@@ -8,9 +8,9 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="lab7" />
+    <orderEntry type="library" name="bcprov-jdk15on-161" level="project" />
+    <orderEntry type="library" name="gson" level="project" />
+    <orderEntry type="library" name="javax.mail" level="project" />
     <orderEntry type="library" name="postgresql-42.2.5" level="project" />
-    <orderEntry type="library" name="javax.mail" level="application" />
-    <orderEntry type="library" name="gson" level="application" />
-    <orderEntry type="library" name="bcprov-jdk15on-161" level="application" />
   </component>
 </module>

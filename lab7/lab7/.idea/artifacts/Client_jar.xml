@@ -1,11 +1,9 @@
 <component name="ArtifactManager">
-  <artifact name="Client:jar">
+  <artifact type="jar" name="Client:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/Client_jar</output-path>
-    <root id="root">
-      <element id="archive" name="Client.jar">
-        <element id="module-output" name="Client" />
-      </element>
-      <element id="library" level="application" name="gson" />
+    <root id="archive" name="Client.jar">
+      <element id="module-output" name="Client" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/gson.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
