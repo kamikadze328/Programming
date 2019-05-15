@@ -120,7 +120,7 @@ class CollectionManager {
         else
             return ("\t" + forAction.toString() + " не является наибольшим элементом коллекции");
     }
-//        Creatures.stream().allMatch(((Creature2) -> (forAction.compareTo(Creature2) > 0)));
+        //Creatures.stream().allMatch(((Creature2) -> (forAction.compareTo(Creature2) > 0)));
 
     String add(Creature forAction){
         if(Creatures.add(forAction))
