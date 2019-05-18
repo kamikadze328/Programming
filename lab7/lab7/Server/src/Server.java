@@ -42,7 +42,6 @@ public class Server {
                     id++;
                     RequestsHandler kek = new RequestsHandler(client, manager, DBman, id);
                     new Thread(kek).start();
-                    Server.add(kek.getReceiver());
                 }
             }
         } catch (IOException e) {
@@ -50,7 +49,7 @@ public class Server {
         }
     }
 
-    private static void add(Receiver client) {
+    static void add(Receiver client) {
         clients.add(client);
     }
 

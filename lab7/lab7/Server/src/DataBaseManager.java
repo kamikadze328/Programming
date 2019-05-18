@@ -69,7 +69,8 @@ class DataBaseManager {
             if (userId == null) pst.setLong(6, 1);
             else pst.setLong(6, userId);
             int row = pst.executeUpdate();
-            addInventory(forAction.getInventory(), (String) cr[0], (String) cr[4]);
+            LinkedList<String> inventory = forAction.getInventory();
+            for (String s : inventory) addInventory(s, (String) cr[0], (String) cr[4]);
             return row > 0;
         } catch (SQLException e) {
             receiver.add(sqlException(e.getMessage()));
@@ -77,14 +78,12 @@ class DataBaseManager {
         }
     }
 
-    private void addInventory(LinkedList<String> inventory, String name, String family) throws SQLException {
+    private void addInventory(String inventory, String name, String family) throws SQLException {
         String query = "INSERT INTO Inventory(creature_id, inventory) VALUES(?, ?)";
         try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
              PreparedStatement pst = connection.prepareStatement(query)) {
             pst.setLong(1, getCreatureId(name, family));
-            final String[] data = inventory.toArray(new String[0]);
-            final java.sql.Array sqlArray = connection.createArrayOf("varchar", data);
-            pst.setArray(2, sqlArray);
+            pst.setString(2, inventory);
             pst.executeUpdate();
         }
     }
@@ -116,7 +115,7 @@ class DataBaseManager {
                 if (rs.isBeforeFirst()) {
                     rs.next();
                     if (getUserId(token) == rs.getLong(1)) {
-                        try (PreparedStatement pst1 = connection.prepareStatement("DELETE FROM Creatures where name = ? AND family = ?")) {
+                        try (PreparedStatement pst1 = connection.prepareStatement("DELETE FROM Creatures cascade where name = ? AND family = ?")) {
                             pst1.setString(1, name);
                             pst1.setString(2, family);
                             return pst1.executeUpdate() > 0;
@@ -467,9 +466,10 @@ class DataBaseManager {
             pst.setLong(1, userId);
             pst.execute();
             try (ResultSet rs1 = pst.getResultSet()) {
-                rs1.next();
-                inventory = (String[]) rs1.getArray(1).getArray();
-                for (String s : inventory) creature.inventory.add(s);
+                if (rs1.isBeforeFirst()) {
+                    while (rs1.next())
+                        creature.inventory.add(rs1.getString(1));
+                }
             }
         }
         return creature;

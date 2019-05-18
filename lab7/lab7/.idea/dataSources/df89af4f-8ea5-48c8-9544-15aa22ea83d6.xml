@@ -14,7 +14,7 @@
       <ObjectId>16600</ObjectId>
       <StateNumber>704</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>1658</IntrospectionStateNumber>
+      <IntrospectionStateNumber>2479</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
       <Relations>sequence|table|16833|16835|1
@@ -104,7 +104,7 @@ sequence|table|16984|16986|7
       <Comment>standard public schema</Comment>
       <StateNumber>360</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>1659</IntrospectionStateNumber>
+      <IntrospectionStateNumber>2480</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
@@ -201,9 +201,9 @@ NaN</Labels>
       <StateNumber>1587</StateNumber>
     </table>
     <table id="30" parent="18" name="inventory">
-      <ObjectId>17003</ObjectId>
+      <ObjectId>17015</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>1657</StateNumber>
+      <StateNumber>2478</StateNumber>
     </table>
     <table id="31" parent="18" name="users">
       <ObjectId>16835</ObjectId>
@@ -300,19 +300,19 @@ family</ColNames>
     <column id="44" parent="30" name="creature_id">
       <Position>1</Position>
       <DataType>bigint|0s</DataType>
-      <StateNumber>1657</StateNumber>
+      <StateNumber>2478</StateNumber>
       <DefaultExpression>1</DefaultExpression>
       <TypeId>20</TypeId>
     </column>
     <column id="45" parent="30" name="inventory">
       <Position>2</Position>
-      <DataType>character varying[]|0s</DataType>
-      <StateNumber>1657</StateNumber>
-      <TypeId>1015</TypeId>
+      <DataType>varchar|0s</DataType>
+      <StateNumber>2478</StateNumber>
+      <TypeId>1043</TypeId>
     </column>
     <foreign-key id="46" parent="30" name="inventory_creature_id_fkey">
-      <ObjectId>17010</ObjectId>
-      <StateNumber>1657</StateNumber>
+      <ObjectId>17022</ObjectId>
+      <StateNumber>2478</StateNumber>
       <ColNames>creature_id</ColNames>
       <RefTableId>16986</RefTableId>
       <RefColPositions>7</RefColPositions>

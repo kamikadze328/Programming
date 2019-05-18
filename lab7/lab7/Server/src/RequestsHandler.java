@@ -118,6 +118,7 @@ public class RequestsHandler extends Thread {
                                     if (DBman.logIn(str, password, receiver)) {
                                         System.out.println(str + " подключился");
                                         Server.sendToAll(str + " подключился", receiver);
+                                        Server.add(receiver);
                                         answer = new Request(receiver.get(), true);
                                     } else
                                         answer = new Request(receiver.get(), false);
@@ -158,9 +159,5 @@ public class RequestsHandler extends Thread {
     private void justExit() {
         Server.remove(receiver);
         exit = true;
-    }
-
-    Receiver getReceiver() {
-        return receiver;
     }
 }
