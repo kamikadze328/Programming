@@ -1,3 +1,5 @@
+package main.java;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -14,9 +16,7 @@ class RequestsSender {
     private boolean exit = false;
     private SocketAddress socketAddress;
     private Creature forAction;
-    private File file;
     private int countTryConnect = 0;
-    private String jsonStr = "";
     private String token;
     private String HOST = "localhost";
 
@@ -64,20 +64,6 @@ class RequestsSender {
                         case "remove":
                         case "add_if_max":
                             oos.writeObject(new Request(fullCommand[0], forAction, token));
-                            answer = (String) ois.readObject();
-                            if (isTimeOut(answer))
-                                server.close();
-                            break;
-
-                        case "load":
-                            oos.writeObject(new Request(fullCommand[0], file, token));
-                            answer = (String) ois.readObject();
-                            if (isTimeOut(answer))
-                                server.close();
-                            break;
-
-                        case "import":
-                            oos.writeObject(new Request(fullCommand[0], jsonStr, token));
                             answer = (String) ois.readObject();
                             if (isTimeOut(answer))
                                 server.close();
@@ -181,8 +167,7 @@ class RequestsSender {
 
     private boolean parse(String[] fullCommand) {
         try {
-            if ((fullCommand[0].equals("add_if_max") || fullCommand[0].equals("add") || fullCommand[0].equals("remove")
-                    || fullCommand[0].equals("load")) || fullCommand[0].equals("import")) {
+            if ((fullCommand[0].equals("add_if_max") || fullCommand[0].equals("add") || fullCommand[0].equals("remove"))) {
                 if (fullCommand.length == 1) {
                     System.out.println("  Ошибка, " + fullCommand[0] + " должка иметь аргумент.");
                     return false;
@@ -198,38 +183,13 @@ class RequestsSender {
                         System.out.println("  Ошибка, элемент задан неверно, возможно вы указали не все значения.");
                         return false;
                     }
-                } else if (fullCommand[0].equals("import"))
-                    return importFile(new File(fullCommand[1].replace(" ", "")));
-                else
-                    file = new File(fullCommand[1].replace(" ", ""));
+                }
             }
         } catch (JsonSyntaxException e) {
             System.out.println("Ошибка в формате аргумента");
             return false;
         }
         return true;
-    }
-
-    private boolean importFile(File file) {
-        try (BufferedReader r = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(file))))) {
-            if (!(file.isFile()))
-                throw new FileNotFoundException("Ой, а это не файл. Добавьте элементы вручную или импортируйте из другого файла");
-            if (!(file.exists()))
-                throw new FileNotFoundException("404. Файл нот фаунд. Добавьте элементы вручную или импортируйте из другого файла");
-            if (!file.canRead())
-                throw new SecurityException("Охраняемая территория!! Вход запрещён! Добавьте элементы вручную или импортируйте из другого файла");
-            String line;
-            jsonStr = "";
-            while ((line = r.readLine()) != null) jsonStr += line;
-            jsonStr = jsonStr.substring(1, jsonStr.length() - 1);
-            return true;
-        } catch (NullPointerException | FileNotFoundException | SecurityException ex) {
-            System.out.println(ex.getMessage());
-            return false;
-        } catch (IOException ex) {
-            System.out.println("Не удалось считать файл");
-            return false;
-        }
     }
 
     private String[] readAndParseCommand() {

@@ -1,3 +1,5 @@
+package main.java;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -60,7 +62,7 @@ class Auth {
         try {
             oos.writeObject(new Request("checkEmail", mailToken, null));
             request = (Request) ois.readObject();
-            String input = request.str;
+            String input = request.login;
             if (input.length() > 0) {
                 System.out.println(input);
                 return false;
@@ -79,7 +81,7 @@ class Auth {
         try {
             oos.writeObject(new Request("sendToken", login, null));
             request = (Request) ois.readObject();
-            String input = request.str;
+            String input = request.login;
             if (!request.success) System.out.println(input);
             return request.success;
         } catch (ClassNotFoundException e) {
@@ -93,7 +95,7 @@ class Auth {
             connect();
             oos.writeObject(new Request("checkLogin", login, null));
             request = (Request) ois.readObject();
-            String input = request.str;
+            String input = request.login;
             if (input.length() > 0) {
                 System.out.println(input);
                 return code != 1;
@@ -112,7 +114,7 @@ class Auth {
         try {
             oos.writeObject(new Request("signUp", login, password, null));
             request = (Request) ois.readObject();
-            String input = request.str;
+            String input = request.login;
             if (input.length() > 0 || !request.success) {
                 System.out.println(input);
                 return false;
@@ -127,7 +129,7 @@ class Auth {
         try {
             oos.writeObject(new Request("logIn", login, password, null));
             request = (Request) ois.readObject();
-            String input = request.str;
+            String input = request.login;
             if (request.success) {
                 this.login = login;
                 token = input;

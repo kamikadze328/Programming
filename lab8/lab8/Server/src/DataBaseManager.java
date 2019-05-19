@@ -432,7 +432,6 @@ class DataBaseManager {
 
     private Creature initFromDataBase(String name, int hunger, String locationStr, Timestamp timestamp, String family, Long userId) throws SQLException {
         Location location;
-        String[] inventory;
         switch (locationStr) {
             case "TopFloor":
                 location = Location.TopFloor;

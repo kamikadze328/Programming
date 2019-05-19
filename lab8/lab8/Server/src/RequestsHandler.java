@@ -1,4 +1,3 @@
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -38,8 +37,7 @@ public class RequestsHandler extends Thread {
 
                 String command = request.command;
                 Creature creature = request.creature;
-                File file = request.file;
-                String str = request.str;
+                String str = request.login;
                 String password = request.password;
                 String token = request.token;
 
@@ -78,12 +76,6 @@ public class RequestsHandler extends Thread {
                                         break;
                                     case "add_if_max":
                                         manager.addIfMax(creature, receiver, token);
-                                        break;
-                                    case "import":
-                                        manager.load(str, receiver, token);
-                                        break;
-                                    case "load":
-                                        manager.loadFile(file, receiver, token);
                                         break;
                                     case "save":
                                         manager.save(receiver);
