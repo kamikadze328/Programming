@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact name="Server:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Server_jar</output-path>
+    <root id="root">
+      <element id="archive" name="Server.jar">
+        <element id="module-output" name="Server" />
+        <element id="module-output" name="lab8" />
+      </element>
+      <element id="library" level="project" name="javax.mail" />
+      <element id="library" level="project" name="gson" />
+      <element id="library" level="project" name="postgresql-42.2.5" />
+      <element id="library" level="project" name="bcprov-jdk15on-161" />
+    </root>
+  </artifact>
+</component>
