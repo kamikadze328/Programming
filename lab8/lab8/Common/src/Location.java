@@ -1,6 +1,6 @@
 public enum Location {
     TopFloor,
-    GroudFloor,
+    GroundFloor,
     Yard,
     Hill,
     Hangar,

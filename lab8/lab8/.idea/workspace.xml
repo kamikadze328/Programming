@@ -12,17 +12,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f85ff96e-cdfa-429b-a99f-4c22a8851cf9" name="Default Changelist" comment="Теперь точно всё готово">
-      <change afterPath="$PROJECT_DIR$/Client/src/main/java/Annotation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Client/res/bundle.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Client/res/bundle_en_AU.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Client/res/bundle_ru.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Client/res/bundle_sl.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Client/res/bundle_sv.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Client/res/bundle_zh_CN.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Client/src/Connector.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Client/src/GUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Client/src/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Client/src/MySwingWorker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Client/src/UTF8Control.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Common/src/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../lab7/lab7/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../lab7/lab7/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/df89af4f-8ea5-48c8-9544-15aa22ea83d6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/df89af4f-8ea5-48c8-9544-15aa22ea83d6.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/Client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Client.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/Auth.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Auth.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/RequestsSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/RequestsSender.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Annotation.java" beforeDir="false" afterPath="$PROJECT_DIR$/Common/src/Annotation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Auth.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/Auth.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Client.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/RequestsSender.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Common/src/Creature.java" beforeDir="false" afterPath="$PROJECT_DIR$/Common/src/Creature.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Common/src/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/Common/src/Location.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Common/src/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/Common/src/Request.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/CollectionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/CollectionManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/Server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Server.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server/src/DataBaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/DataBaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/RequestsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/RequestsHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/Server.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -93,6 +108,16 @@
         <item name="test: database" type="162271b6:PgImplModel$Database" />
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
         <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
+        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="creatures: table" type="69fad909:PgImplModel$LocalTable" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="test@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="test: database" type="162271b6:PgImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
         <item name="object types" type="d4e8921:DatabaseStructure$FamilyGroup" />
       </path>
       <path>
@@ -114,36 +139,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Server/src/Server.java">
+        <entry file="file://$PROJECT_DIR$/Client/src/Auth.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Common/src/Creature.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="14" column="4" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="4" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#2100#2101#0" expanded="true" />
-                <element signature="e#2140#2141#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/src/main/java/Client.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+            <state relative-caret-position="2023">
+              <caret line="126" column="5" selection-start-line="126" selection-start-column="5" selection-end-line="126" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -152,28 +151,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Client/Client.iml">
+        <entry file="file://$PROJECT_DIR$/Client/src/GUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="34" selection-start-line="9" selection-start-column="34" selection-end-line="9" selection-end-column="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Common/Common.iml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="6" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/src/main/java/RequestsSender.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="56" column="50" selection-start-line="56" selection-start-column="50" selection-end-line="56" selection-end-column="50" />
+            <state relative-caret-position="251">
+              <caret line="325" column="27" selection-start-line="325" selection-start-column="27" selection-end-line="325" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -182,51 +163,40 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Server/src/TokenFactory.java">
+        <entry file="file://$PROJECT_DIR$/Client/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-96">
-              <caret line="9" column="47" selection-start-line="9" selection-start-column="47" selection-end-line="9" selection-end-column="47" />
+            <state relative-caret-position="51">
+              <caret line="3" column="8" selection-start-line="3" selection-start-column="8" selection-end-line="3" selection-end-column="8" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#64#65#0" expanded="true" />
+                <element signature="e#90#91#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/src/main/java/Annotation.java">
+        <entry file="file://$PROJECT_DIR$/Client/src/MySwingWorker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" column="11" selection-start-line="16" selection-start-column="11" selection-end-line="16" selection-end-column="11" />
+            <state relative-caret-position="289">
+              <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#206#207#0" expanded="true" />
+                <element signature="e#242#243#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/src/main/java/Auth.java">
+        <entry file="file://$PROJECT_DIR$/Client/res/bundle.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="221">
+              <caret line="13" column="1" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Server/src/RequestsHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="414">
-              <caret line="39" selection-start-line="39" selection-end-line="39" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
+          <provider editor-type-id="ResourceBundle" />
         </entry>
       </file>
     </leaf>
@@ -236,17 +206,13 @@
       <list>
         <option value="Enum" />
         <option value="Interface" />
-        <option value="Class" />
         <option value="AnnotationType" />
+        <option value="Class" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>family</find>
-      <find>Class</find>
-      <find>load</find>
-      <find>clear</find>
       <find>receiver</find>
       <find>write</find>
       <find>time</find>
@@ -273,77 +239,81 @@
       <find>nosuch</find>
       <find>inventory</find>
       <find>collection</find>
+      <find>objection</find>
+      <find>p9</find>
+      <find>&lt;</find>
+      <find>fromto</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="UPDATE_TYPE" value="REBASE" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Server/src/EntryPoint.java" />
-        <option value="$PROJECT_DIR$/Server/src/Command.java" />
-        <option value="$PROJECT_DIR$/Client/src/EntryPoint.java" />
-        <option value="$PROJECT_DIR$/Server/src/NewServer.java" />
-        <option value="$PROJECT_DIR$/Client/src/Reader.java" />
-        <option value="$PROJECT_DIR$/Client/src/Requast.java" />
-        <option value="$PROJECT_DIR$/Server/src/Handler.java" />
-        <option value="$PROJECT_DIR$/Client/src/RequestMaker.java" />
-        <option value="$PROJECT_DIR$/Client/src/RequestsMaker.java" />
-        <option value="$PROJECT_DIR$/Client/src/Main.java" />
-        <option value="$PROJECT_DIR$/Server/src/Main.java" />
-        <option value="$PROJECT_DIR$/Server/src/RequestHandler.java" />
-        <option value="$PROJECT_DIR$/Creatures/src/Creature.java" />
-        <option value="$PROJECT_DIR$/Common/src/CloseFriends.java" />
-        <option value="$PROJECT_DIR$/Common/src/Hattifatteners.java" />
-        <option value="$PROJECT_DIR$/Common/src/MoominFamily.java" />
-        <option value="$PROJECT_DIR$/Common/src/Morra.java" />
-        <option value="$PROJECT_DIR$/lab6.iml" />
-        <option value="$PROJECT_DIR$/Server/src/Auth.java" />
-        <option value="$PROJECT_DIR$/Common/src/User.java" />
-        <option value="$PROJECT_DIR$/Server/src/RandomString.java" />
-        <option value="$PROJECT_DIR$/Common/src/Creature.java" />
-        <option value="$PROJECT_DIR$/Common/src/Location.java" />
-        <option value="$PROJECT_DIR$/lab7.iml" />
-        <option value="$PROJECT_DIR$/Server/Server.iml" />
-        <option value="$PROJECT_DIR$/Client/src/Location.java" />
-        <option value="$PROJECT_DIR$/Server/src/Location.java" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/.datagrid/cell" />
         <option value="$PROJECT_DIR$/Server/src/Request.java" />
         <option value="$PROJECT_DIR$/Server/src/TokenFactory.java" />
-        <option value="$PROJECT_DIR$/Client/Client.iml" />
         <option value="$PROJECT_DIR$/out/production/Client/META-INF/MANIFEST.MF" />
-        <option value="$PROJECT_DIR$/Client/src/Auth.java" />
         <option value="$PROJECT_DIR$/Server/src/Receiver.java" />
         <option value="$PROJECT_DIR$/Client/src/Creature.java" />
         <option value="$PROJECT_DIR$/Client/src/Request.java" />
         <option value="$PROJECT_DIR$/Server/src/Creature.java" />
         <option value="$PROJECT_DIR$/Server/src/META-INF/MANIFEST.MF" />
-        <option value="$PROJECT_DIR$/Client/src/Client.java" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/df89af4f-8ea5-48c8-9544-15aa22ea83d6/console.sql" />
         <option value="$PROJECT_DIR$/Server/src/CollectionManager.java" />
         <option value="$PROJECT_DIR$/Server/src/Server.java" />
-        <option value="$PROJECT_DIR$/Server/src/DataBaseManager.java" />
         <option value="$PROJECT_DIR$/Server/src/RequestsHandler.java" />
-        <option value="$PROJECT_DIR$/Common/src/Request.java" />
         <option value="$PROJECT_DIR$/Client/src/RequestsSender.java" />
         <option value="$PROJECT_DIR$/Client/src/Annotation.java" />
         <option value="$PROJECT_DIR$/Client/src/main/Annotation.java" />
         <option value="$PROJECT_DIR$/Client/src/main/java/Annotation.java" />
         <option value="$PROJECT_DIR$/Client/src/main/java/java/RequestsSender.java" />
+        <option value="$PROJECT_DIR$/Common/src/Request.java" />
+        <option value="$PROJECT_DIR$/Common/src/RequestsSender.java" />
         <option value="$PROJECT_DIR$/Client/src/main/java/RequestsSender.java" />
+        <option value="$PROJECT_DIR$/Client/Client.iml" />
+        <option value="$PROJECT_DIR$/Client/src/java/Auth.java" />
+        <option value="$PROJECT_DIR$/Client/src/UTF8Control.java" />
+        <option value="$PROJECT_DIR$/Client/src/ГЫУК.java" />
+        <option value="$PROJECT_DIR$/Client/src/User.java" />
+        <option value="$PROJECT_DIR$/Server/Server.iml" />
+        <option value="$PROJECT_DIR$/Client/src/Client.java" />
+        <option value="$PROJECT_DIR$/Client/src/Connector.java" />
+        <option value="$PROJECT_DIR$/Common/src/Creature.java" />
+        <option value="$PROJECT_DIR$/Common/src/Location.java" />
+        <option value="$PROJECT_DIR$/Server/src/DataBaseManager.java" />
+        <option value="$PROJECT_DIR$/Client/src/Circle.java" />
+        <option value="$PROJECT_DIR$/Common/src/Annotation.java" />
+        <option value="$PROJECT_DIR$/Common/src/User.java" />
+        <option value="$PROJECT_DIR$/Client/res/bundle_ru.properties" />
+        <option value="$PROJECT_DIR$/Client/res/bundle_en_AU.properties" />
+        <option value="$PROJECT_DIR$/Client/res/bundle_sl.properties" />
+        <option value="$PROJECT_DIR$/Client/res/bundle_sv.properties" />
+        <option value="$PROJECT_DIR$/Client/res/bundle_zh_CN.properties" />
+        <option value="$PROJECT_DIR$/Client/src/MySwingWorker.java" />
+        <option value="$PROJECT_DIR$/Client/res/bundle.properties" />
+        <option value="$PROJECT_DIR$/Client/src/JDialog.java" />
+        <option value="$PROJECT_DIR$/Client/src/GUI.form" />
+        <option value="$PROJECT_DIR$/Client/src/KekGUI.form" />
+        <option value="$PROJECT_DIR$/Client/src/KekGUI.java" />
+        <option value="$PROJECT_DIR$/Client/src/kek.form" />
+        <option value="$PROJECT_DIR$/Client/src/kek.java" />
+        <option value="$PROJECT_DIR$/Client/src/Main.java" />
+        <option value="$PROJECT_DIR$/Client/src/Auth.java" />
+        <option value="$PROJECT_DIR$/Client/src/GUI.java" />
       </list>
     </option>
   </component>
   <component name="NamedScopeManager">
     <scope name="lab5" pattern="src:com.kamikadze328.vk.Reader||src:com.kamikadze328.vk.Main||src:com.kamikadze328.vk.CollectionManager||src:com.kamikadze328.vk.Creature" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="510" />
-    <option name="y" value="-25" />
-    <option name="width" value="985" />
-    <option name="height" value="1095" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="950" />
+    <option name="width" value="979" />
+    <option name="height" value="1040" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -353,7 +323,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -370,50 +340,19 @@
               <item name="lab8" type="b2602c69:ProjectViewProjectNode" />
               <item name="lab8" type="462c0819:PsiDirectoryNode" />
               <item name="Client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="res" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="lab8" type="b2602c69:ProjectViewProjectNode" />
               <item name="lab8" type="462c0819:PsiDirectoryNode" />
               <item name="Client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lab8" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lab8" type="462c0819:PsiDirectoryNode" />
-              <item name="Client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lab8" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lab8" type="462c0819:PsiDirectoryNode" />
-              <item name="Common" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lab8" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lab8" type="462c0819:PsiDirectoryNode" />
-              <item name="Common" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lab8" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lab8" type="462c0819:PsiDirectoryNode" />
-              <item name="Server" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lab8" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lab8" type="462c0819:PsiDirectoryNode" />
-              <item name="Server" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -430,8 +369,8 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553771760460" />
-    <property name="database.console.LAST_STATE" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../Labs_пример_final_1/secondSem" />
+    <property name="database.console.LAST_STATE" value="false" />
+    <property name="last_opened_file_path" value="D:/Program Files/Git/cmd/git.exe" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -441,7 +380,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -451,11 +390,11 @@
       <recent name="C:\Users\Banana\Desktop\ITMO\Pis\lab7\lab7\Client" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Banana\Desktop\ITMO\Pis\lab8\lab8\Client" />
+      <recent name="C:\Users\Banana\Desktop\ITMO\Pis\lab8\lab8\Client\src" />
       <recent name="C:\Users\Banana\Desktop\ITMO\Pis\lab7\lab7\Common\src" />
       <recent name="C:\Users\Banana\Desktop\ITMO\Pis\lab7\lab7\Common" />
       <recent name="C:\Users\Banana\Desktop\ITMO\Pis\lab7\lab7\Client\src" />
-      <recent name="C:\Users\Banana\Desktop\ITMO\Pis\lab7\lab7\Server\src" />
-      <recent name="C:\Users\Banana\Desktop\ITMO\Pis\lab7\lab7\Server" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -470,15 +409,22 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Client">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="main.java.java.Client" />
+      <option name="MAIN_CLASS_NAME" value="Client" />
       <module name="Client" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="Client" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="Client" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="Client" />
       <method v="2">
@@ -496,9 +442,11 @@
     <list>
       <item itemvalue="Application.Client" />
       <item itemvalue="Application.Server" />
+      <item itemvalue="Application.Main" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.Client" />
         <item itemvalue="Application.Server" />
       </list>
@@ -566,7 +514,11 @@
       <workItem from="1557918729651" duration="12775000" />
       <workItem from="1557993021409" duration="10675000" />
       <workItem from="1558223039679" duration="829000" />
-      <workItem from="1558223943328" duration="2839000" />
+      <workItem from="1558223943328" duration="18262000" />
+      <workItem from="1558597372474" duration="860000" />
+      <workItem from="1558598400501" duration="17131000" />
+      <workItem from="1558625659614" duration="7149000" />
+      <workItem from="1558989071476" duration="7006000" />
     </task>
     <task id="LOCAL-00001" summary="Добавлена lab7(ведётся работа)">
       <created>1556126978996</created>
@@ -677,26 +629,26 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="591134000" />
+    <option name="totallyTimeSpent" value="638703000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="7" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18120806" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10872483" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
       <window_info id="Capture Tool" order="4" />
       <window_info id="Favorites" order="5" side_tool="true" />
       <window_info id="Image Layers" order="6" />
-      <window_info active="true" anchor="bottom" id="Database Console" order="0" sideWeight="0.49530202" visible="true" weight="0.60322106" />
+      <window_info anchor="bottom" id="Database Console" order="0" sideWeight="0.49530202" weight="0.38360175" />
       <window_info anchor="bottom" id="Duplicate detector" order="1" weight="0.3286119" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.45637584" weight="0.42313322" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4557047" visible="true" weight="0.42313322" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.45973155" weight="0.37774524" />
       <window_info anchor="bottom" id="Version Control" order="4" sideWeight="0.49932885" weight="0.329429" />
-      <window_info anchor="bottom" id="Terminal" order="5" />
+      <window_info anchor="bottom" id="Terminal" order="5" weight="0.329429" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.54362416" side_tool="true" weight="0.4714495" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5442953" side_tool="true" weight="0.42313322" />
       <window_info anchor="bottom" id="Message" order="8" />
       <window_info anchor="bottom" id="Find" order="9" weight="0.32796487" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
@@ -705,33 +657,33 @@
       <window_info anchor="bottom" id="Docker" order="13" show_stripe_button="false" />
       <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.49597314" weight="0.32650074" />
       <window_info anchor="right" id="Capture Analysis" order="0" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.24966443" />
       <window_info anchor="right" id="Theme Preview" order="2" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
-      <window_info anchor="right" id="Database" order="4" weight="0.3295302" />
-      <window_info anchor="right" id="Maven Projects" order="5" />
-      <window_info anchor="right" id="Palette" order="6" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="7" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="8" weight="0.24966443" />
-      <window_info anchor="right" id="Coverage" order="9" side_tool="true" />
+      <window_info anchor="right" id="Maven Projects" order="4" />
+      <window_info anchor="right" id="Palette" order="5" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="6" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="7" weight="0.24966443" />
+      <window_info anchor="right" id="Coverage" order="8" side_tool="true" />
+      <window_info anchor="right" id="Database" order="9" weight="0.3295302" />
       <window_info anchor="right" id="Maven" order="10" />
     </layout>
     <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1785235" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21744967" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
       <window_info id="Capture Tool" order="4" />
       <window_info id="Favorites" order="5" side_tool="true" />
       <window_info id="Image Layers" order="6" />
-      <window_info anchor="bottom" id="Database Console" order="0" sideWeight="0.49530202" weight="0.29136163" />
+      <window_info anchor="bottom" id="Database Console" order="0" sideWeight="0.49530202" weight="0.38360175" />
       <window_info anchor="bottom" id="Duplicate detector" order="1" weight="0.3286119" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.45637584" weight="0.42313322" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.45973155" visible="true" weight="0.29575402" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4557047" visible="true" weight="0.42313322" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.45973155" weight="0.37774524" />
       <window_info anchor="bottom" id="Version Control" order="4" sideWeight="0.49932885" weight="0.329429" />
-      <window_info anchor="bottom" id="Terminal" order="5" />
+      <window_info anchor="bottom" id="Terminal" order="5" weight="0.329429" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.54362416" side_tool="true" weight="0.4714495" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5442953" side_tool="true" weight="0.42313322" />
       <window_info anchor="bottom" id="Message" order="8" />
       <window_info anchor="bottom" id="Find" order="9" weight="0.32796487" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
@@ -740,15 +692,15 @@
       <window_info anchor="bottom" id="Docker" order="13" show_stripe_button="false" />
       <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.49597314" weight="0.32650074" />
       <window_info anchor="right" id="Capture Analysis" order="0" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.24966443" />
       <window_info anchor="right" id="Theme Preview" order="2" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
-      <window_info anchor="right" id="Database" order="4" weight="0.3295302" />
-      <window_info anchor="right" id="Maven Projects" order="5" />
-      <window_info anchor="right" id="Palette" order="6" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="7" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="8" weight="0.24966443" />
-      <window_info anchor="right" id="Coverage" order="9" side_tool="true" />
+      <window_info anchor="right" id="Maven Projects" order="4" />
+      <window_info anchor="right" id="Palette" order="5" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="6" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="7" weight="0.24966443" />
+      <window_info anchor="right" id="Coverage" order="8" side_tool="true" />
+      <window_info anchor="right" id="Database" order="9" weight="0.3295302" />
       <window_info anchor="right" id="Maven" order="10" />
     </layout-to-restore>
   </component>
@@ -788,6 +740,10 @@
       </configuration>
     </watches-manager>
   </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
+  </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
       <expression>
@@ -805,166 +761,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../../../../postgresql-42.2.5.jar!/org/postgresql/core/v3/QueryExecutorImpl.class" />
-    <entry file="jar://$PROJECT_DIR$/../../../../gson-2.8.5.jar!/com/google/gson/Gson.class" />
-    <entry file="jar://$PROJECT_DIR$/../../../../postgresql-42.2.5.jar!/org/postgresql/core/QueryExecutorBase.class" />
-    <entry file="jar://$PROJECT_DIR$/../../../../postgresql-42.2.5.jar!/org/postgresql/core/ResultHandlerBase.class" />
-    <entry file="jar://$PROJECT_DIR$/../../../../postgresql-42.2.5.jar!/org/postgresql/jdbc/ResultWrapper.class" />
-    <entry file="file://$PROJECT_DIR$/Server/src/Auth.java" />
-    <entry file="file://$PROJECT_DIR$/Common/src/User.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/lang/Thread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="698" column="29" selection-start-line="698" selection-start-column="29" selection-end-line="698" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/security/SecureRandom.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="154" column="11" selection-start-line="154" selection-start-column="11" selection-end-line="154" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/net/Socket.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="1489" column="29" selection-start-line="1489" selection-start-column="29" selection-end-line="1489" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Common/src/Request.java" />
-    <entry file="file://$PROJECT_DIR$/Client/Common/src/Creature.java" />
-    <entry file="file://$PROJECT_DIR$/lab8.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../../../../postgresql-42.2.5.jar!/org/postgresql/jdbc/PgStatement.class" />
-    <entry file="jar://$PROJECT_DIR$/../../../../postgresql-42.2.5.jar!/org/postgresql/Driver.class" />
-    <entry file="jar://$PROJECT_DIR$/../../../../postgresql-42.2.5.jar!/org/postgresql/jdbc/PgConnection.class" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/concurrent/CopyOnWriteArrayList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="524" column="19" selection-start-line="524" selection-start-column="19" selection-end-line="524" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../../../../postgresql-42.2.5.jar!/org/postgresql/jdbc/PgPreparedStatement.class" />
-    <entry file="jar://$PROJECT_DIR$/../../../../postgresql-42.2.5.jar!/org/postgresql/util/GT.class" />
-    <entry file="jar://$PROJECT_DIR$/../../../../postgresql-42.2.5.jar!/org/postgresql/jdbc/PgResultSet.class" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/lang/String.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="1957" column="18" selection-start-line="1957" selection-start-column="18" selection-end-line="1957" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/src/Location.java" />
-    <entry file="file://$PROJECT_DIR$/out/production/Client/META-INF/MANIFEST.MF">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/src/Request.java" />
-    <entry file="file://$PROJECT_DIR$/../../lab6/lab6/Server/src/CollectionManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="83" column="62" selection-start-line="83" selection-start-column="62" selection-end-line="83" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/src/META-INF/MANIFEST.MF">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/Server.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="24" selection-start-line="9" selection-start-column="24" selection-end-line="9" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://df89af4f-8ea5-48c8-9544-15aa22ea83d6/database/test/schema/public/table/users">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/postgresql-42.2.5.jar!/org/postgresql/Driver.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="144" selection-start-line="144" selection-end-line="144" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/postgresql-42.2.5.jar!/org/postgresql/jdbc/PgPreparedStatement.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="108" selection-start-line="108" selection-end-line="108" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/postgresql-42.2.5.jar!/org/postgresql/jdbc/PgResultSet.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="1412" selection-start-line="1412" selection-end-line="1412" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/Creature.java" />
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/df89af4f-8ea5-48c8-9544-15aa22ea83d6/console.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" column="81" selection-start-line="31" selection-start-column="81" selection-end-line="31" selection-end-column="81" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Common/src/Request.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="16" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Common/src/Location.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="14" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/src/CollectionManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-555">
-          <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/src/DataBaseManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4018">
-          <caret line="434" selection-start-line="434" selection-end-line="434" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server/src/Receiver.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -972,10 +768,59 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Server/src/TokenFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-96">
+          <caret line="9" column="47" selection-start-line="9" selection-start-column="47" selection-end-line="9" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Server/src/RequestsHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="39" selection-start-line="39" selection-end-line="39" />
+        <state relative-caret-position="227">
+          <caret line="28" column="15" selection-start-line="28" selection-start-column="15" selection-end-line="28" selection-end-column="15" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lab8.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="27" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/src/META-INF/MANIFEST.MF" />
+    <entry file="file://$PROJECT_DIR$/Common/Common.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="34" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Common/src/Request.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/Client.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="58" selection-start-line="5" selection-start-column="58" selection-end-line="5" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/src/CollectionManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -992,70 +837,61 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/src/TokenFactory.java">
+    <entry file="file://$PROJECT_DIR$/Server/Server.iml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-96">
-          <caret line="9" column="47" selection-start-line="9" selection-start-column="47" selection-end-line="9" selection-end-column="47" />
+        <state relative-caret-position="204">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/src/Client.java" />
+    <entry file="file://$PROJECT_DIR$/Client/src/RequestsSender.java" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/javax/swing/text/JTextComponent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="123">
+          <caret line="1692" column="18" selection-start-line="1692" selection-start-column="18" selection-end-line="1692" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/javax/swing/JPasswordField.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="123">
+          <caret line="292" column="18" selection-start-line="292" selection-start-column="18" selection-end-line="292" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/df89af4f-8ea5-48c8-9544-15aa22ea83d6/console.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="74">
+          <caret line="29" column="19" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/ResourceBundle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="219">
+          <caret line="405" column="24" selection-start-line="405" selection-start-column="24" selection-end-line="405" selection-end-column="24" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#15397#15398#0" expanded="true" />
+            <element signature="e#15443#15444#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/main.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/main/java/Annotation.java">
+    <entry file="file://$PROJECT_DIR$/Server/src/DataBaseManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="11" selection-start-line="16" selection-start-column="11" selection-end-line="16" selection-end-column="11" />
+        <state relative-caret-position="109">
+          <caret line="439" column="32" selection-start-line="439" selection-start-column="32" selection-end-line="439" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/main/java/Auth.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/main/java/Client.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/main/java/RequestsSender.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="56" column="50" selection-start-line="56" selection-start-column="50" selection-end-line="56" selection-end-column="50" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Common/Common.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="6" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Common/src/Creature.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="14" column="4" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="4" />
+        <state relative-caret-position="1258">
+          <caret line="90" column="9" lean-forward="true" selection-start-line="90" selection-start-column="9" selection-end-line="90" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2100#2101#0" expanded="true" />
@@ -1064,10 +900,173 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/Client.iml">
+    <entry file="file://$PROJECT_DIR$/Common/src/Location.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="34" selection-start-line="9" selection-start-column="34" selection-end-line="9" selection-end-column="34" />
+        <state relative-caret-position="68">
+          <caret line="4" column="9" lean-forward="true" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/src/Circle.java" />
+    <entry file="file://$PROJECT_DIR$/Common/src/Annotation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Common/src/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/concurrent/Executor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="139" column="9" selection-start-line="139" selection-start-column="9" selection-end-line="139" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/javax/swing/SwingWorker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="537" column="41" selection-start-line="537" selection-start-column="41" selection-end-line="537" selection-end-column="41" />
+          <folding>
+            <element signature="e#16773#16774#0" expanded="true" />
+            <element signature="e#16830#16831#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/src/Connector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-96">
+          <caret line="12" column="24" lean-forward="true" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#331#332#0" expanded="true" />
+            <element signature="e#367#368#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/src/UTF8Control.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/res/bundle_en_AU.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="1" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/res/bundle_ru.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="1" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/res/bundle_sl.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="1" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/res/bundle_sv.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="1" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/src/JDialog.form" />
+    <entry file="file://$PROJECT_DIR$/Client/src/JDialog.java" />
+    <entry file="file://$PROJECT_DIR$/Client/src/GUIframe.java" />
+    <entry file="file://$PROJECT_DIR$/Client/src/GUIframe.form" />
+    <entry file="file://$PROJECT_DIR$/Client/src/лул.form" />
+    <entry file="file://$PROJECT_DIR$/Client/src/GUI.form" />
+    <entry file="file://$PROJECT_DIR$/Client/src/MyGUI.java" />
+    <entry file="file://$PROJECT_DIR$/Client/src/MyGUI.form" />
+    <entry file="file://$PROJECT_DIR$/Client/res/bundle_zh_CN.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="1" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/src/MyGUI1.form" />
+    <entry file="file://$PROJECT_DIR$/Client/src/MyGUI1.java" />
+    <entry file="file://$PROJECT_DIR$/Client/src/KekGUI.form" />
+    <entry file="file://$PROJECT_DIR$/Client/src/KekGUI.java" />
+    <entry file="file://$PROJECT_DIR$/Client/src/kek.form" />
+    <entry file="file://$PROJECT_DIR$/Client/src/kek.java" />
+    <entry file="file://$PROJECT_DIR$/Client/src/Auth.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2023">
+          <caret line="126" column="5" selection-start-line="126" selection-start-column="5" selection-end-line="126" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/src/MySwingWorker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#206#207#0" expanded="true" />
+            <element signature="e#242#243#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/res/bundle.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="1" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="8" selection-start-line="3" selection-start-column="8" selection-end-line="3" selection-end-column="8" />
+          <folding>
+            <element signature="e#64#65#0" expanded="true" />
+            <element signature="e#90#91#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/src/GUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="251">
+          <caret line="325" column="27" selection-start-line="325" selection-start-column="27" selection-end-line="325" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1125,7 +1124,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>Client</last-edited>
+          <last-edited>Server</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

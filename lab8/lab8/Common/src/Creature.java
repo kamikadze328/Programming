@@ -1,16 +1,31 @@
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.Objects;
 
+@Table(name = "Creatures")
 public class Creature implements Comparable<Creature>, Serializable {
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "family")
+    private String family;
+
+    @Column(name = "hunger")
+    private int hunger;
+
+    @Column(name = "location")
+    private Location location;
+
+    @Column(name = "creation_time")
+    private OffsetDateTime creationTime;
+
+    transient private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss", Locale.getDefault());
     private static final long serialVersionUID = -2308846153109753988L;
     Inventory inventory = new Inventory();
-    private String name;
-    private int hunger;
-    private Location location;
-    private OffsetDateTime creationTime;
-    private String family;
 
     Creature(String name, int hunger, Location location, OffsetDateTime creationTime, String family) {
         this.name = name;
@@ -18,12 +33,6 @@ public class Creature implements Comparable<Creature>, Serializable {
         this.location = location;
         this.creationTime = creationTime;
         this.family = family;
-    }
-
-    Creature(String n, Location l) {
-        name = n;
-        location = l;
-        creationTime = OffsetDateTime.now();
     }
 
     String getFamily() {
@@ -70,9 +79,12 @@ public class Creature implements Comparable<Creature>, Serializable {
         return "\n" + getFamily() + " " + getName();
     }
 
+    @Table(name ="Inventory" )
     class Inventory implements Serializable {
-        private static final long serialVersionUID = -1484983106197509695L;
+        @Column(name = "inventory")
         LinkedList<String> inventory = new LinkedList<>();
+
+        private static final long serialVersionUID = -1484983106197509695L;
 
         void add(String a) {
             inventory.add(a);

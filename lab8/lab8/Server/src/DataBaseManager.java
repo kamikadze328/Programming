@@ -436,8 +436,8 @@ class DataBaseManager {
             case "TopFloor":
                 location = Location.TopFloor;
                 break;
-            case "GroudFloor":
-                location = Location.GroudFloor;
+            case "GroundFloor":
+                location = Location.GroundFloor;
                 break;
             case "Yard":
                 location = Location.Yard;

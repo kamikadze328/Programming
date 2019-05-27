@@ -17,8 +17,8 @@
       <IntrospectionStateNumber>2479</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
-      <Relations>sequence|table|16833|16835|1
-sequence|table|16984|16986|7
+      <Relations>sequence|table|16984|16986|7
+sequence|table|16833|16835|1
 </Relations>
     </database>
     <role id="4" parent="1" name="pg_execute_server_program">
