@@ -3,4 +3,4 @@ jar cfm lab.jar MANIFEST.MF ./*
 java18 -jar lab.jar lab5.json
 
 ssh s264434@helios.cs.ifmo.ru -p 2222
-ssh s264434@se.ifmo.ru -L 5001:localhost:5001 -p 2222
+ssh s264434@se.ifmo.ru -L 5432:localhost:5432 -p 2222
