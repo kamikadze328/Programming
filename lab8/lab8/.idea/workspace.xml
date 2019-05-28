@@ -12,32 +12,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f85ff96e-cdfa-429b-a99f-4c22a8851cf9" name="Default Changelist" comment="Теперь точно всё готово">
-      <change afterPath="$PROJECT_DIR$/Client/res/bundle.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/res/bundle_en_AU.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/res/bundle_ru.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/res/bundle_sl.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/res/bundle_sv.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/res/bundle_zh_CN.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/src/Connector.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/src/GUI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/src/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/src/MySwingWorker.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/src/UTF8Control.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Common/src/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lab7/lab7/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../lab7/lab7/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/df89af4f-8ea5-48c8-9544-15aa22ea83d6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/df89af4f-8ea5-48c8-9544-15aa22ea83d6.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/src/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/src/ORM.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/Client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Client.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Annotation.java" beforeDir="false" afterPath="$PROJECT_DIR$/Common/src/Annotation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Auth.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/Auth.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/Client.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/RequestsSender.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/src/Creature.java" beforeDir="false" afterPath="$PROJECT_DIR$/Common/src/Creature.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/src/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/Common/src/Location.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/src/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/Common/src/Request.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/Server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Server.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/DataBaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/DataBaseManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/res/bundle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Client/res/bundle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/res/bundle_en_AU.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Client/res/bundle_en_AU.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/res/bundle_ru.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Client/res/bundle_ru.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/Auth.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/Auth.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/GUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Client/bundle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Client/bundle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Client/bundle_en_AU.properties" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Client/bundle_en_AU.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Client/bundle_ru.properties" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Client/bundle_ru.properties" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -141,8 +126,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/src/Auth.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2023">
-              <caret line="126" column="5" selection-start-line="126" selection-start-column="5" selection-end-line="126" selection-end-column="5" />
+            <state relative-caret-position="248">
+              <caret line="160" column="21" selection-start-line="160" selection-start-column="21" selection-end-line="160" selection-end-column="21" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -150,13 +135,44 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Client/src/GUI.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="251">
-              <caret line="325" column="27" selection-start-line="325" selection-start-column="27" selection-end-line="325" selection-end-column="27" />
+            <state relative-caret-position="119">
+              <caret line="7" column="28" selection-start-line="7" selection-start-column="28" selection-end-line="7" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Server/src/ORM.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="10" column="44" selection-start-line="10" selection-start-column="44" selection-end-line="10" selection-end-column="44" />
               <folding>
                 <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Common/src/User.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="251">
+              <caret line="21" column="4" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Client/src/GUI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="265">
+              <caret line="85" column="28" selection-start-line="85" selection-start-column="28" selection-end-line="85" selection-end-column="28" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#21063#21064#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -193,7 +209,27 @@
         <entry file="file://$PROJECT_DIR$/Client/res/bundle.properties">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="221">
-              <caret line="13" column="1" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
+              <caret line="13" column="7" selection-start-line="13" selection-start-column="7" selection-end-line="13" selection-end-column="7" />
+            </state>
+          </provider>
+          <provider editor-type-id="ResourceBundle" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Client/res/bundle_en_AU.properties">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="13" column="9" selection-start-line="13" selection-start-column="9" selection-end-line="13" selection-end-column="9" />
+            </state>
+          </provider>
+          <provider editor-type-id="ResourceBundle" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Client/res/bundle_ru.properties">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
             </state>
           </provider>
           <provider editor-type-id="ResourceBundle" />
@@ -213,8 +249,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>receiver</find>
-      <find>write</find>
       <find>time</find>
       <find>toke</find>
       <find>sende</find>
@@ -243,6 +277,8 @@
       <find>p9</find>
       <find>&lt;</find>
       <find>fromto</find>
+      <find>size</find>
+      <find>font</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -253,8 +289,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$APPLICATION_CONFIG_DIR$/consoles/.datagrid/cell" />
-        <option value="$PROJECT_DIR$/Server/src/Request.java" />
         <option value="$PROJECT_DIR$/Server/src/TokenFactory.java" />
         <option value="$PROJECT_DIR$/out/production/Client/META-INF/MANIFEST.MF" />
         <option value="$PROJECT_DIR$/Server/src/Receiver.java" />
@@ -288,13 +322,10 @@
         <option value="$PROJECT_DIR$/Client/src/Circle.java" />
         <option value="$PROJECT_DIR$/Common/src/Annotation.java" />
         <option value="$PROJECT_DIR$/Common/src/User.java" />
-        <option value="$PROJECT_DIR$/Client/res/bundle_ru.properties" />
-        <option value="$PROJECT_DIR$/Client/res/bundle_en_AU.properties" />
         <option value="$PROJECT_DIR$/Client/res/bundle_sl.properties" />
         <option value="$PROJECT_DIR$/Client/res/bundle_sv.properties" />
         <option value="$PROJECT_DIR$/Client/res/bundle_zh_CN.properties" />
         <option value="$PROJECT_DIR$/Client/src/MySwingWorker.java" />
-        <option value="$PROJECT_DIR$/Client/res/bundle.properties" />
         <option value="$PROJECT_DIR$/Client/src/JDialog.java" />
         <option value="$PROJECT_DIR$/Client/src/GUI.form" />
         <option value="$PROJECT_DIR$/Client/src/KekGUI.form" />
@@ -302,8 +333,13 @@
         <option value="$PROJECT_DIR$/Client/src/kek.form" />
         <option value="$PROJECT_DIR$/Client/src/kek.java" />
         <option value="$PROJECT_DIR$/Client/src/Main.java" />
-        <option value="$PROJECT_DIR$/Client/src/Auth.java" />
+        <option value="$PROJECT_DIR$/Client/res/bundle.properties" />
+        <option value="$PROJECT_DIR$/Client/res/bundle_en_AU.properties" />
+        <option value="$PROJECT_DIR$/Client/res/bundle_ru.properties" />
         <option value="$PROJECT_DIR$/Client/src/GUI.java" />
+        <option value="$PROJECT_DIR$/Client/src/Auth.java" />
+        <option value="$PROJECT_DIR$/Server/src/Main.java" />
+        <option value="$PROJECT_DIR$/Server/src/ORM.java" />
       </list>
     </option>
   </component>
@@ -312,7 +348,7 @@
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="950" />
-    <option name="width" value="979" />
+    <option name="width" value="980" />
     <option name="height" value="1040" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -346,6 +382,24 @@
               <item name="lab8" type="b2602c69:ProjectViewProjectNode" />
               <item name="lab8" type="462c0819:PsiDirectoryNode" />
               <item name="Client" type="462c0819:PsiDirectoryNode" />
+              <item name="res" type="462c0819:PsiDirectoryNode" />
+              <item name="Resource Bundle 'bundle'" type="a6c14932:ResourceBundleNode" />
+            </path>
+            <path>
+              <item name="lab8" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lab8" type="462c0819:PsiDirectoryNode" />
+              <item name="Client" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lab8" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lab8" type="462c0819:PsiDirectoryNode" />
+              <item name="Server" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lab8" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lab8" type="462c0819:PsiDirectoryNode" />
+              <item name="Server" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -370,7 +424,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553771760460" />
     <property name="database.console.LAST_STATE" value="false" />
-    <property name="last_opened_file_path" value="D:/Program Files/Git/cmd/git.exe" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -518,7 +572,8 @@
       <workItem from="1558597372474" duration="860000" />
       <workItem from="1558598400501" duration="17131000" />
       <workItem from="1558625659614" duration="7149000" />
-      <workItem from="1558989071476" duration="7006000" />
+      <workItem from="1558989071476" duration="7246000" />
+      <workItem from="1558998122760" duration="16046000" />
     </task>
     <task id="LOCAL-00001" summary="Добавлена lab7(ведётся работа)">
       <created>1556126978996</created>
@@ -625,16 +680,24 @@
       <option name="project" value="LOCAL" />
       <updated>1558252823730</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Работа над восьмой лабой&#10;Всё плохо">
+      <created>1558997902655</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1558997902655</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="638703000" />
+    <option name="totallyTimeSpent" value="654989000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10872483" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18657719" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -643,12 +706,12 @@
       <window_info id="Image Layers" order="6" />
       <window_info anchor="bottom" id="Database Console" order="0" sideWeight="0.49530202" weight="0.38360175" />
       <window_info anchor="bottom" id="Duplicate detector" order="1" weight="0.3286119" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4557047" visible="true" weight="0.42313322" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.45503357" visible="true" weight="0.2137628" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.45973155" weight="0.37774524" />
       <window_info anchor="bottom" id="Version Control" order="4" sideWeight="0.49932885" weight="0.329429" />
       <window_info anchor="bottom" id="Terminal" order="5" weight="0.329429" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5442953" side_tool="true" weight="0.42313322" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.54496646" side_tool="true" weight="0.42313322" />
       <window_info anchor="bottom" id="Message" order="8" />
       <window_info anchor="bottom" id="Find" order="9" weight="0.32796487" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
@@ -665,7 +728,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="6" type="SLIDING" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="7" weight="0.24966443" />
       <window_info anchor="right" id="Coverage" order="8" side_tool="true" />
-      <window_info anchor="right" id="Database" order="9" weight="0.3295302" />
+      <window_info active="true" anchor="right" id="Database" order="9" visible="true" weight="0.3295302" />
       <window_info anchor="right" id="Maven" order="10" />
     </layout>
     <layout-to-restore>
@@ -720,7 +783,8 @@
     <MESSAGE value="Всё готово" />
     <MESSAGE value="Теперь точно всё готово" />
     <MESSAGE value="Добавлена лаб8" />
-    <option name="LAST_COMMIT_MESSAGE" value="Добавлена лаб8" />
+    <MESSAGE value="Работа над восьмой лабой&#10;Всё плохо" />
+    <option name="LAST_COMMIT_MESSAGE" value="Работа над восьмой лабой&#10;Всё плохо" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -761,23 +825,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Server/src/Receiver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="13" column="21" selection-start-line="13" selection-start-column="21" selection-end-line="13" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/src/TokenFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-96">
-          <caret line="9" column="47" selection-start-line="9" selection-start-column="47" selection-end-line="9" selection-end-column="47" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server/src/RequestsHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="227">
@@ -918,13 +965,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Common/src/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/concurrent/Executor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="264">
@@ -965,22 +1005,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/res/bundle_en_AU.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="1" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
-        </state>
-      </provider>
-      <provider editor-type-id="ResourceBundle" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/res/bundle_ru.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="1" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
-        </state>
-      </provider>
-      <provider editor-type-id="ResourceBundle" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Client/res/bundle_sl.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -1019,16 +1043,6 @@
     <entry file="file://$PROJECT_DIR$/Client/src/KekGUI.java" />
     <entry file="file://$PROJECT_DIR$/Client/src/kek.form" />
     <entry file="file://$PROJECT_DIR$/Client/src/kek.java" />
-    <entry file="file://$PROJECT_DIR$/Client/src/Auth.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2023">
-          <caret line="126" column="5" selection-start-line="126" selection-start-column="5" selection-end-line="126" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Client/src/MySwingWorker.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -1041,14 +1055,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/res/bundle.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="1" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
-        </state>
-      </provider>
-      <provider editor-type-id="ResourceBundle" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Client/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
@@ -1060,10 +1066,69 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Client/res/bundle_en_AU.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="9" selection-start-line="13" selection-start-column="9" selection-end-line="13" selection-end-column="9" />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/res/bundle.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="7" selection-start-line="13" selection-start-column="7" selection-end-line="13" selection-end-column="7" />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/res/bundle_ru.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/Client/src/GUI.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="265">
+          <caret line="85" column="28" selection-start-line="85" selection-start-column="28" selection-end-line="85" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#21063#21064#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Common/src/User.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="251">
-          <caret line="325" column="27" selection-start-line="325" selection-start-column="27" selection-end-line="325" selection-end-column="27" />
+          <caret line="21" column="4" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/src/Auth.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="160" column="21" selection-start-line="160" selection-start-column="21" selection-end-line="160" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="28" selection-start-line="7" selection-start-column="28" selection-end-line="7" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/src/ORM.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="10" column="44" selection-start-line="10" selection-start-column="44" selection-end-line="10" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 class GUI extends JFrame {
-    CopyOnWriteArrayList<Creature> creatureList = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<Creature> creatureList = new CopyOnWriteArrayList<>();
     private ResourceBundle bundle = ResourceBundle.getBundle("bundle", Locale.getDefault(), new UTF8Control());
     static private ResourceBundle staticBundle = ResourceBundle.getBundle("bundle", Locale.getDefault(), new UTF8Control());
     private Locale rulocale = new Locale("ru");
@@ -21,7 +21,7 @@ class GUI extends JFrame {
 
     private static JLabel connectionText = new JLabel();
     private static boolean isConnected = false;
-    JPanel p3;
+    private JPanel p3 = new JPanel();
     private ArrayList<Timer> timers;
     private JLabel infoObjectText = new JLabel(bundle.getString("info") + ":");
     private JLabel nameText = new JLabel(bundle.getString("name") + ":");
@@ -44,16 +44,15 @@ class GUI extends JFrame {
     private JButton refreshButton = new JButton(bundle.getString("refresh"));
     private JLabel infoText = new JLabel(" " + bundle.getString("greeting"));
     private int filtersTextNumber = 0;
-    private JCheckBox topFloorCheckBox = new JCheckBox(bundle.getString("TopFloor"));
-    private JCheckBox groundFloorCheckBox = new JCheckBox(bundle.getString("GroungFloor"));
-    private JCheckBox yardCheckBox = new JCheckBox(bundle.getString("Yard"));
-    private JCheckBox hillCheckBox = new JCheckBox(bundle.getString("Hill"));
-    private JCheckBox hangarCheckBox = new JCheckBox(bundle.getString("Hangar"));
-    private JCheckBox footPathCheckBox = new JCheckBox(bundle.getString("FootPath"));
-    private JCheckBox lightHouseCheckBox = new JCheckBox(bundle.getString("LightHouse"));
-    private JCheckBox nanCheckBox = new JCheckBox(bundle.getString("NaN"));
+    private String topFloorComboBox = bundle.getString("TopFloor");
+    private String groundFloorComboBox = bundle.getString("GroungFloor");
+    private String yardComboBox = bundle.getString("Yard");
+    private String hillComboBox =bundle.getString("Hill");
+    private String hangarComboBox = bundle.getString("Hangar");
+    private String footPathComboBox = bundle.getString("FootPath");
+    private String lightHouseComboBox = bundle.getString("LightHouse");
+    private String nanComboBox = bundle.getString("NaN");
     private JLabel nameStarts = new JLabel(bundle.getString("nameFilter"));
-    private JTextField nameField = new JTextField();
     private JLabel nameFromTo = new JLabel(bundle.getString("name"));
     private JTextField nameTo = new JTextField();
     private JLabel familyFromTo = new JLabel(bundle.getString("family"));
@@ -62,13 +61,14 @@ class GUI extends JFrame {
     private JTextField timeFrom = new JTextField();
     private JTextField timeTo = new JTextField();
     private JLabel locationFromTo = new JLabel(bundle.getString("location"));
-    private JTextField locationTo = new JTextField();
+    private JLabel infoConnectionText = new JLabel("<html><h1 align=\"center\">ВЫ никуда не подключены<br>LOL</h1></html>");
+
     private JLabel hungerFromTo = new JLabel(bundle.getString("hunger"));
     private JTextField hungerTo = new JTextField();
     private JLabel X = new JLabel("X:");
     private JLabel Y = new JLabel("Y:");
-    private JLabel size = new JLabel("Size:");
-
+    private JLabel size = new JLabel(bundle.getString("size")+  ":");
+    private JLabel sizeText = new JLabel(bundle.getString("size")+  ":");
 
     private JSlider xFromSlider = new JSlider();
     private JSlider yFromSlider = new JSlider();
@@ -80,7 +80,6 @@ class GUI extends JFrame {
     private DateTimeFormatter displayDateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.MEDIUM).withLocale(Locale.getDefault());
     private Creature chosenCreature;
     private DateTimeFormatter filterDateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm:ss");
-    private JPanel pane1;
 
     GUI(Connector connector, Locale locale) {
         changeLanguage(locale);
@@ -95,7 +94,8 @@ class GUI extends JFrame {
         sizeValue.setEditable(false);
         JLabel xText = new JLabel("X:");
         JLabel yText = new JLabel("Y:");
-        JLabel sizeText = new JLabel("Size:");
+
+
         JMenuBar menuBar = new JMenuBar();
         JMenuItem en_item = new JMenuItem("Australian");
         JMenuItem ru_item = new JMenuItem("Русский");
@@ -116,25 +116,32 @@ class GUI extends JFrame {
         setJMenuBar(menuBar);
 
         //Right panel elements
+        Font font = new Font("Sans-Serif", Font.PLAIN, 16);
+        Font font1 = new Font("Calibri", Font.BOLD, 16);
+
+        infoObjectText.setFont(font1);
+        nameText.setFont(font1);
+        familyText.setFont(font1);
+        hungerText.setFont(font1);
+        timeText.setFont(font1);
+        locationText.setFont(font1);
+        xValue.setFont(font1);
+        yValue.setFont(font1);
+        sizeValue.setFont(font1);
+        yText.setFont(font1);
+        xText.setFont(font1);
+        sizeText.setFont(font1);
+
         connectionText.setBackground(Color.BLACK);
         connectionText.setOpaque(true);
         connectionText.setText(" ");
         connectionText.setBackground(Color.BLACK);
-        connectionText.setFont(new Font("Sans-Serif", Font.PLAIN, 16));
+        connectionText.setFont(font);
         infoText.setBackground(Color.BLACK);
         infoText.setOpaque(true);
-        infoText.setFont(new Font("Sans-Serif", Font.PLAIN, 16));
+        infoText.setFont(font);
         infoText.setForeground(Color.GREEN);
         refreshButton.addActionListener(arg0 -> new Thread(this::refreshCollection).start());
-
-        topFloorCheckBox.setSelected(true);
-        groundFloorCheckBox.setSelected(true);
-        yardCheckBox.setSelected(true);
-        hillCheckBox.setSelected(true);
-        hangarCheckBox.setSelected(true);
-        footPathCheckBox.setSelected(true);
-        lightHouseCheckBox.setSelected(true);
-        nanCheckBox.setSelected(true);
 
         timeFrom.setToolTipText(bundle.getString("format") + ": dd.MM.yyyy HH:mm:ss");
         timeTo.setToolTipText(bundle.getString("format") + ": dd.MM.yyyy HH:mm:ss");
@@ -148,22 +155,34 @@ class GUI extends JFrame {
         yFromSlider.setValue(-1000);
         JLabel yFrom = new JLabel("-1000");
         yFromSlider.addChangeListener(e -> yFrom.setText(Integer.toString(yFromSlider.getValue())));
-        sizeFromSlider.setMinimum(-1000);
-        sizeFromSlider.setMaximum(1000);
-        sizeFromSlider.setValue(-1000);
-        JLabel sizeFrom = new JLabel("-1000");
-        xFromSlider.addChangeListener(e -> sizeFrom.setText(Integer.toString(xFromSlider.getValue())));
-        xFrom.setPreferredSize(new Dimension(35, 20));
-        yFrom.setPreferredSize(new Dimension(35, 20));
+        sizeFromSlider.setMinimum(10);
+        sizeFromSlider.setMaximum(99);
+        sizeFromSlider.setValue(35);
+        JLabel sizeFrom = new JLabel("35");
+        sizeFromSlider.addChangeListener(e -> sizeFrom.setText(Integer.toString(sizeFromSlider.getValue())));
 
         startButton.addActionListener(args0 -> new Thread(this::checkFilters).start());
         stopButton.setEnabled(false);
         stopButton.addActionListener(args0 -> new Thread(this::stopAnimation).start());
 
+        String[] locationArrange = {
+                "",
+                topFloorComboBox,
+                groundFloorComboBox,
+                yardComboBox,
+                hillComboBox,
+                hangarComboBox,
+                footPathComboBox,
+                lightHouseComboBox,
+                nanComboBox
+        };
+        JComboBox<String> locationComboBox = new JComboBox<>(locationArrange);
+        locationComboBox.setEditable(false);
+
         //Panels
         JPanel p17 = new JPanel();
+        p17.setMaximumSize(new Dimension(500, 10));
         p17.setLayout(new GridLayout());
-        GridBagConstraints c = new GridBagConstraints();
         p17.add(connectionText);
         JPanel refreshButtonPanel = new JPanel();
         refreshButtonPanel.setLayout(new BoxLayout(refreshButtonPanel, BoxLayout.X_AXIS));
@@ -173,98 +192,109 @@ class GUI extends JFrame {
 
         JPanel p16 = new JPanel();
         p16.setLayout(new BorderLayout());
+        p16.setMaximumSize(new Dimension(500, 50));
+        p16.setPreferredSize(new Dimension(500, 50));
         p16.add(infoText);
 
         JPanel p15 = new JPanel();
         p15.setLayout(new BoxLayout(p15, BoxLayout.X_AXIS));
-        p15.add(locationText);
-
-        JPanel p14 = new JPanel();
-        p14.setLayout(new GridLayout(3, 3, 0, 5));
-
-
-        JPanel p14extended = new JPanel();
-        p14extended.setLayout(new BoxLayout(p14extended, BoxLayout.X_AXIS));
-        p14extended.add(Box.createRigidArea(new Dimension(80, 0)));
-        p14extended.add(p14);
+        p15.add(infoConnectionText);
 
         JPanel p13 = new JPanel();
         p13.setLayout(new BoxLayout(p13, BoxLayout.X_AXIS));
+        p13.add(Box.createRigidArea(new Dimension(0, 70)));
         p13.add(infoObjectText);
-        p13.add(Box.createRigidArea(new Dimension(10, 0)));
-        p13.add(nameField);
 
         JPanel p12 = new JPanel();
         p12.setLayout(new BoxLayout(p12, BoxLayout.X_AXIS));
+        nameValue.setPreferredSize(new Dimension(190, 30));
+        nameValue.setMaximumSize(new Dimension(190, 30));
         p12.add(Box.createRigidArea(new Dimension(7, 0)));
-        p12.add(nameFromTo);
-        p12.add(Box.createRigidArea(new Dimension(7, 0)));
-        p12.add(nameTo);
+        p12.add(nameText, Component.LEFT_ALIGNMENT);
+        p12.add(Box.createHorizontalGlue());
+        p12.add(nameValue, Component.RIGHT_ALIGNMENT);
 
         JPanel p11 = new JPanel();
         p11.setLayout(new BoxLayout(p11, BoxLayout.X_AXIS));
+        familyValue.setPreferredSize(new Dimension(190, 30));
+        familyValue.setMaximumSize(new Dimension(190, 30));
         p11.add(Box.createRigidArea(new Dimension(7, 0)));
-        p11.add(familyFromTo);
-        p11.add(Box.createRigidArea(new Dimension(7, 0)));
-        p11.add(familyTo);
+        p11.add(familyText, Component.LEFT_ALIGNMENT);
+        p11.add(Box.createHorizontalGlue());
+        p11.add(familyValue, Component.RIGHT_ALIGNMENT);
 
         JPanel p111 = new JPanel();
         p111.setLayout(new BoxLayout(p111, BoxLayout.X_AXIS));
+        hungerValue.setPreferredSize(new Dimension(190, 30));
+        hungerValue.setMaximumSize(new Dimension(190, 30));
         p111.add(Box.createRigidArea(new Dimension(7, 0)));
-        p111.add(hungerFromTo);
-        p111.add(Box.createRigidArea(new Dimension(7, 0)));
-        p111.add(hungerTo);
+        p111.add(hungerText, Component.LEFT_ALIGNMENT);
+        p111.add(Box.createHorizontalGlue());
+        p111.add(hungerValue, Component.RIGHT_ALIGNMENT);
 
         JPanel p10 = new JPanel();
         p10.setLayout(new BoxLayout(p10, BoxLayout.X_AXIS));
+        timeValue.setPreferredSize(new Dimension(190, 30));
+        timeValue.setMaximumSize(new Dimension(190, 30));
         p10.add(Box.createRigidArea(new Dimension(7, 0)));
-        p10.add(timeFromTo);
-        p10.add(Box.createRigidArea(new Dimension(7, 0)));
-        p10.add(timeTo);
+        p10.add(timeText, Component.LEFT_ALIGNMENT);
+        p10.add(Box.createHorizontalGlue());
+        p10.add(timeValue, Component.RIGHT_ALIGNMENT);
 
         JPanel p9 = new JPanel();
         p9.setLayout(new BoxLayout(p9, BoxLayout.X_AXIS));
+        locationValue.setPreferredSize(new Dimension(190, 30));
+        locationValue.setMaximumSize(new Dimension(190, 30));
         p9.add(Box.createRigidArea(new Dimension(7, 0)));
-        p9.add(locationFromTo);
-        p9.add(Box.createRigidArea(new Dimension(7, 0)));
-        p9.add(locationTo);
+        p9.add(locationText, Component.LEFT_ALIGNMENT);
+        p9.add(Box.createHorizontalGlue());
+        p9.add(locationValue, Component.RIGHT_ALIGNMENT);
 
+        JPanel p99 = new JPanel();
+        p99.setLayout(new BoxLayout(p99, BoxLayout.X_AXIS));
+        xValue.setMaximumSize(new Dimension(300, 100));
+        yValue.setMaximumSize(new Dimension(300, 100));
+        sizeValue.setMaximumSize(new Dimension(300, 100));
+
+        p99.add(Box.createRigidArea(new Dimension(7, 0)));
+        p99.add(xText);
+        p99.add(Box.createRigidArea(new Dimension(7, 0)));
+        p99.add(xValue);
+        p99.add(Box.createRigidArea(new Dimension(20, 0)));
+        p99.add(yText);
+        p99.add(Box.createRigidArea(new Dimension(7, 0)));
+        p99.add(yValue);
+        p99.add(Box.createRigidArea(new Dimension(20, 0)));
+        p99.add(sizeText);
+        p99.add(Box.createRigidArea(new Dimension(7, 0)));
+        p99.add(sizeValue);
 
         JPanel p8 = new JPanel();
-        p8.setLayout(new GridBagLayout());
-        GridBagConstraints c1 = new GridBagConstraints();
-        c1.insets = new Insets(0, 10, 10, 10);
-        c1.gridx = 0;
-        c1.gridy = 0;
-        p8.add(X, c1);
-        c1.gridx++;
-        p8.add(xFromSlider, c1);
-        c1.gridx++;
-        p8.add(xFrom, c1);
+        p8.setLayout(new BoxLayout(p8, BoxLayout.X_AXIS));
+        xFromSlider.setMaximumSize(new Dimension(150, 17));
+        p8.add(X, Component.LEFT_ALIGNMENT);
+        p8.add(Box.createRigidArea(new Dimension(100, 10)));
+        p8.add(xFromSlider);
+        p8.add(Box.createHorizontalGlue());
+        p8.add(xFrom, Component.RIGHT_ALIGNMENT);
 
         JPanel p7 = new JPanel();
-        p7.setLayout(new GridBagLayout());
-        GridBagConstraints c2 = new GridBagConstraints();
-        c2.insets = new Insets(0, 10, 10, 10);
-        c2.gridx = 0;
-        c2.gridy = 0;
-        p7.add(Y, c2);
-        c2.gridx++;
-        p7.add(yFromSlider, c2);
-        c2.gridx++;
-        p7.add(yFrom, c2);
+        p7.setLayout(new BoxLayout(p7, BoxLayout.X_AXIS));
+        yFromSlider.setMaximumSize(new Dimension(150, 17));
+        p7.add(Y, Component.LEFT_ALIGNMENT);
+        p7.add(Box.createRigidArea(new Dimension(100, 10)));
+        p7.add(yFromSlider);
+        p7.add(Box.createHorizontalGlue());
+        p7.add(yFrom, Component.RIGHT_ALIGNMENT);
 
         JPanel p6 = new JPanel();
-        p6.setLayout(new GridBagLayout());
-        GridBagConstraints c3 = new GridBagConstraints();
-        c3.insets = new Insets(0, 10, 10, 10);
-        c3.gridx = 0;
-        c3.gridy = 0;
-        p6.add(size, c3);
-        c3.gridx++;
-        p6.add(sizeFromSlider, c3);
-        c3.gridx++;
-        p6.add(sizeFrom, c3);
+        p6.setLayout(new BoxLayout(p6, BoxLayout.X_AXIS));
+        sizeFromSlider.setMaximumSize(new Dimension(250, 17));
+        p6.add(size, Component.LEFT_ALIGNMENT);
+        p6.add(Box.createHorizontalGlue());
+        p6.add(sizeFromSlider);
+        p6.add(Box.createRigidArea(new Dimension(25, 0)));
+        p6.add(sizeFrom, Component.RIGHT_ALIGNMENT);
 
         JPanel p5 = new JPanel();
         p5.setLayout(new BoxLayout(p5, BoxLayout.X_AXIS));
@@ -274,17 +304,17 @@ class GUI extends JFrame {
 
         JPanel p4 = new JPanel();
         p4.setLayout(new BoxLayout(p4, BoxLayout.Y_AXIS));
+        p4.setPreferredSize(new Dimension(350, 1000));
+        p4.setMaximumSize(new Dimension(350, 1000));
         p4.add(Box.createRigidArea(new Dimension(0, 10)));
         p4.add(p17);
         p4.add(Box.createRigidArea(new Dimension(0, 10)));
         p4.add(p16);
         p4.add(Box.createRigidArea(new Dimension(0, 10)));
         p4.add(p15);
-        p4.add(Box.createRigidArea(new Dimension(0, 10)));
-        p4.add(p14extended);
-        p4.add(Box.createRigidArea(new Dimension(0, 5)));
+        p4.add(Box.createVerticalGlue());
         p4.add(p13);
-        p4.add(Box.createRigidArea(new Dimension(0, 5)));
+        p4.add(Box.createRigidArea(new Dimension(0, 10)));
         p4.add(p12);
         p4.add(Box.createRigidArea(new Dimension(0, 5)));
         p4.add(p11);
@@ -294,8 +324,9 @@ class GUI extends JFrame {
         p4.add(p10);
         p4.add(Box.createRigidArea(new Dimension(0, 5)));
         p4.add(p9);
+        p4.add(Box.createRigidArea(new Dimension(0, 5)));
+        p4.add(p99);
         p4.add(Box.createRigidArea(new Dimension(0, 30)));
-
         p4.add(p8);
         p4.add(Box.createRigidArea(new Dimension(0, 10)));
         p4.add(p7);
@@ -312,45 +343,41 @@ class GUI extends JFrame {
         p4extended.add(Box.createRigidArea(new Dimension(10, 0)));
         p4extended.setBorder(BorderFactory.createMatteBorder(0, 2, 0, 0, Color.BLACK));
 
-        p3 = new JPanel();
         p3.setLayout(null);
+
+
 
         JPanel p2 = new JPanel();
         p2.setLayout(new BoxLayout(p2, BoxLayout.X_AXIS));
-        timeValue.setPreferredSize(new Dimension(20, 20));
-        p2.add(infoObjectText);
-        p2.add(nameText);
+        p2.add(nameFromTo);
         p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        p2.add(nameValue);
+        nameTo.setMaximumSize(new Dimension(90, 50));
+        nameTo.setPreferredSize(new Dimension(90, 30));
+        p2.add(nameTo);
         p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        p2.add(familyText);
+        p2.add(familyFromTo);
         p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        p2.add(familyValue);
+        familyTo.setMaximumSize(new Dimension(60, 50));
+        familyTo.setPreferredSize(new Dimension(60, 30));
+        p2.add(familyTo);
         p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        p2.add(hungerText);
+        p2.add(hungerFromTo);
         p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        p2.add(hungerValue);
+        hungerTo.setMaximumSize(new Dimension(25, 50));
+        hungerTo.setPreferredSize(new Dimension(25, 30));
+        p2.add(hungerTo);
         p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        p2.add(timeText);
+        p2.add(timeFromTo);
         p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        p2.add(timeValue);
+        timeTo.setMaximumSize(new Dimension(120, 50));
+        timeTo.setPreferredSize(new Dimension(120, 30));
+        p2.add(timeTo);
         p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        p2.add(locationText);
+        p2.add(locationFromTo);
         p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        p2.add(locationValue);
-        p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        p2.add(xText);
-        p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        p2.add(xValue);
-        p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        p2.add(yText);
-        p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        p2.add(yValue);
-        p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        p2.add(sizeText);
-        p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        p2.add(sizeValue);
-        p2.add(Box.createRigidArea(new Dimension(8, 0)));
+        p2.add(locationComboBox);
+        p2.add(Box.createRigidArea(new Dimension(100, 0)));
+
 
         JPanel p2extended = new JPanel();
         p2extended.setLayout(new BoxLayout(p2extended, BoxLayout.Y_AXIS));
@@ -365,9 +392,26 @@ class GUI extends JFrame {
         p2extended.add(botSpace);
         botSpace.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 
+        JPanel p3extended = new JPanel();
+        p3extended.setLayout(new BorderLayout());
+        p3extended.add(p2extended, BorderLayout.NORTH);
+        p3extended.add(p3, BorderLayout.CENTER);
+
+        JPanel pInfo = new JPanel();
+        pInfo.setLayout(new BoxLayout(pInfo, BoxLayout.Y_AXIS));
+        JPanel topInfoSpace = new JPanel();
+        topInfoSpace.setLayout(new BorderLayout());
+        topInfoSpace.add(Box.createRigidArea(new Dimension(0, 8)), BorderLayout.NORTH);
+        JPanel botInfoSpace = new JPanel();
+        botInfoSpace.setLayout(new BorderLayout());
+        botInfoSpace.add(Box.createRigidArea(new Dimension(0, 8)), BorderLayout.NORTH);
+        pInfo.add(topSpace);
+        pInfo.add(botSpace);
+        botInfoSpace.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
+
         setLayout(new BorderLayout());
-        add(p2extended, BorderLayout.NORTH);
-        add(p3, BorderLayout.CENTER);
+        add(pInfo, BorderLayout.NORTH);
+        add(p3extended, BorderLayout.CENTER);
         add(p4extended, BorderLayout.EAST);
 
         setTitle(bundle.getString("title"));
@@ -550,21 +594,21 @@ class GUI extends JFrame {
         connectionText.setText(" " + (isConnected ? staticBundle.getString("connected") : staticBundle.getString("disconnected")));
         setTitle(bundle.getString("title"));
         language.setText(bundle.getString("language"));
-        infoObjectText.setText(bundle.getString("info") + " - ");
+        infoObjectText.setText(bundle.getString("info"));
         nameText.setText(bundle.getString("name") + ":");
         familyText.setText(bundle.getString("family") + ":");
         hungerText.setText(bundle.getString("hunger") + ":");
         locationText.setText(bundle.getString("location") + ":");
         timeText.setText(bundle.getString("creationTime") + ":");
         refreshButton.setText(bundle.getString("refresh"));
-        topFloorCheckBox.setText(bundle.getString("TopFloor"));
-        groundFloorCheckBox.setText(bundle.getString("GroungFloor"));
-        yardCheckBox.setText(bundle.getString("Yard"));
-        hillCheckBox.setText(bundle.getString("Hill"));
-        hangarCheckBox.setText(bundle.getString("Hangar"));
-        footPathCheckBox.setText(bundle.getString("FootPath"));
-        lightHouseCheckBox.setText(bundle.getString("LightHouse"));
-        nanCheckBox.setText((bundle.getString("NaN")));
+        topFloorComboBox = bundle.getString("TopFloor");
+        groundFloorComboBox = bundle.getString("GroungFloor");
+        yardComboBox = bundle.getString("Yard");
+        hillComboBox = bundle.getString("Hill");
+        hangarComboBox = bundle.getString("Hangar");
+        footPathComboBox = bundle.getString("FootPath");
+        lightHouseComboBox = bundle.getString("LightHouse");
+        nanComboBox = bundle.getString("NaN");
         nameStarts.setText(bundle.getString("nameFilter"));
         nameFromTo.setText(bundle.getString("name"));
         familyFromTo.setText(bundle.getString("family"));
@@ -573,6 +617,10 @@ class GUI extends JFrame {
         hungerFromTo = new JLabel(bundle.getString("hunger"));
         startButton.setText(bundle.getString("start"));
         stopButton.setText(bundle.getString("stop"));
+        size.setText(bundle.getString("size")+  ":");
+        sizeText.setText(bundle.getString("size")+  ":");
+        timeFromTo.setText(bundle.getString("time"));
+
         if (chosenCreature != null) {
             setTopPanelInfo(chosenCreature);
         }

@@ -121,9 +121,8 @@ class Auth {
         frame.setTitle(bundle.getString("titleAuth"));
         frame.setSize(360, 240);
         frame.setLocationRelativeTo(null);
-       // frame.setVisible(true);
+        frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        work();
     }
 
     private void logUserIn(User user) {
@@ -157,7 +156,7 @@ class Auth {
     }
 
     private boolean checkInput(User user) {
-        if (new String(passwordField.getPassword()).length() <= 3) { //Can't check user's password because its encrypted
+        if (new String(passwordField.getPassword()).length() <= 3) {
             setErrorMessage(passTooShort);
             return false;
         } else if (user.getLogin().length() <= 3) {
