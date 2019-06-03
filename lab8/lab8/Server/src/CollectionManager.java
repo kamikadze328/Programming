@@ -1,77 +1,129 @@
-import java.io.File;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
+import java.io.*;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 class CollectionManager {
 
+    private File importFile;
     private CopyOnWriteArrayList<Creature> Creatures;
-    private DataBaseManager DBman;
-    private String initTime;
+    private DataBaseManager DBmanager;
 
-    CollectionManager(DataBaseManager DBman, Receiver receiver) {
-        this.DBman = DBman;
-        Creatures = DBman.synchronize(receiver);
-        initTime = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm:ssX"));
+    CollectionManager(File file, DataBaseManager DBmanager) {
+        importFile = file;
+        this.DBmanager = DBmanager;
+        Creatures = DBmanager.synchronize();
     }
 
-    void remove(Creature forAction, Receiver receiver, String token) {
-        if (DBman.removeCreature(forAction, receiver, token)) {
-            Creatures.remove(forAction);
-            receiver.add(forAction.toString().replace("\n", "") + " удалён.");
+    String loadFile(File file, String token) throws SQLException{
+        try {
+            if (file == null || !(file.isFile()) || !(file.exists()) || !file.canRead())
+                throw new IOException();
+            String JsonString = readFromFile(file);
+            int added = load(JsonString, token);
+            if (added >= 0)
+                return "ADDED: " + added;
+            else
+                return "JSONError";
+        } catch (NullPointerException | IOException ex) {
+            return "loadFileError";
         }
     }
 
-    void addIfMax(Creature forAction, Receiver receiver, String token) {
-        if (DBman.addIfMax(forAction, receiver, token)) {
-            Creatures.add(forAction);
-            receiver.add((forAction.toString().replace("\n", "") + " добавлен, т.к. является наибольшим"));
-        } else
-            receiver.add(forAction.toString().replace("\n", "") + " не является наибольшим");
+    int load(String JsonString, String token) throws SQLException{
+        try {
+            return parser(JsonString.split("},\\{"), token);
+        } catch (JsonSyntaxException ex) {
+            return -1;
+        }
     }
 
-    boolean add(Creature forAction, Receiver receiver, String token) {
-        if (DBman.addCreature(forAction, receiver, token)) {
+    private String readFromFile(File file) throws IOException {
+        StringBuilder jsonStr = new StringBuilder();
+        BufferedReader r = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(file))));
+        String line;
+        while ((line = r.readLine()) != null) jsonStr.append(line);
+        jsonStr = new StringBuilder(jsonStr.substring(1, jsonStr.length() - 1));
+        return jsonStr.toString();
+    }
+
+    private int parser(String[] line, String token) throws JsonSyntaxException, SQLException {
+        boolean oneParse = false;
+        if (line.length == 1) oneParse = true;
+        int added = 0;
+        Gson gson = new Gson();
+        for (int i = 0; i < line.length; i++) {
+            if (i == 0 && !oneParse) line[i] = line[i] + "}";
+            else if (i == line.length - 1 && !oneParse) line[i] = "{" + line[i];
+            else if (line.length > 1) line[i] = "{" + line[i] + "}";
+            if (!line[i].equals("") && line[i].contains("\"family\"") && (line[i].contains("\"name\""))) {
+                Creature forAction = gson.fromJson(line[i], Creature.class);
+                if (add(forAction, token)) added++;
+            }
+        }
+        return added;
+    }
+
+    String remove(Creature forAction, String token) throws SQLException {
+        String answer = DBmanager.removeCreature(forAction, token);
+        if (answer.contains("Success"))
+            Creatures.remove(forAction);
+        return answer;
+    }
+
+    boolean addIfMax(Creature forAction, String token) throws SQLException {
+        if (DBmanager.addIfMax(forAction, token)) {
             Creatures.add(forAction);
-            receiver.add(forAction.toString().replace("\n", "") + " добавлен");
+            return true;
+        } else
+            return false;
+    }
+
+    boolean add(Creature forAction, String token) throws SQLException{
+        if (DBmanager.addCreature(forAction, token)) {
+            Creatures.add(forAction);
             return true;
         }
         return false;
     }
 
-    void info(Receiver receiver) {
-        DBman.info(receiver);
-        receiver.add("\nКоллекция типа " + Creatures.getClass().getSimpleName() + " содержит объекты класса Creature" +
-                "\nДата инициализации:  " + initTime +
-                "\nСейчас содержит " + Creatures.size() + " существ." +
-                "\nДля помощи введите команду help.");
+
+    synchronized boolean save() {
+        File saveFile = importFile;
+        Gson gson = new Gson();
+        try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(saveFile, false))) {
+            osw.write(gson.toJson(Creatures));
+            osw.flush();
+            return true;
+        } catch (IOException | NullPointerException e) {
+            Date d = new Date();
+            SimpleDateFormat formater = new SimpleDateFormat("MM.dd_hh:mm:ss");
+            saveFile = new File("saveFile" + formater.format(d) + ".json");
+            try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(saveFile, true))) {
+                osw.write(gson.toJson(Creatures));
+                osw.flush();
+                return true;
+            } catch (IOException ex) {
+                return false;
+            }
+        }
     }
 
-    void help(Receiver receiver) {
-        receiver.add("add {element}: добавить существо;\n" +
-                "remove {element}: удалить существо;\n" +
-                "add_if_max {element}: добавить существо, если его имя длинее всех остальных имён;\n" +
-                "show: показать текущих существ;\n" +
-                "clear: удалить всех существ(или нет);\n" +
-                "info: вывести информацию о базе данных и коллекции;\n" +
-                "load путь_к_файлу: загрузить существ из файла сервера;\n" +
-                "import путь_к_файлу: загрузить существ из файла клиента;\n" +
-                "save: сохранить существ в файл на сервере;\n" +
-                "exit: завершить работу;\n" +
-                "help: вывести помощь по всем командам.");
-    }
-
-    synchronized void save(Receiver receiver) {
-
-    }
-
-    void show(Receiver receiver) {
-        receiver.add(Creatures.toString());
-    }
-
-    void clear(Receiver receiver, String token) {
-        if (DBman.clearCreature(receiver, token))
+    String clear(String token) throws SQLException {
+        int deleted = DBmanager.clearCreature(token);
+        if (deleted> 0)
             Creatures.clear();
-        Creatures = DBman.synchronize(receiver);
+        Creatures = DBmanager.synchronize();
+        return "DELETED: " + deleted;
+    }
+
+    public List<Creature> getCreatures() {
+        return Creatures;
     }
 }

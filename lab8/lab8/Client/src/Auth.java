@@ -8,6 +8,10 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 class Auth {
+    private User currentUser;
+    Color color= null;
+    String login;
+    String token;
     private Locale rulocale = new Locale("ru");
     private Locale sllocale = new Locale("sl");
     private Locale enlocale = new Locale("en", "AU");
@@ -16,6 +20,7 @@ class Auth {
     private Locale chosenLocale = Locale.getDefault();
     private ResourceBundle bundle = ResourceBundle.getBundle("bundle", chosenLocale, new UTF8Control());
 
+    private JLabel tokenText = new JLabel(bundle.getString("token"));
     private JMenu language = new JMenu(bundle.getString("language"));
     private JLabel loginText = new JLabel(bundle.getString("login"));
     private JTextField loginField = new JTextField();
@@ -24,11 +29,23 @@ class Auth {
     private JFrame frame = new JFrame();
     private JLabel logTooShort = new JLabel(bundle.getString("logTooShort"));
     private JLabel passTooShort = new JLabel(bundle.getString("passTooShort"));
-    private JLabel objection = new JLabel(bundle.getString("objection"));
     private JLabel serverUnavailable = new JLabel(bundle.getString("disconnected"));
     private JLabel userAlreadyExists = new JLabel(bundle.getString("userAlreadyExists"));
-    private JButton LogInButton = new JButton(bundle.getString("logIn"));
+    private JLabel wrongEmail = new JLabel(bundle.getString("wrongEmail"));
+    private JLabel deadToken = new JLabel(bundle.getString("deadToken"));
+    private JLabel wrongToken = new JLabel(bundle.getString("wrongToken"));
+    private JLabel signUpError = new JLabel(bundle.getString("signUpError"));
+    private JLabel SQLException = new JLabel(bundle.getString("SQLException"));
+    private JLabel incorrectCommand = new JLabel(bundle.getString("incorrectCommand"));
+
+
+
+
+    private JButton logInButton = new JButton(bundle.getString("logIn"));
     private JButton signUpButton = new JButton(bundle.getString("signUp"));
+    private JButton sendButton = new JButton(bundle.getString("send"));
+    private JButton cancelButton = new JButton(bundle.getString("cancel"));
+
     private SocketAddress server = new InetSocketAddress("localhost", 5001);
 
     Auth() {
@@ -36,29 +53,63 @@ class Auth {
         passwordText.setHorizontalAlignment(SwingConstants.CENTER);
         logTooShort.setForeground(Color.RED);
         passTooShort.setForeground(Color.RED);
-        objection.setForeground(Color.RED);
         userAlreadyExists.setForeground(Color.RED);
+        wrongEmail.setForeground(Color.RED);
+        deadToken.setForeground(Color.RED);
+        wrongToken.setForeground(Color.RED);
+        signUpError.setForeground(Color.BLACK);
+        SQLException.setForeground(Color.BLACK);
+        incorrectCommand.setForeground(Color.YELLOW);
+        sendButton.setVisible(false);
+        cancelButton.setVisible(false);
         loginField.setPreferredSize(new Dimension(130, 20));
         passwordField.setPreferredSize(new Dimension(130, 20));
+        /*loginField.setMaximumSize(new Dimension(220, 20));
+        loginField.setMinimumSize(new Dimension(220, 20));
+        passwordField.setMaximumSize(new Dimension(220, 20));
+        passwordField.setMinimumSize(new Dimension(220, 20));
+        signUpButton.setMaximumSize(new Dimension(220, 20));
+        signUpButton.setMinimumSize(new Dimension(220, 20));
+        logInButton.setMaximumSize(new Dimension(20, 20));
+        logInButton.setMinimumSize(new Dimension(20, 20));*/
+
+
 
         Font font = new Font("Comic Sans MS", Font.PLAIN, 14);
         Font font1 = new Font("Comic Sans MS", Font.BOLD, 13);
         Font font2 = new Font("Times New Roman", Font.BOLD, 14);
+
         loginText.setFont(font);
         passwordText.setFont(font);
-        LogInButton.setFont(font1);
+        logInButton.setFont(font1);
         signUpButton.setFont(font1);
+        cancelButton.setFont(font1);
+        sendButton.setFont(font1);
         passTooShort.setFont(font2);
         logTooShort.setFont(font2);
         userAlreadyExists.setFont(font2);
-        objection.setFont(font2);
+        wrongEmail.setFont(font2);
         serverUnavailable.setFont(font2);
+        deadToken.setFont(font2);
+        wrongToken.setFont(font2);
+        signUpError.setFont(font2);
+        SQLException.setFont(font2);
+        incorrectCommand.setFont(font2);
+        tokenText.setFont(font);
 
         logTooShort.setVisible(false);
         passTooShort.setVisible(false);
         userAlreadyExists.setVisible(false);
-        objection.setVisible(false);
         serverUnavailable.setVisible(false);
+        wrongEmail.setVisible(false);
+        deadToken.setVisible(false);
+        wrongToken.setVisible(false);
+        signUpError.setVisible(false);
+        SQLException.setVisible(false);
+        incorrectCommand.setVisible(false);
+        sendButton.setVisible(false);
+        cancelButton.setVisible(false);
+        tokenText.setVisible(false);
 
         JMenuItem en_item = new JMenuItem("Australian");
         JMenuItem ru_item = new JMenuItem("Русский");
@@ -79,47 +130,122 @@ class Auth {
         menuBar.add(language);
         frame.setJMenuBar(menuBar);
 
-        LogInButton.addActionListener(args0 -> {
+        logInButton.addActionListener(args0 -> {
+            logTooShort.setVisible(false);
+            passTooShort.setVisible(false);
+            userAlreadyExists.setVisible(false);
+            serverUnavailable.setVisible(false);
+            wrongEmail.setVisible(false);
+            deadToken.setVisible(false);
+            wrongToken.setVisible(false);
+            signUpError.setVisible(false);
+            SQLException.setVisible(false);
+            incorrectCommand.setVisible(false);
             User user = new User(loginField.getText(), new String(passwordField.getPassword()));
             logUserIn(user);
         });
 
         signUpButton.addActionListener(e -> {
+            logTooShort.setVisible(false);
+            passTooShort.setVisible(false);
+            userAlreadyExists.setVisible(false);
+            serverUnavailable.setVisible(false);
+            wrongEmail.setVisible(false);
+            deadToken.setVisible(false);
+            wrongToken.setVisible(false);
+            signUpError.setVisible(false);
+            SQLException.setVisible(false);
+            incorrectCommand.setVisible(false);
             User user = new User(loginField.getText(), new String(passwordField.getPassword()));
             signUserUp(user);
         });
 
+        cancelButton.addActionListener(args0 -> {
+            logTooShort.setVisible(false);
+            passTooShort.setVisible(false);
+            userAlreadyExists.setVisible(false);
+            serverUnavailable.setVisible(false);
+            wrongEmail.setVisible(false);
+            deadToken.setVisible(false);
+            wrongToken.setVisible(false);
+            signUpError.setVisible(false);
+            SQLException.setVisible(false);
+            incorrectCommand.setVisible(false);
+            sendButton.setVisible(false);
+            cancelButton.setVisible(false);
+            tokenText.setVisible(false);
+            sendButton.setVisible(false);
+            cancelButton.setVisible(false);
+            tokenText.setVisible(false);
+            passwordField.setVisible(true);
+            passwordText.setVisible(true);
+            signUpButton.setVisible(true);
+            logInButton.setVisible(true);
+            loginText.setVisible(true);
+            loginField.setText("");
+        });
+
+        sendButton.addActionListener(e -> {
+            logTooShort.setVisible(false);
+            passTooShort.setVisible(false);
+            userAlreadyExists.setVisible(false);
+            serverUnavailable.setVisible(false);
+            wrongEmail.setVisible(false);
+            deadToken.setVisible(false);
+            wrongToken.setVisible(false);
+            signUpError.setVisible(false);
+            SQLException.setVisible(false);
+            incorrectCommand.setVisible(false);
+            currentUser.token = loginField.getText();
+            sendToken(currentUser);
+        });
+
+
+
         frame.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.fill   = GridBagConstraints.BOTH;
-        c.insets = new Insets(4, 4, 4, 4);
+        c.insets = new Insets(5, 2, 5, 2);
         c.gridx = 0;
         c.gridy = 0;
+        c.anchor = GridBagConstraints.WEST;
+        frame.add(tokenText, c);
         frame.add(loginText, c);
         c.gridx++;
+        c.fill = GridBagConstraints.BOTH;
+        c.anchor = GridBagConstraints.EAST;
         frame.add(loginField, c);
         c.gridx = 0;
         c.gridy++;
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.WEST;
         frame.add(passwordText, c);
         c.gridx++;
+        c.fill = GridBagConstraints.BOTH;
+        c.anchor = GridBagConstraints.EAST;
         frame.add(passwordField, c);
         c.gridx = 0;
         c.gridy++;
+        frame.add(cancelButton, c);
         frame.add(signUpButton, c);
         c.gridx++;
-        frame.add(LogInButton, c);
+        frame.add(logInButton, c);
+        frame.add(sendButton, c);
         c.gridy++;
         c.gridx = 0;
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.gridheight = GridBagConstraints.REMAINDER;
+        c.gridwidth = 2;
+        c.gridheight = 5;
+        c.anchor = GridBagConstraints.CENTER;
+        c.fill = GridBagConstraints.BOTH;
         frame.add(logTooShort, c);
         frame.add(passTooShort, c);
         frame.add(userAlreadyExists, c);
-        frame.add(objection, c);
         frame.add(serverUnavailable, c);
+        frame.add(wrongEmail, c);
+
 
         frame.setTitle(bundle.getString("titleAuth"));
         frame.setSize(360, 240);
+        frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -131,9 +257,10 @@ class Auth {
                 SocketChannel sc = SocketChannel.open(server);
                 ObjectOutputStream oos = new ObjectOutputStream(sc.socket().getOutputStream());
                 ObjectInputStream ois = new ObjectInputStream(sc.socket().getInputStream());
-                user.command = "signIn";
+                user.command = "logIn";
                 oos.writeObject(user);
-                handleServerErrors((String) ois.readObject());
+                currentUser = user;
+                handleServerCommands((String) ois.readObject());
             } catch (IOException | ClassNotFoundException e) {
                 setErrorMessage(serverUnavailable);
             }
@@ -148,10 +275,25 @@ class Auth {
                 ObjectInputStream ois = new ObjectInputStream(sc.socket().getInputStream());
                 user.command = "signUp";
                 oos.writeObject(user);
-                handleServerErrors((String) ois.readObject());
+                currentUser = user;
+                handleServerCommands((String) ois.readObject());
             } catch (IOException | ClassNotFoundException e) {
                 setErrorMessage(serverUnavailable);
             }
+        }
+    }
+
+    private void sendToken(User user) {
+        try {
+            SocketChannel sc = SocketChannel.open(server);
+            ObjectOutputStream oos = new ObjectOutputStream(sc.socket().getOutputStream());
+            ObjectInputStream ois = new ObjectInputStream(sc.socket().getInputStream());
+            user.command = "checkEmail";
+            oos.writeObject(user);
+            handleServerCommands((String) ois.readObject());
+            if(color!=null) handleServerCommands((String) ois.readObject());
+        } catch (IOException | ClassNotFoundException e) {
+            setErrorMessage(serverUnavailable);
         }
     }
 
@@ -168,7 +310,7 @@ class Auth {
     private void work() {
         frame.setVisible(false);
         frame.dispose();
-        new MySwingWorker(chosenLocale).execute();
+        new MySwingWorker(chosenLocale, currentUser).execute();
     }
 
     private void changeLanguage(Locale locale) {
@@ -178,38 +320,105 @@ class Auth {
         language.setText(bundle.getString("language"));
         loginText.setText(bundle.getString("login"));
         passwordText.setText(bundle.getString("password"));
-        LogInButton.setText(bundle.getString("logIn"));
+        logInButton.setText(bundle.getString("logIn"));
         signUpButton.setText(bundle.getString("signUp"));
-        objection.setText(bundle.getString("objection"));
         logTooShort.setText(bundle.getString("logTooShort"));
         passTooShort.setText(bundle.getString("passTooShort"));
+        wrongEmail.setText(bundle.getString("wrongEmail"));
         userAlreadyExists.setText(bundle.getString("userAlreadyExists"));
         serverUnavailable.setText(bundle.getString("disconnected"));
+        tokenText.setText(bundle.getString("token"));
+        deadToken.setText(bundle.getString("deadToken"));
+        wrongToken.setText(bundle.getString("wrongToken"));
+        signUpError.setText(bundle.getString("signUpError"));
+        SQLException.setText(bundle.getString("SQLException"));
+        incorrectCommand.setText(bundle.getString("incorrectCommand"));
     }
 
-    private void handleServerErrors(String error) {
-        switch (error) {
-            case "":
-                work();
+    private void handleServerCommands(String command) {
+        switch (command) {
+            case "TokenSent":
+                checkEmail();
                 break;
-            case "logTooShort":
-                setErrorMessage(logTooShort);
-                break;
-            case "userAlreadyExists":
+            case "LoginExists":
                 setErrorMessage(userAlreadyExists);
                 break;
-            case "objection":
-                setErrorMessage(objection);
+            case "WrongEmailAddress":
+                setErrorMessage(wrongEmail);
+                break;
+            case "DeadToken":
+                setErrorMessage(deadToken);
+                break;
+            case "WrongToken":
+                setErrorMessage(wrongToken);
+                break;
+            case "SignUpError":
+                setErrorMessage(signUpError);
+                break;
+
+
+            case "SQLException":
+                setErrorMessage(SQLException);
+                break;
+            case "IncorrectCommand":
+                setErrorMessage(incorrectCommand);
                 break;
         }
+        if(command.contains("COLOR: ")){
+            switch (command.substring(7)) {
+                case "FernGreen":
+                    color = Colors.FernGreen.getRgbColor();
+                    break;
+                case "White":
+                    color = Colors.White.getRgbColor();
+                    break;
+                case "PareGold":
+                    color = Colors.PareGold.getRgbColor();
+                    break;
+                case "DeepRed":
+                    color = Colors.DeepRed.getRgbColor();
+                    break;
+                case "Purple":
+                    color = Colors.Purple.getRgbColor();
+                    break;
+                case "Black":
+                    color = Colors.Black.getRgbColor();
+                default:
+                    color = new Color(Integer.parseInt(command.substring(7)));
+            }
+
+        }else if(command.contains("TOKEN: ")){
+            token = command.substring(7);
+            login = currentUser.login;
+            work();
+        }
     }
+
+    private void checkEmail() {
+        sendButton.setVisible(true);
+        cancelButton.setVisible(true);
+        tokenText.setVisible(true);
+        passwordField.setVisible(false);
+        passwordText.setVisible(false);
+        signUpButton.setVisible(false);
+        logInButton.setVisible(false);
+        loginText.setVisible(false);
+        loginField.setText("");
+        passwordField.setText("");
+    }
+
 
     private void setErrorMessage(JLabel message) {
         logTooShort.setVisible(false);
         passTooShort.setVisible(false);
         userAlreadyExists.setVisible(false);
-        objection.setVisible(false);
         serverUnavailable.setVisible(false);
+        wrongEmail.setVisible(false);
+        deadToken.setVisible(false);
+        wrongToken.setVisible(false);
+        signUpError.setVisible(false);
+        SQLException.setVisible(false);
+        incorrectCommand.setVisible(false);
         message.setVisible(true);
     }
 }

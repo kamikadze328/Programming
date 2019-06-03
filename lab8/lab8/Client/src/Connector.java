@@ -9,6 +9,7 @@ public class Connector extends Thread {
 
     private SocketAddress server;
 
+
     Connector(SocketAddress server) {
         this.server = server;
     }

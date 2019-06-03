@@ -1,23 +1,19 @@
 import java.io.Serializable;
 
-@Table(name = "users")
 class User implements Serializable {
     private static final long serialVersionUID = 965492277031384770L;
 
-    @Column(name = "user_id")
     private Integer id;
 
-    @Column(name = "login")
-    private String login;
+    String login;
 
-    @Column(name = "password")
-    private String password;
+    String password;
 
-    String command = ""; // is used to send different commands to server ("signIn" or "signUp")
+    String command = ""; // is used to send different commands to server ("LogIn" or "signUp")
 
+    String token = "";
 
-    User() {
-    }
+    User() {}
 
     User(String login, String password) {
         this.login = login;
@@ -30,5 +26,9 @@ class User implements Serializable {
 
     String getPassword() {
         return password;
+    }
+
+    void setGenaratedPassword(String password){
+        this.password = password;
     }
 }

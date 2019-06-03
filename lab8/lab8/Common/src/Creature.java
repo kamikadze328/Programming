@@ -5,34 +5,52 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Objects;
 
-@Table(name = "Creatures")
 public class Creature implements Comparable<Creature>, Serializable {
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "family")
     private String family;
 
-    @Column(name = "hunger")
     private int hunger;
 
-    @Column(name = "location")
     private Location location;
 
-    @Column(name = "creation_time")
     private OffsetDateTime creationTime;
+
+    private Integer x;
+
+    private Integer y;
+
+    private Integer size;
+
+    private Colors color;
 
     transient private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss", Locale.getDefault());
     private static final long serialVersionUID = -2308846153109753988L;
     Inventory inventory = new Inventory();
 
-    Creature(String name, int hunger, Location location, OffsetDateTime creationTime, String family) {
+    Creature(String name, int hunger, Location location, OffsetDateTime creationTime, String family, Integer x, Integer y, Integer size, Colors color) {
         this.name = name;
         this.hunger = hunger;
         this.location = location;
         this.creationTime = creationTime;
         this.family = family;
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.color = color;
+    }
+
+    Creature(String name, int hunger, Location location, String family, Integer x, Integer y, Integer size, Colors color) {
+        this.name = name;
+        this.hunger = hunger;
+        this.location = location;
+        this.creationTime = OffsetDateTime.now();
+        this.family = family;
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.color = color;
     }
 
     String getFamily() {
@@ -47,6 +65,10 @@ public class Creature implements Comparable<Creature>, Serializable {
         return hunger;
     }
 
+    int getX(){return x;}
+    int getY(){return y;}
+    int getSize(){return size;}
+
     Location getLocation() {
         if (location == null) location = Location.NaN;
         return location;
@@ -57,12 +79,17 @@ public class Creature implements Comparable<Creature>, Serializable {
         return creationTime;
     }
 
+    Colors getColor() {
+        return color;
+    }
+
     public boolean equals(Object otherObject) {
         if (this == otherObject) return true;
         if (otherObject == null) return false;
         if (getClass() != otherObject.getClass()) return false;
         Creature other = (Creature) otherObject;
-        return getName().equals(other.getName());
+        return getName().equals(other.getName()) &&
+                getFamily().equals((other.getFamily()));
 
     }
 
@@ -79,9 +106,7 @@ public class Creature implements Comparable<Creature>, Serializable {
         return "\n" + getFamily() + " " + getName();
     }
 
-    @Table(name ="Inventory" )
     class Inventory implements Serializable {
-        @Column(name = "inventory")
         LinkedList<String> inventory = new LinkedList<>();
 
         private static final long serialVersionUID = -1484983106197509695L;

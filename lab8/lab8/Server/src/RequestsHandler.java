@@ -1,155 +1,179 @@
+import javax.print.DocFlavor;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.sql.SQLException;
 
 public class RequestsHandler extends Thread {
     private Socket client;
     private CollectionManager manager;
     private DataBaseManager DBman;
     private boolean exit = false;
-    private Receiver receiver;
-    private String login;
 
-    RequestsHandler(Socket socket, CollectionManager manager, DataBaseManager DBman, int id) {
+    RequestsHandler(Socket socket, CollectionManager manager, DataBaseManager DBman) {
         this.client = socket;
         this.manager = manager;
         this.DBman = DBman;
-        receiver = new Receiver(id);
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            manager.save(receiver);
-            exit();
-        }));
     }
 
     @Override
     public void run() {
         try (ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
              ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream())) {
-            Request request;
             while (!exit) {
                 try {
-                    request = (Request) ois.readObject();
-                } catch (ClassNotFoundException e) {
-                    System.out.println(e.getMessage());
-                    request = new Request("", null);
-                }
+                    Object message = ois.readObject();
+                    if (message instanceof Request) {
+                        Request request = (Request) message;
+                        String command = request.command;
+                        Creature creature = request.creature;
+                        File fileClients = request.fileClients;
+                        String fileServer = request.fileServer;
+                        String token = request.token;
+                        new Thread(() -> {
+                            try {
+                                boolean get = false;
+                                String answer;
+                                answer = DBman.checkToken(token);
+                                if (answer != null) {
+                                    oos.writeObject(answer);
+                                    justExit();
+                                } else {
+                                    switch (command) {
+                                        case "get":
+                                            oos.writeObject(manager.getCreatures());
+                                            get = true;
+                                            break;
 
-                String command = request.command;
-                Creature creature = request.creature;
-                String str = request.login;
-                String password = request.password;
-                String token = request.token;
+                                        case "clear":
+                                            answer = manager.clear(token);
+                                            break;
 
-                new Thread(() -> {
-                    try {
-                        if (token != null) {
-                            login = DBman.checkToken(token, receiver);
-                            if (login != null && login.equals("-1")) {
-                                oos.writeObject(receiver.get());
-                                exit = true;
-                                throw new IOException();
-                            } else if (login != null) {
-                                oos.writeObject(receiver.get());
-                                System.out.println(login + " отключён по таймауту");
-                                exit();
-                                throw new IOException();
-                            } else {
+                                        case "add":
+                                            if (manager.add(creature, token))
+                                                answer = "AddedSuccess";
+                                            else
+                                                answer = "AddedFailing";
+                                            break;
+
+                                        case "remove":
+                                            answer = manager.remove(creature, token);
+                                            break;
+
+                                        case "add_if_max":
+                                            if (manager.addIfMax(creature, token))
+                                                answer = "AddedSuccess";
+                                            else
+                                                answer = "AddedFailing";
+                                            break;
+
+                                        case "import":
+                                            int added = manager.load(fileServer, token);
+                                            answer = "ADDED: " + added;
+                                            break;
+
+                                        case "load":
+                                            answer = manager.loadFile(fileClients, token);
+                                            break;
+
+                                        case "save":
+                                            if (manager.save())
+                                                answer = "SavedSuccess";
+                                            else
+                                                answer = "SavedFailing";
+                                            break;
+
+                                        case "exit":
+                                            justExit();
+                                            break;
+                                    }
+                                    if (!exit && !get) oos.writeObject(answer);
+                                }
+
+                            } catch (IOException ignored) {
+                            } catch (SQLException e) {
+                                try {
+                                    oos.writeObject("SQLException");
+                                } catch (IOException ignored) {
+                                }
+                            }
+                        }).start();
+                    } else if (message instanceof User) {
+                        User user;
+                        user = (User) message;
+                        String command = user.command;
+                        String login = user.login;
+                        String password = user.password;
+                        String token = user.token;
+                        new Thread(() -> {
+                            try {
+                                String answer;
                                 switch (command) {
-                                    case ("info"):
-                                        manager.info(receiver);
+                                    case "logIn":
+                                        DBman.deleteDeadUsers();
+                                        if (DBman.checkLogin(login)) {
+                                            answer = DBman.logIn(login, password);
+                                            /*if (!answer.equals("WrongPassword"))
+                                                Server.add(client);*/
+                                        } else
+                                            answer = "LoginDoesntExist";
                                         break;
-                                    case "help":
-                                        manager.help(receiver);
+
+                                    case "signUp":
+                                        DBman.deleteDeadUsers();
+                                        if (!DBman.checkLogin(login)) {
+                                            if (DBman.sendToken(login))
+                                                answer = "TokenSent";
+                                            else
+                                                answer = "WrongEmailAddress";
+                                            break;
+                                        } else
+                                            answer = "LoginExists";
                                         break;
-                                    case "show":
-                                        manager.show(receiver);
-                                        break;
-                                    case "clear":
-                                        manager.clear(receiver, token);
-                                        break;
-                                    case "add":
-                                        manager.add(creature, receiver, token);
-                                        break;
-                                    case "remove":
-                                        manager.remove(creature, receiver, token);
-                                        break;
-                                    case "add_if_max":
-                                        manager.addIfMax(creature, receiver, token);
-                                        break;
-                                    case "save":
-                                        manager.save(receiver);
-                                        break;
-                                    case "exit":
-                                        String login = DBman.getLogin(token, receiver);
-                                        if (login != null) {
-                                            System.out.println(login + " отключился");
-                                            Server.sendToAll(login + " отключился", receiver);
-                                        } else {
-                                            Server.sendToAll("Кто-то отключился", receiver);
-                                            System.out.println("Кто-то отключился");
-                                            receiver.add("Кажется вы замешаны в какой-то подозрительной активности");
+
+                                    case "checkEmail":
+                                        answer = DBman.checkEmail(token);
+                                        if (answer.equals("EmailCorrect"))
+                                            answer = DBman.signUp(login, password);
+                                        if(answer.contains("TOKEN: ")){
+                                            String color = "COLOR: " + DBman.getColor(login);
+                                            oos.writeObject(color);
                                         }
-                                        justExit();
+                                        break;
+
+                                    default:
+                                        answer = "IncorrectCommand";
                                         break;
                                 }
-                                oos.writeObject(receiver.get());
+                                oos.writeObject(answer);
+                            } catch (SQLException e) {
+                                try {
+                                    oos.writeObject("SQLException");
+                                } catch (IOException ignored) {
+                                }
+                            } catch (IOException ignored) {
                             }
-                        } else {
-                            Request answer = null;
-                            boolean success;
-                            switch (command) {
-                                case "checkLogin":
-                                    DBman.deleteDeadUsers();
-                                    if (DBman.checkLogin(str, receiver)) {
-                                        answer = new Request(receiver.get(), true);
-                                    } else
-                                        answer = new Request(receiver.get(), false);
-                                    break;
-                                case "logIn":
-                                    if (DBman.logIn(str, password, receiver)) {
-                                        System.out.println(str + " подключился");
-                                        Server.sendToAll(str + " подключился", receiver);
-                                        Server.add(receiver);
-                                        answer = new Request(receiver.get(), true);
-                                    } else
-                                        answer = new Request(receiver.get(), false);
-                                    break;
-                                case "checkEmail":
-                                    success = DBman.checkEmail(str, receiver);
-                                    answer = new Request(receiver.get(), success);
-                                    break;
-                                case "sendToken":
-                                    success = DBman.sendToken(str, receiver);
-                                    answer = new Request(receiver.get(), success);
-                                    break;
-                                case "signUp":
-                                    if (DBman.signUp(str, password, receiver)) {
-                                        answer = new Request(receiver.get(), true);
-                                    } else {
-                                        receiver.add("Не удалось зарегестрироваться");
-                                        answer = new Request(receiver.get(), false);
-                                    }
-                                    break;
-                            }
-                            if (!exit) oos.writeObject(answer);
-                        }
+                        }).start();
+                    }
+                } catch (ClassNotFoundException e) {
+                    System.out.println(e.getMessage());
+                    try {
+                        oos.writeObject("WTF");
                     } catch (IOException ignored) {
                     }
-                }).start();
+                } catch (IOException ignored) {
+
+                }
             }
             client.close();
         } catch (IOException ignored) {
         }
     }
 
-    private void exit() {
-        Server.sendToAll(login + " отключился по таймауту", receiver);
-        justExit();
-    }
-
     private void justExit() {
-        Server.remove(receiver);
+        Server.remove(client);
         exit = true;
     }
 }

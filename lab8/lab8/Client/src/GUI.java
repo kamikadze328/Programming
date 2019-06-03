@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.FormatStyle;
@@ -62,6 +63,7 @@ class GUI extends JFrame {
     private JTextField timeTo = new JTextField();
     private JLabel locationFromTo = new JLabel(bundle.getString("location"));
     private JLabel infoConnectionText = new JLabel("<html><h1 align=\"center\">ВЫ никуда не подключены<br>LOL</h1></html>");
+    private JLabel user;
 
     private JLabel hungerFromTo = new JLabel(bundle.getString("hunger"));
     private JTextField hungerTo = new JTextField();
@@ -75,13 +77,22 @@ class GUI extends JFrame {
     private JSlider sizeFromSlider = new JSlider();
 
 
-    private JButton startButton = new JButton(bundle.getString("start"));
-    private JButton stopButton = new JButton(bundle.getString("stop"));
+    private JButton changeButton = new JButton(bundle.getString("change"));
+    private JButton newCreatureButton = new JButton(bundle.getString("newCreature"));
+    private JButton addButton = new JButton(bundle.getString("add"));
+    private JButton addIfMaxButton = new JButton(bundle.getString("add_if_max"));
+    private JButton removeButton = new JButton(bundle.getString("remove"));
+
+    private JButton cancelButton = new JButton(bundle.getString("cancel"));
+
+    private JComboBox<String> locationBox;
+
     private DateTimeFormatter displayDateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.MEDIUM).withLocale(Locale.getDefault());
     private Creature chosenCreature;
     private DateTimeFormatter filterDateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm:ss");
 
-    GUI(Connector connector, Locale locale) {
+    GUI(Connector connector, Locale locale, User user) {
+        this.user = new JLabel(user.getLogin());
         changeLanguage(locale);
         this.connector = connector;
         nameValue.setEditable(false);
@@ -94,7 +105,6 @@ class GUI extends JFrame {
         sizeValue.setEditable(false);
         JLabel xText = new JLabel("X:");
         JLabel yText = new JLabel("Y:");
-
 
         JMenuBar menuBar = new JMenuBar();
         JMenuItem en_item = new JMenuItem("Australian");
@@ -161,9 +171,22 @@ class GUI extends JFrame {
         JLabel sizeFrom = new JLabel("35");
         sizeFromSlider.addChangeListener(e -> sizeFrom.setText(Integer.toString(sizeFromSlider.getValue())));
 
-        startButton.addActionListener(args0 -> new Thread(this::checkFilters).start());
-        stopButton.setEnabled(false);
-        stopButton.addActionListener(args0 -> new Thread(this::stopAnimation).start());
+//        addButton.addActionListener(args0 -> new Thread(this::addCreature).start());
+
+        xFromSlider.setEnabled(false);
+        yFromSlider.setEnabled(false);
+        sizeFromSlider.setEnabled(false);
+        newCreatureButton.addActionListener(args0 -> new Thread(this::newCreature).start());
+        addButton.setEnabled(false);
+        addButton.addActionListener(args0 -> checkInput("add"));
+        addIfMaxButton.setEnabled(false);
+        addIfMaxButton.addActionListener(args0 -> checkInput("add_if_max"));
+        removeButton.setEnabled(false);
+        addIfMaxButton.addActionListener(args0 -> checkInput("remove"));
+        changeButton.setEnabled(false);
+        changeButton.addActionListener(args0 -> new Thread(this::checkFilters).start());
+        cancelButton.setEnabled(false);
+        cancelButton.addActionListener(args0 -> new Thread(this::cancel).start());
 
         String[] locationArrange = {
                 "",
@@ -176,6 +199,9 @@ class GUI extends JFrame {
                 lightHouseComboBox,
                 nanComboBox
         };
+        locationBox = new JComboBox<>(locationArrange);
+        locationBox.setEditable(false);
+        locationBox.setEnabled(false);
         JComboBox<String> locationComboBox = new JComboBox<>(locationArrange);
         locationComboBox.setEditable(false);
 
@@ -243,12 +269,12 @@ class GUI extends JFrame {
 
         JPanel p9 = new JPanel();
         p9.setLayout(new BoxLayout(p9, BoxLayout.X_AXIS));
-        locationValue.setPreferredSize(new Dimension(190, 30));
-        locationValue.setMaximumSize(new Dimension(190, 30));
+        locationBox.setPreferredSize(new Dimension(190, 30));
+        locationBox.setMaximumSize(new Dimension(190, 30));
         p9.add(Box.createRigidArea(new Dimension(7, 0)));
         p9.add(locationText, Component.LEFT_ALIGNMENT);
         p9.add(Box.createHorizontalGlue());
-        p9.add(locationValue, Component.RIGHT_ALIGNMENT);
+        p9.add(locationBox, Component.RIGHT_ALIGNMENT);
 
         JPanel p99 = new JPanel();
         p99.setLayout(new BoxLayout(p99, BoxLayout.X_AXIS));
@@ -298,9 +324,21 @@ class GUI extends JFrame {
 
         JPanel p5 = new JPanel();
         p5.setLayout(new BoxLayout(p5, BoxLayout.X_AXIS));
-        p5.add(startButton);
-        p5.add(Box.createRigidArea(new Dimension(30, 0)));
-        p5.add(stopButton);
+        p5.add(changeButton);
+        p5.add(Box.createRigidArea(new Dimension(15, 0)));
+        p5.add(newCreatureButton);
+        p5.add(Box.createRigidArea(new Dimension(15, 0)));
+        p5.add(cancelButton);
+
+
+        JPanel p55 = new JPanel();
+        p55.setLayout(new BoxLayout(p55, BoxLayout.X_AXIS));
+        p55.add(addButton);
+        p55.add(Box.createRigidArea(new Dimension(15, 0)));
+        p55.add(addIfMaxButton);
+        p55.add(Box.createRigidArea(new Dimension(15, 0)));
+        p55.add(removeButton);
+
 
         JPanel p4 = new JPanel();
         p4.setLayout(new BoxLayout(p4, BoxLayout.Y_AXIS));
@@ -334,6 +372,8 @@ class GUI extends JFrame {
         p4.add(p6);
         p4.add(Box.createRigidArea(new Dimension(0, 10)));
         p4.add(p5);
+        p4.add(Box.createRigidArea(new Dimension(0, 10)));
+        p4.add(p55);
         p4.add(Box.createRigidArea(new Dimension(0, 10)));
 
         JPanel p4extended = new JPanel();
@@ -415,7 +455,7 @@ class GUI extends JFrame {
         add(p4extended, BorderLayout.EAST);
 
         setTitle(bundle.getString("title"));
-        setSize(1200, 800);
+        setSize(1500, 800);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
         firstTimeRefresh();
@@ -432,7 +472,7 @@ class GUI extends JFrame {
         }
     }
 
-    void setTopPanelInfo(Creature creature) {
+    private void setTopPanelInfo(Creature creature) {
         chosenCreature = creature;
         nameValue.setText(creature.getName());
         familyValue.setText(creature.getFamily());
@@ -442,15 +482,15 @@ class GUI extends JFrame {
     }
 
     private void checkFilters() {
-        startButton.setEnabled(false);
+        changeButton.setEnabled(false);
         /*if ((notANumeric(sizeFrom.getText()) && !sizeFrom.getText().isEmpty()) || (notANumeric(sizeTo.getText()) && !sizeTo.getText().isEmpty())) {
-            setFiltersText(bundle.getString("incorrectSize"), true);
+            printText(bundle.getString("incorrectSize"), true);
             filtersTextNumber = 1;
-            startButton.setEnabled(true);
+            changeButton.setEnabled(true);
         } else *//*if ((notANumeric(powerFrom.getText()) && !powerFrom.getText().isEmpty()) || (notANumeric(powerTo.getText()) && !powerTo.getText().isEmpty())) {
-            setFiltersText(bundle.getString("incorrectPower"), true);
+            printText(bundle.getString("incorrectPower"), true);
             filtersTextNumber = 2;
-            startButton.setEnabled(true);
+            changeButton.setEnabled(true);
         } else {*/
         try {
             if (!timeFrom.getText().isEmpty()) {
@@ -459,22 +499,22 @@ class GUI extends JFrame {
             if (!timeTo.getText().isEmpty()) {
                 filterDateTimeFormatter.parse(timeTo.getText());
             }
-            setFiltersText(bundle.getString("filtersCorrect"), false);
+            printText(bundle.getString("filtersCorrect"), false);
             filtersTextNumber = 4;
             applyFilters();
         } catch (DateTimeParseException e) {
-            setFiltersText(bundle.getString("incorrectDate") + " dd.MM.yyyy HH:mm:ss!", true);
+            printText(bundle.getString("incorrectDate") + " dd.MM.yyyy HH:mm:ss!", true);
             filtersTextNumber = 3;
-            startButton.setEnabled(true);
+            changeButton.setEnabled(true);
         }
         //  }
     }
 
     private boolean notANumeric(String str) {
-        return !str.matches("-?\\d+(\\.\\d+)?");
+        return !str.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+");
     }
 
-    private void setFiltersText(String message, boolean isError) {
+    private void printText(String message, boolean isError) {
         if (isError) infoText.setForeground(Color.RED);
         else infoText.setForeground(Color.GREEN);
         infoText.setText(" " + message);
@@ -505,12 +545,12 @@ class GUI extends JFrame {
                 .forEach(filteredCircles::add);
 
         if (filteredCircles.size() == 0) {
-            startButton.setEnabled(true);
-            setFiltersText(bundle.getString("noObjectsFound"), false);
+            changeButton.setEnabled(true);
+            printText(bundle.getString("noObjectsFound"), false);
             filtersTextNumber = 5;
         } else {
-            stopButton.setEnabled(true);
-            setFiltersText(filteredCircles.size() + " " + bundle.getString("objectsFound"), false);
+            cancelButton.setEnabled(true);
+            printText(filteredCircles.size() + " " + bundle.getString("objectsFound"), false);
             filtersTextNumber = 6;
             timers = new ArrayList<>();
             for (Circle circle : filteredCircles) {
@@ -542,8 +582,8 @@ class GUI extends JFrame {
         }*/
         p3.revalidate();
         p3.repaint();
-        startButton.setEnabled(true);
-        stopButton.setEnabled(false);
+        changeButton.setEnabled(true);
+        cancelButton.setEnabled(false);
     }
 
     private void refreshCollection() {
@@ -557,14 +597,14 @@ class GUI extends JFrame {
                 circleList[i] = c;
                 p3.add(c);
             }*/
-            setFiltersText(bundle.getString("acquired") + " " + creatureList.size() + " " + bundle.getString("elements"), false);
+            printText(bundle.getString("acquired") + " " + creatureList.size() + " " + bundle.getString("elements"), false);
             filtersTextNumber = 7;
             p3.revalidate();
             p3.repaint();
-            startButton.setEnabled(true);
-            stopButton.setEnabled(false);
+            changeButton.setEnabled(true);
+            cancelButton.setEnabled(false);
         } else {
-            setFiltersText(bundle.getString("tryAgain"), true);
+            printText(bundle.getString("tryAgain"), true);
             filtersTextNumber = 8;
         }
     }
@@ -614,9 +654,13 @@ class GUI extends JFrame {
         familyFromTo.setText(bundle.getString("family"));
         timeFromTo.setText(bundle.getString("time"));
         locationFromTo.setText(bundle.getString("location"));
-        hungerFromTo = new JLabel(bundle.getString("hunger"));
-        startButton.setText(bundle.getString("start"));
-        stopButton.setText(bundle.getString("stop"));
+        hungerFromTo.setText(bundle.getString("hunger"));
+        changeButton.setText(bundle.getString("change"));
+        newCreatureButton.setText(bundle.getString("newCreature"));
+        addButton.setText(bundle.getString("add"));
+        addIfMaxButton.setText(bundle.getString("add_if_max"));
+        removeButton.setText(bundle.getString("remove"));
+        cancelButton.setText(bundle.getString("cancel"));
         size.setText(bundle.getString("size")+  ":");
         sizeText.setText(bundle.getString("size")+  ":");
         timeFromTo.setText(bundle.getString("time"));
@@ -626,32 +670,117 @@ class GUI extends JFrame {
         }
         switch (filtersTextNumber) {
             case 0:
-                setFiltersText(bundle.getString("greeting"), false);
+                printText(bundle.getString("greeting"), false);
                 break;
             case 1:
-                setFiltersText(bundle.getString("incorrectSize"), true);
+                printText(bundle.getString("incorrectSize"), true);
                 break;
             case 2:
-                setFiltersText(bundle.getString("incorrectPower"), true);
+                printText(bundle.getString("incorrectPower"), true);
                 break;
             case 3:
-                setFiltersText(bundle.getString("incorrectDate") + " dd-MM-yyyy!", true);
+                printText(bundle.getString("incorrectDate") + " dd-MM-yyyy!", true);
                 break;
             case 4:
-                setFiltersText(bundle.getString("filtersCorrect"), false);
+                printText(bundle.getString("filtersCorrect"), false);
                 break;
             case 5:
-                setFiltersText(bundle.getString("noObjectsFound"), false);
+                printText(bundle.getString("noObjectsFound"), false);
                 break;
             case 6:
-                //  setFiltersText(filteredCircles.size() + " " + bundle.getString("objectsFound"), false);
+                //  printText(filteredCircles.size() + " " + bundle.getString("objectsFound"), false);
                 break;
             case 7:
-                setFiltersText(bundle.getString("acquired") + " " + creatureList.size() + " " + bundle.getString("elements"), false);
+                printText(bundle.getString("acquired") + " " + creatureList.size() + " " + bundle.getString("elements"), false);
                 break;
             case 8:
-                setFiltersText(bundle.getString("tryAgain"), true);
+                printText(bundle.getString("tryAgain"), true);
                 break;
         }
     }
+    private void newCreature(){
+        addButton.setEnabled(true);
+        addIfMaxButton.setEnabled(true);
+        removeButton.setEnabled(true);
+        cancelButton.setEnabled(true);
+        newCreatureButton.setEnabled(false);
+        changeButton.setEnabled(false);
+        nameValue.setEditable(true);
+        familyValue.setEditable(true);
+        hungerValue.setEditable(true);
+        locationBox.setEnabled(true);
+        xFromSlider.setEnabled(true);
+        yFromSlider.setEnabled(true);
+        sizeFromSlider.setEnabled(true);
+    }
+
+    private void cancel(){
+        addButton.setEnabled(false);
+        addIfMaxButton.setEnabled(false);
+        removeButton.setEnabled(false);
+        cancelButton.setEnabled(false);
+        newCreatureButton.setEnabled(true);
+        changeButton.setEnabled(false);
+        nameValue.setEditable(false);
+        nameValue.setText("");
+        familyValue.setEditable(false);
+        familyValue.setText("");
+        hungerValue.setEditable(false);
+        hungerValue.setText("");
+        locationBox.setSelectedIndex(0);
+        xFromSlider.setValue(-1000);
+        xFromSlider.setEnabled(false);
+        yFromSlider.setValue(-1000);
+        yFromSlider.setEnabled(false);
+        sizeFromSlider.setValue(35);
+        sizeFromSlider.setEnabled(false);
+    }
+
+    private void checkInput(String command) {
+        if (nameValue.getText().isEmpty()) {
+            printText(bundle.getString("name")  +" "+ bundle.getString("isEmpty"), true);
+        } else if (familyValue.getText().isEmpty()) {
+            printText(bundle.getString("family") +" " + bundle.getString("isEmpty"), true);
+        } else if (hungerValue.getText().isEmpty()) {
+            printText(bundle.getString("hunger") +" " + bundle.getString("isEmpty"), true);
+        } else if (notANumeric(hungerValue.getText())) {
+            printText(bundle.getString("hunger") + " " + bundle.getString("isnNumber"), true);
+        } else if (Double.parseDouble(hungerValue.getText()) <= 0) {
+            printText(bundle.getString("hunger") +" "+ bundle.getString("isNegative"), true);
+        } else if (locationBox.getSelectedItem().equals("")) {
+            printText(bundle.getString("location")  +" "+ bundle.getString("isnChosen"), true);
+        } else {
+            Creature creature = new Creature(nameValue.getText(), (int) Double.parseDouble(hungerValue.getText()), Location.valueOf(((String)locationBox.getSelectedItem()).replace(" ", "")), OffsetDateTime.now(), familyValue.getText(), xFromSlider.getValue(), yFromSlider.getValue(), sizeFromSlider.getValue(), Colors.Black);
+            switch (command) {
+                case "add":
+//                    Auth.sm.add(creature);
+                    printText(nameValue.getText() +" "+ bundle.getString("added"), false);
+                    cancel();
+                    break;
+
+                case "add_if_max":
+                    if (true) {
+                        printText(bundle.getString("added"), false);
+                        cancel();
+                    } else {
+                        printText(bundle.getString("NotMax"), false);
+                    }
+                    break;
+
+                case "remove":
+                    cancel();
+//                    Auth.sm.remove_greater(creature);
+
+                    break;
+            }
+        }
+    }
+
+    private void printToConsole(){
+
+    }
+
+    /*private void load(){
+        Creature creature = new Creature(nameValue.getText(), )
+    }*/
 }
