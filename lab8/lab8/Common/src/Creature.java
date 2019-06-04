@@ -7,6 +7,8 @@ import java.util.Objects;
 
 public class Creature implements Comparable<Creature>, Serializable {
 
+    private Integer id;
+
     private String name;
 
     private String family;
@@ -53,6 +55,23 @@ public class Creature implements Comparable<Creature>, Serializable {
         this.color = color;
     }
 
+    Creature(String name, int hunger, Location location, OffsetDateTime creationTime, String family, Integer x, Integer y, Integer size, Colors color, Integer id) {
+        this.name = name;
+        this.hunger = hunger;
+        this.location = location;
+        this.creationTime = creationTime;
+        this.family = family;
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.color = color;
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
     String getFamily() {
         return family;
     }
@@ -79,6 +98,10 @@ public class Creature implements Comparable<Creature>, Serializable {
         return creationTime;
     }
 
+    public void setCreationTime(OffsetDateTime creationTime) {
+        this.creationTime = creationTime;
+    }
+
     Colors getColor() {
         return color;
     }
@@ -88,9 +111,24 @@ public class Creature implements Comparable<Creature>, Serializable {
         if (otherObject == null) return false;
         if (getClass() != otherObject.getClass()) return false;
         Creature other = (Creature) otherObject;
-        return getName().equals(other.getName()) &&
-                getFamily().equals((other.getFamily()));
+        return /*getName().equals(other.getName()) &&
+                getFamily().equals((other.getFamily()));*/
+                getId().equals(other.getId());
+    }
 
+    public boolean equalsAll(Object otherObject) {
+        if (this == otherObject) return true;
+        if (otherObject == null) return false;
+        if (getClass() != otherObject.getClass()) return false;
+        Creature other = (Creature) otherObject;
+        return getName().equals(other.getName()) &&
+                getFamily().equals((other.getFamily()))&&
+                getId().equals(other.getId())&&
+                getHunger()==(other.getHunger()) &&
+                getLocation().equals(other.getLocation()) &&
+                getX()==(other.getX()) &&
+                getY()==(other.getY()) &&
+                getSize()==(other.getSize());
     }
 
     public int hashCode() {

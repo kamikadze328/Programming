@@ -38,9 +38,6 @@ class Auth {
     private JLabel SQLException = new JLabel(bundle.getString("SQLException"));
     private JLabel incorrectCommand = new JLabel(bundle.getString("incorrectCommand"));
 
-
-
-
     private JButton logInButton = new JButton(bundle.getString("logIn"));
     private JButton signUpButton = new JButton(bundle.getString("signUp"));
     private JButton sendButton = new JButton(bundle.getString("send"));
@@ -241,7 +238,11 @@ class Auth {
         frame.add(userAlreadyExists, c);
         frame.add(serverUnavailable, c);
         frame.add(wrongEmail, c);
-
+        frame.add(wrongToken, c);
+        frame.add(deadToken, c);
+        frame.add(signUpError);
+        frame.add(SQLException, c);
+        frame.add(incorrectCommand, c);
 
         frame.setTitle(bundle.getString("titleAuth"));
         frame.setSize(360, 240);
@@ -310,7 +311,7 @@ class Auth {
     private void work() {
         frame.setVisible(false);
         frame.dispose();
-        new MySwingWorker(chosenLocale, currentUser).execute();
+        new MySwingWorker(chosenLocale, color, login, token).execute();
     }
 
     private void changeLanguage(Locale locale) {
@@ -347,12 +348,14 @@ class Auth {
                 setErrorMessage(wrongEmail);
                 break;
             case "DeadToken":
+                cancelButton.doClick();
                 setErrorMessage(deadToken);
                 break;
             case "WrongToken":
                 setErrorMessage(wrongToken);
                 break;
             case "SignUpError":
+                cancelButton.doClick();
                 setErrorMessage(signUpError);
                 break;
 

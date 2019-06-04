@@ -1,23 +1,30 @@
 import javax.swing.*;
+import java.awt.*;
 import java.net.InetSocketAddress;
 import java.util.Locale;
 
 public class MySwingWorker extends SwingWorker<Void, Void> {
 
     private Locale locale;
-    private User user;
+    private Color color;
+    private String login;
+    private String token;
 
-    MySwingWorker(Locale locale, User user) {
-        this.user = user;
+    MySwingWorker(Locale locale, Color color, String login, String token) {
         this.locale = locale;
+        this.color = color;
+        this.login = login;
+        this.token = token;
     }
 
     @Override
     protected Void doInBackground() {
         try {
-            Connector connector = new Connector(new InetSocketAddress("localhost", 5001));
-            connector.start();
-            new GUI(connector, locale, user);
+            GUI gui = new GUI(locale, color, login);
+            Sender sender = new Sender(new InetSocketAddress("localhost", 5001), token, gui);
+            sender.start();
+            gui.sender = sender;
+            sender.getCollection();
         }catch (Exception e){
             e.printStackTrace();
         }

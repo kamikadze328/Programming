@@ -1,15 +1,16 @@
 import javax.swing.*;
+import java.io.ObjectOutputStream;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.FormatStyle;
+import java.util.List;
 import java.util.Timer;
 import java.awt.*;
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 class GUI extends JFrame {
-    private CopyOnWriteArrayList<Creature> creatureList = new CopyOnWriteArrayList<>();
+    private List<Creature> creatureList = new ArrayList<>();
     private ResourceBundle bundle = ResourceBundle.getBundle("bundle", Locale.getDefault(), new UTF8Control());
     static private ResourceBundle staticBundle = ResourceBundle.getBundle("bundle", Locale.getDefault(), new UTF8Control());
     private Locale rulocale = new Locale("ru");
@@ -40,7 +41,8 @@ class GUI extends JFrame {
     private JTextField locationValue = new JTextField();
     private JTextField timeValue = new JTextField();
 
-    private Connector connector;
+    Sender sender;
+    private Color color;
 
     private JButton refreshButton = new JButton(bundle.getString("refresh"));
     private JLabel infoText = new JLabel(" " + bundle.getString("greeting"));
@@ -63,7 +65,7 @@ class GUI extends JFrame {
     private JTextField timeTo = new JTextField();
     private JLabel locationFromTo = new JLabel(bundle.getString("location"));
     private JLabel infoConnectionText = new JLabel("<html><h1 align=\"center\">ВЫ никуда не подключены<br>LOL</h1></html>");
-    private JLabel user;
+    private JLabel login;
 
     private JLabel hungerFromTo = new JLabel(bundle.getString("hunger"));
     private JTextField hungerTo = new JTextField();
@@ -91,10 +93,10 @@ class GUI extends JFrame {
     private Creature chosenCreature;
     private DateTimeFormatter filterDateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm:ss");
 
-    GUI(Connector connector, Locale locale, User user) {
-        this.user = new JLabel(user.getLogin());
+    GUI(Locale locale, Color color, String login) {
+        this.login = new JLabel(login);
+        this.color = color;
         changeLanguage(locale);
-        this.connector = connector;
         nameValue.setEditable(false);
         familyValue.setEditable(false);
         hungerValue.setEditable(false);
@@ -144,14 +146,15 @@ class GUI extends JFrame {
 
         connectionText.setBackground(Color.BLACK);
         connectionText.setOpaque(true);
-        connectionText.setText(" ");
+        connectionText.setText("");
         connectionText.setBackground(Color.BLACK);
         connectionText.setFont(font);
         infoText.setBackground(Color.BLACK);
         infoText.setOpaque(true);
         infoText.setFont(font);
         infoText.setForeground(Color.GREEN);
-        refreshButton.addActionListener(arg0 -> new Thread(this::refreshCollection).start());
+        refreshButton.addActionListener(arg0 ->
+                sender.getCollection());
 
         timeFrom.setToolTipText(bundle.getString("format") + ": dd.MM.yyyy HH:mm:ss");
         timeTo.setToolTipText(bundle.getString("format") + ": dd.MM.yyyy HH:mm:ss");
@@ -385,8 +388,6 @@ class GUI extends JFrame {
 
         p3.setLayout(null);
 
-
-
         JPanel p2 = new JPanel();
         p2.setLayout(new BoxLayout(p2, BoxLayout.X_AXIS));
         p2.add(nameFromTo);
@@ -445,7 +446,13 @@ class GUI extends JFrame {
         JPanel botInfoSpace = new JPanel();
         botInfoSpace.setLayout(new BorderLayout());
         botInfoSpace.add(Box.createRigidArea(new Dimension(0, 8)), BorderLayout.NORTH);
-        pInfo.add(topSpace);
+//        pInfo.add(topSpace);
+
+        JPanel userInfo = new JPanel();
+        userInfo.setLayout(new BoxLayout(userInfo, BoxLayout.X_AXIS));
+        JButton exitButton = new JButton(bundle.getString("exit"));
+//        exitButton.set
+        pInfo.add(userInfo);
         pInfo.add(botSpace);
         botInfoSpace.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 
@@ -458,7 +465,6 @@ class GUI extends JFrame {
         setSize(1500, 800);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
-        firstTimeRefresh();
     }
 
     static void setConnectionInfo(boolean isWorking) {
@@ -514,10 +520,21 @@ class GUI extends JFrame {
         return !str.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+");
     }
 
-    private void printText(String message, boolean isError) {
+    void printTextToConsole(String message, boolean isError) {
+        if (isError) infoText.setForeground(Color.RED);
+        else infoText.setForeground(Color.GREEN);
+        infoText.setText(bundle.getString(message));
+    }
+
+    void printText(String message, boolean isError) {
         if (isError) infoText.setForeground(Color.RED);
         else infoText.setForeground(Color.GREEN);
         infoText.setText(" " + message);
+    }
+
+    void printTextToConsole(String message, int i) {
+        infoText.setForeground(Color.GREEN);
+        infoText.setText(bundle.getString(message) + " "+ bundle.getString("creatures") +": " + i);
     }
 
     private void applyFilters() {
@@ -586,18 +603,30 @@ class GUI extends JFrame {
         cancelButton.setEnabled(false);
     }
 
-    private void refreshCollection() {
-        CopyOnWriteArrayList<Creature> tempCreatureList = connector.getCollection();
-        if (tempCreatureList != null) {
-            creatureList = tempCreatureList;
-            //circleList = new Circle[creatureList.size()];
+    void refreshCollection(List<Creature> tempCr) {
+        List<Creature> newCreature = new ArrayList<>(tempCr);
+        List<Creature> changedCr = new ArrayList<>();
+        for (Creature creatureTemp : tempCr) {
+            for (Creature creature : creatureList) {
+                if (creature.equals(creatureTemp)) {
+                    creatureList.remove(creature);
+                    tempCr.remove(creatureTemp);
+                    if (!creature.equalsAll(creatureTemp))
+                        changedCr.add(creatureTemp);
+                    break;
+                }
+            }
+        }
+        changedCr.addAll(tempCr);
+        creatureList = newCreature;
+            /*circleList = new Circle[creatureList.size()];
             p3.removeAll();
-            /*for (int i = 0; i < creatureList.size(); i++) {
+            for (int i = 0; i < creatureList.size(); i++) {
                 Circle c = new Circle(creatureList.get(i), this);
                 circleList[i] = c;
                 p3.add(c);
             }*/
-            printText(bundle.getString("acquired") + " " + creatureList.size() + " " + bundle.getString("elements"), false);
+            /*printText(bundle.getString("acquired") + " " + creatureList.size() + " " + bundle.getString("elements"), false);
             filtersTextNumber = 7;
             p3.revalidate();
             p3.repaint();
@@ -605,14 +634,14 @@ class GUI extends JFrame {
             cancelButton.setEnabled(false);
         } else {
             printText(bundle.getString("tryAgain"), true);
-            filtersTextNumber = 8;
-        }
+            filtersTextNumber = 8;*/
     }
+
 
     private void firstTimeRefresh() {
         while (true) {
-            CopyOnWriteArrayList<Creature> tempCreatureList = connector.getCollection();
-            if (tempCreatureList != null) {
+//            List<Creature> tempCreatureList = sender.getCollection();
+//            if (tempCreatureList != null) {
                 /*creatureList = tempCreatureList;
                 circleList = new Circle[creatureList.size()];
                 for (int i = 0; i < creatureList.size(); i++) {
@@ -625,7 +654,7 @@ class GUI extends JFrame {
                 break;
             }
         }
-    }
+
 
     private void changeLanguage(Locale locale) {
         bundle = ResourceBundle.getBundle("Bundle", locale, new UTF8Control());
@@ -668,18 +697,18 @@ class GUI extends JFrame {
         if (chosenCreature != null) {
             setTopPanelInfo(chosenCreature);
         }
-        switch (filtersTextNumber) {
+        /*switch (filtersTextNumber) {
             case 0:
-                printText(bundle.getString("greeting"), false);
+                printText("greeting", false);
                 break;
             case 1:
-                printText(bundle.getString("incorrectSize"), true);
+                printText("incorrectSize", true);
                 break;
             case 2:
-                printText(bundle.getString("incorrectPower"), true);
+                printText("incorrectPower", true);
                 break;
             case 3:
-                printText(bundle.getString("incorrectDate") + " dd-MM-yyyy!", true);
+                printText("incorrectDate" + " dd-MM-yyyy!", true);
                 break;
             case 4:
                 printText(bundle.getString("filtersCorrect"), false);
@@ -695,8 +724,8 @@ class GUI extends JFrame {
                 break;
             case 8:
                 printText(bundle.getString("tryAgain"), true);
-                break;
-        }
+                break;*/
+
     }
     private void newCreature(){
         addButton.setEnabled(true);

@@ -36,6 +36,13 @@ class CollectionManager {
         }
     }
 
+    /**
+     *
+     * @param JsonString строка в формате json
+     * @param token token
+     * @return количество добавленных существ
+     * @throws SQLException
+     */
     int load(String JsonString, String token) throws SQLException{
         try {
             return parser(JsonString.split("},\\{"), token);
@@ -53,7 +60,8 @@ class CollectionManager {
         return jsonStr.toString();
     }
 
-    private int parser(String[] line, String token) throws JsonSyntaxException, SQLException {
+    private int parser(String[] line, String token) throws SQLException, JsonSyntaxException {
+        ArrayList<Creature> tempCr = new ArrayList<>();
         boolean oneParse = false;
         if (line.length == 1) oneParse = true;
         int added = 0;
@@ -64,16 +72,27 @@ class CollectionManager {
             else if (line.length > 1) line[i] = "{" + line[i] + "}";
             if (!line[i].equals("") && line[i].contains("\"family\"") && (line[i].contains("\"name\""))) {
                 Creature forAction = gson.fromJson(line[i], Creature.class);
-                if (add(forAction, token)) added++;
+                tempCr.add(forAction);
             }
         }
+        for (Creature creature : tempCr)
+            if (add(creature, token)) added++;
         return added;
     }
 
     String remove(Creature forAction, String token) throws SQLException {
         String answer = DBmanager.removeCreature(forAction, token);
-        if (answer.contains("Success"))
+        if (answer.contains("Success")){
             Creatures.remove(forAction);
+        }
+        return answer;
+    }
+    String change(Creature forAction, String token)throws SQLException {
+        String answer = DBmanager.change(forAction, token);
+        if (answer.contains("Success")) {
+            Creatures.removeIf(forAction::equals);
+            Creatures.add(forAction);
+        }
         return answer;
     }
 
@@ -123,7 +142,9 @@ class CollectionManager {
         return "DELETED: " + deleted;
     }
 
-    public List<Creature> getCreatures() {
+    List<Creature> getCreatures() {
         return Creatures;
     }
+
+
 }

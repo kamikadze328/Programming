@@ -104,6 +104,45 @@ class DataBaseManager {
         }
     }
 
+    String change(Creature newCreature, String token) throws SQLException {
+        Creature oldCreature;
+        String query = "SELECT * from creatures where creature_id = ?";
+        try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+             PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, newCreature.getId());
+            pst.execute();
+            try (ResultSet rs = pst.getResultSet()) {
+                if (rs.isBeforeFirst()) {
+                    while (rs.next()) {
+                        String name = rs.getString(1);
+                        int hunger = rs.getInt(2);
+                        String location = rs.getString(3);
+                        Timestamp time = rs.getTimestamp(4);
+                        String family = rs.getString(5);
+                        Long creatureId = rs.getLong(7);
+                        int x = rs.getInt(8);
+                        int y = rs.getInt(9);
+                        int size = rs.getInt(10);
+                        String color = rs.getString(11);
+                        oldCreature = initFromDataBase(name, hunger, location, time, family, creatureId, x, y, size, color);
+                        String answer = removeCreature(oldCreature, token);
+                        if (answer.contains("Success")) {
+                            newCreature.setCreationTime(OffsetDateTime.ofInstant(Instant.ofEpochMilli(time.getTime()), ZoneId.of("UTC")));
+                            if (addCreature(newCreature, token))
+                                return "ChangedSuccess";
+                            else while (!addCreature(oldCreature, token)) {
+                            }
+                            return "ChangedFailed";
+                        } else if(answer.contains("DontYours"))
+                            return "ChangedFailingDontYours";
+                    }
+                }
+            }
+            return "ChangedFailedDontExist";
+        }
+
+    }
+
     String removeCreature(Creature forAction, String token) throws SQLException {
         String query = "SELECT user_id from Creatures where name = ? AND family = ?";
         try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
@@ -181,23 +220,24 @@ class DataBaseManager {
     private Color newColor() {
         switch (colors.size()) {
             case 0:
-                colors.add(Colors.FernGreen.getRgbColor());
-                return Colors.FernGreen.getRgbColor();
-            case 1:
-                colors.add(Colors.PareGold.getRgbColor());
-                return Colors.PareGold.getRgbColor();
-            case 2:
-                colors.add(Colors.Black.getRgbColor());
-                return Colors.Black.getRgbColor();
-            case 3:
-                colors.add(Colors.White.getRgbColor());
-                return Colors.White.getRgbColor();
-            case 4:
-                colors.add(Colors.DeepRed.getRgbColor());
-                return Colors.DeepRed.getRgbColor();
-            case 5:
                 colors.add(Colors.Purple.getRgbColor());
                 return Colors.Purple.getRgbColor();
+            case 1:
+                colors.add(Colors.FernGreen.getRgbColor());
+                return Colors.FernGreen.getRgbColor();
+            case 2:
+                colors.add(Colors.PareGold.getRgbColor());
+                return Colors.PareGold.getRgbColor();
+            case 3:
+                colors.add(Colors.DeepRed.getRgbColor());
+                return Colors.DeepRed.getRgbColor();
+            case 4:
+                colors.add(Colors.Black.getRgbColor());
+                return Colors.Black.getRgbColor();
+            case 5:
+                colors.add(Colors.White.getRgbColor());
+                return Colors.White.getRgbColor();
+
             default:
                 while (true) {
                     Color color = new Color((int) (Math.random() * 0x1000000));
@@ -351,22 +391,9 @@ class DataBaseManager {
     }
 
     private String generate(String password) {
-        byte[] hashByte = SCrypt.generate(password.getBytes(), "salt".getBytes(), 3, 3, 3, 7);
+        byte[] hashByte = SCrypt.generate(password.getBytes(), "salt".getBytes(), 8, 8, 8, 7);
         return Base64.getEncoder().encodeToString(hashByte);
 
-    }
-
-    String getLogin(String token) throws SQLException {
-        String query = "SELECT login from users where token = ?";
-        try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
-             PreparedStatement pst = connection.prepareStatement(query)) {
-            pst.setString(1, generate(token));
-            pst.execute();
-            try (ResultSet rs = pst.getResultSet()) {
-                rs.next();
-                return rs.getString(1);
-            }
-        }
     }
 
     private Long getUserId(String token) throws SQLException {
@@ -384,7 +411,7 @@ class DataBaseManager {
     }
 
     String getColor(String login) throws SQLException {
-        String query = "SELECT color from users where login = ?";
+        String query = "SELECT color from users where login = ? and color is not null";
         try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
              PreparedStatement pst = connection.prepareStatement(query)) {
             pst.setString(1, login);
@@ -427,8 +454,8 @@ class DataBaseManager {
         }
     }
 
-    void synchronizeUsers() throws SQLException {
-        String query = "SELECT * from users";
+    private void synchronizeUsers() throws SQLException {
+        String query = "SELECT * from users where color is not null";
         try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
              PreparedStatement pst = connection.prepareStatement(query)) {
             pst.execute();
