@@ -3,20 +3,19 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class Handler extends Thread {
-    private Sender sender;
     ObjectInputStream ois;
     ObjectOutputStream oos;
     GUI gui;
+    boolean exit = false;
 
     Handler(Sender sender) {
-        this.sender = sender;
         ois = sender.ois;
         oos = sender.oos;
     }
 
     @Override
     public void run() {
-        while (true) {
+        while (!exit) {
             try {
                 Object message = ois.readObject();
                 new Thread(() -> {

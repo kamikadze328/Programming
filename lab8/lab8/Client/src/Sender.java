@@ -7,10 +7,10 @@ import java.nio.channels.SocketChannel;
 public class Sender extends Thread {
 
     private SocketAddress server;
-    Handler handler = new Handler(this);
+    private Handler handler = new Handler(this);
     ObjectOutputStream oos;
     ObjectInputStream ois;
-    SocketChannel sc;
+    private boolean exit;
     String token;
 
     Sender(SocketAddress server, String token, GUI gui) {
@@ -26,7 +26,7 @@ public class Sender extends Thread {
      */
     @Override
     public void run() {
-        while (true) {
+        while (!exit) {
             try {
                 checkConnect();
                 Thread.sleep(1000);
@@ -51,6 +51,7 @@ public class Sender extends Thread {
     }
 
     private boolean connect() {
+        SocketChannel sc;
         try {
             sc = SocketChannel.open(server);
             oos = new ObjectOutputStream(sc.socket().getOutputStream());
@@ -76,9 +77,13 @@ public class Sender extends Thread {
                 } catch (InterruptedException ex) {
                     Thread.currentThread().interrupt();
                 } catch (IOException ignored) {
-                    //No connection. Trying again.
                 }
             }
         }
+    }
+    void exit(){
+        exit = true;
+        handler.exit = true;
+        handler=null;
     }
 }

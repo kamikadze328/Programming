@@ -37,6 +37,9 @@ class Auth {
     private JLabel signUpError = new JLabel(bundle.getString("signUpError"));
     private JLabel SQLException = new JLabel(bundle.getString("SQLException"));
     private JLabel incorrectCommand = new JLabel(bundle.getString("incorrectCommand"));
+    private JLabel wait = new JLabel(bundle.getString("waiting"));
+    private JLabel wrongPassword = new JLabel(bundle.getString("wrongPassword"));
+    private JLabel userDoesntExist = new JLabel(bundle.getString("userDoesntExist"));
 
     private JButton logInButton = new JButton(bundle.getString("logIn"));
     private JButton signUpButton = new JButton(bundle.getString("signUp"));
@@ -54,6 +57,9 @@ class Auth {
         wrongEmail.setForeground(Color.RED);
         deadToken.setForeground(Color.RED);
         wrongToken.setForeground(Color.RED);
+        wrongPassword.setForeground(Color.RED);
+        userDoesntExist.setForeground(Color.RED);
+        wait.setForeground(Color.BLACK);
         signUpError.setForeground(Color.BLACK);
         SQLException.setForeground(Color.BLACK);
         incorrectCommand.setForeground(Color.YELLOW);
@@ -93,7 +99,13 @@ class Auth {
         SQLException.setFont(font2);
         incorrectCommand.setFont(font2);
         tokenText.setFont(font);
+        wait.setFont(font2);
+        wrongPassword.setFont(font2);
+        userDoesntExist.setFont(font2);
 
+        userDoesntExist.setVisible(false);
+        wrongPassword.setVisible(false);
+        wait.setVisible(false);
         logTooShort.setVisible(false);
         passTooShort.setVisible(false);
         userAlreadyExists.setVisible(false);
@@ -128,46 +140,32 @@ class Auth {
         frame.setJMenuBar(menuBar);
 
         logInButton.addActionListener(args0 -> {
-            logTooShort.setVisible(false);
-            passTooShort.setVisible(false);
-            userAlreadyExists.setVisible(false);
-            serverUnavailable.setVisible(false);
-            wrongEmail.setVisible(false);
-            deadToken.setVisible(false);
-            wrongToken.setVisible(false);
-            signUpError.setVisible(false);
-            SQLException.setVisible(false);
-            incorrectCommand.setVisible(false);
-            User user = new User(loginField.getText(), new String(passwordField.getPassword()));
-            logUserIn(user);
+            setErrorMessage(wait);
+            logInButton.setEnabled(false);
+            signUpButton.setEnabled(false);
+            loginField.setEditable(false);
+            passwordField.setEditable(false);
+            new Thread(() -> {
+                User user = new User(loginField.getText(), new String(passwordField.getPassword()));
+                logUserIn(user);
+            }).start();
         });
 
+
         signUpButton.addActionListener(e -> {
-            logTooShort.setVisible(false);
-            passTooShort.setVisible(false);
-            userAlreadyExists.setVisible(false);
-            serverUnavailable.setVisible(false);
-            wrongEmail.setVisible(false);
-            deadToken.setVisible(false);
-            wrongToken.setVisible(false);
-            signUpError.setVisible(false);
-            SQLException.setVisible(false);
-            incorrectCommand.setVisible(false);
-            User user = new User(loginField.getText(), new String(passwordField.getPassword()));
-            signUserUp(user);
+            setErrorMessage(wait);
+            logInButton.setEnabled(false);
+            signUpButton.setEnabled(false);
+            loginField.setEditable(false);
+            passwordField.setEditable(false);
+            new Thread(() -> {
+                User user = new User(loginField.getText(), new String(passwordField.getPassword()));
+                signUserUp(user);
+            }).start();
         });
 
         cancelButton.addActionListener(args0 -> {
-            logTooShort.setVisible(false);
-            passTooShort.setVisible(false);
-            userAlreadyExists.setVisible(false);
-            serverUnavailable.setVisible(false);
-            wrongEmail.setVisible(false);
-            deadToken.setVisible(false);
-            wrongToken.setVisible(false);
-            signUpError.setVisible(false);
-            SQLException.setVisible(false);
-            incorrectCommand.setVisible(false);
+            setErrorMessage(wait);
             sendButton.setVisible(false);
             cancelButton.setVisible(false);
             tokenText.setVisible(false);
@@ -180,21 +178,16 @@ class Auth {
             logInButton.setVisible(true);
             loginText.setVisible(true);
             loginField.setText("");
+            wait.setVisible(false);
         });
 
         sendButton.addActionListener(e -> {
-            logTooShort.setVisible(false);
-            passTooShort.setVisible(false);
-            userAlreadyExists.setVisible(false);
-            serverUnavailable.setVisible(false);
-            wrongEmail.setVisible(false);
-            deadToken.setVisible(false);
-            wrongToken.setVisible(false);
-            signUpError.setVisible(false);
-            SQLException.setVisible(false);
-            incorrectCommand.setVisible(false);
-            currentUser.token = loginField.getText();
-            sendToken(currentUser);
+            setErrorMessage(wait);
+            new Thread(() -> {
+                currentUser.token = loginField.getText();
+                sendToken(currentUser);
+                wait.setVisible(false);
+            }).start();
         });
 
 
@@ -243,6 +236,9 @@ class Auth {
         frame.add(signUpError);
         frame.add(SQLException, c);
         frame.add(incorrectCommand, c);
+        frame.add(wait, c);
+        frame.add(wrongPassword, c);
+        frame.add(userDoesntExist, c);
 
         frame.setTitle(bundle.getString("titleAuth"));
         frame.setSize(360, 240);
@@ -263,6 +259,10 @@ class Auth {
                 currentUser = user;
                 handleServerCommands((String) ois.readObject());
             } catch (IOException | ClassNotFoundException e) {
+                logInButton.setEnabled(true);
+                signUpButton.setEnabled(true);
+                loginField.setEditable(true);
+                passwordField.setEditable(true);
                 setErrorMessage(serverUnavailable);
             }
         }
@@ -279,6 +279,10 @@ class Auth {
                 currentUser = user;
                 handleServerCommands((String) ois.readObject());
             } catch (IOException | ClassNotFoundException e) {
+                logInButton.setEnabled(true);
+                signUpButton.setEnabled(true);
+                loginField.setEditable(true);
+                passwordField.setEditable(true);
                 setErrorMessage(serverUnavailable);
             }
         }
@@ -294,15 +298,27 @@ class Auth {
             handleServerCommands((String) ois.readObject());
             if(color!=null) handleServerCommands((String) ois.readObject());
         } catch (IOException | ClassNotFoundException e) {
+            logInButton.setEnabled(true);
+            signUpButton.setEnabled(true);
+            loginField.setEditable(true);
+            passwordField.setEditable(true);
             setErrorMessage(serverUnavailable);
         }
     }
 
     private boolean checkInput(User user) {
         if (new String(passwordField.getPassword()).length() <= 3) {
+            logInButton.setEnabled(true);
+            signUpButton.setEnabled(true);
+            loginField.setEditable(true);
+            passwordField.setEditable(true);
             setErrorMessage(passTooShort);
             return false;
         } else if (user.getLogin().length() <= 3) {
+            logInButton.setEnabled(true);
+            signUpButton.setEnabled(true);
+            loginField.setEditable(true);
+            passwordField.setEditable(true);
             setErrorMessage(logTooShort);
             return false;
         } else return true;
@@ -334,20 +350,44 @@ class Auth {
         signUpError.setText(bundle.getString("signUpError"));
         SQLException.setText(bundle.getString("SQLException"));
         incorrectCommand.setText(bundle.getString("incorrectCommand"));
+        wait.setText(bundle.getString("waiting"));
+        wrongPassword.setText(bundle.getString("wrongPassword"));
+        userDoesntExist.setText(bundle.getString("userDoesntExist"));
     }
 
     private void handleServerCommands(String command) {
         switch (command) {
             case "TokenSent":
+                wait.setVisible(false);
                 checkEmail();
                 break;
             case "LoginExists":
+                logInButton.setEnabled(true);
+                signUpButton.setEnabled(true);
+                loginField.setEditable(true);
+                passwordField.setEditable(true);
                 setErrorMessage(userAlreadyExists);
                 break;
+            case"LoginDoesntExist":
+                logInButton.setEnabled(true);
+                signUpButton.setEnabled(true);
+                loginField.setEditable(true);
+                passwordField.setEditable(true);
+                setErrorMessage(userDoesntExist);
+                break;
+
             case "WrongEmailAddress":
+                logInButton.setEnabled(true);
+                signUpButton.setEnabled(true);
+                loginField.setEditable(true);
+                passwordField.setEditable(true);
                 setErrorMessage(wrongEmail);
                 break;
             case "DeadToken":
+                logInButton.setEnabled(true);
+                signUpButton.setEnabled(true);
+                loginField.setEditable(true);
+                passwordField.setEditable(true);
                 cancelButton.doClick();
                 setErrorMessage(deadToken);
                 break;
@@ -358,12 +398,21 @@ class Auth {
                 cancelButton.doClick();
                 setErrorMessage(signUpError);
                 break;
+            case"WrongPassword":
+                logInButton.setEnabled(true);
+                signUpButton.setEnabled(true);
+                loginField.setEditable(true);
+                passwordField.setEditable(true);
+                setErrorMessage(wrongPassword);
+                break;
 
 
             case "SQLException":
+
                 setErrorMessage(SQLException);
                 break;
             case "IncorrectCommand":
+
                 setErrorMessage(incorrectCommand);
                 break;
         }
@@ -401,6 +450,7 @@ class Auth {
         sendButton.setVisible(true);
         cancelButton.setVisible(true);
         tokenText.setVisible(true);
+        loginField.setEditable(true);
         passwordField.setVisible(false);
         passwordText.setVisible(false);
         signUpButton.setVisible(false);
@@ -421,7 +471,10 @@ class Auth {
         wrongToken.setVisible(false);
         signUpError.setVisible(false);
         SQLException.setVisible(false);
+        wait.setVisible(false);
+        userDoesntExist.setVisible(false);
         incorrectCommand.setVisible(false);
+        wrongPassword.setVisible(false);
         message.setVisible(true);
     }
 }

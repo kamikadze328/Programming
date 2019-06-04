@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.io.ObjectOutputStream;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -31,6 +30,7 @@ class GUI extends JFrame {
     private JLabel hungerText = new JLabel(bundle.getString("hunger") + ":");
     private JLabel locationText = new JLabel(bundle.getString("location") + ":");
     private JLabel timeText = new JLabel(bundle.getString("creationTime") + ":");
+    private JLabel inventoryText = new JLabel(bundle.getString("inventory") + ":");
     private JTextField xValue = new JTextField();
     private JTextField yValue = new JTextField();
     private JTextField sizeValue = new JTextField();
@@ -40,6 +40,7 @@ class GUI extends JFrame {
     private JTextField hungerValue = new JTextField();
     private JTextField locationValue = new JTextField();
     private JTextField timeValue = new JTextField();
+    private JTextField inventoryValue = new JTextField();
 
     Sender sender;
     private Color color;
@@ -65,7 +66,7 @@ class GUI extends JFrame {
     private JTextField timeTo = new JTextField();
     private JLabel locationFromTo = new JLabel(bundle.getString("location"));
     private JLabel infoConnectionText = new JLabel("<html><h1 align=\"center\">ВЫ никуда не подключены<br>LOL</h1></html>");
-    private JLabel login;
+    private JLabel loginInfo;
 
     private JLabel hungerFromTo = new JLabel(bundle.getString("hunger"));
     private JTextField hungerTo = new JTextField();
@@ -84,6 +85,8 @@ class GUI extends JFrame {
     private JButton addButton = new JButton(bundle.getString("add"));
     private JButton addIfMaxButton = new JButton(bundle.getString("add_if_max"));
     private JButton removeButton = new JButton(bundle.getString("remove"));
+    private JButton exitButton = new JButton(bundle.getString("exit"));
+
 
     private JButton cancelButton = new JButton(bundle.getString("cancel"));
 
@@ -94,14 +97,16 @@ class GUI extends JFrame {
     private DateTimeFormatter filterDateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm:ss");
 
     GUI(Locale locale, Color color, String login) {
-        this.login = new JLabel(login);
+        loginInfo = new JLabel(bundle.getString("user") + ": " + login);
         this.color = color;
         changeLanguage(locale);
         nameValue.setEditable(false);
         familyValue.setEditable(false);
         hungerValue.setEditable(false);
         locationValue.setEditable(false);
+        locationValue.setEnabled(false);
         timeValue.setEditable(false);
+        inventoryValue.setEditable(false);
         xValue.setEditable(false);
         yValue.setEditable(false);
         sizeValue.setEditable(false);
@@ -137,12 +142,14 @@ class GUI extends JFrame {
         hungerText.setFont(font1);
         timeText.setFont(font1);
         locationText.setFont(font1);
+        inventoryText.setFont(font1);
         xValue.setFont(font1);
         yValue.setFont(font1);
         sizeValue.setFont(font1);
         yText.setFont(font1);
         xText.setFont(font1);
         sizeText.setFont(font1);
+        loginInfo.setFont(font1);
 
         connectionText.setBackground(Color.BLACK);
         connectionText.setOpaque(true);
@@ -153,8 +160,10 @@ class GUI extends JFrame {
         infoText.setOpaque(true);
         infoText.setFont(font);
         infoText.setForeground(Color.GREEN);
-        refreshButton.addActionListener(arg0 ->
-                sender.getCollection());
+        refreshButton.addActionListener(arg0 ->{
+            printText("", false);
+            new Thread(sender::getCollection).start();
+        });
 
         timeFrom.setToolTipText(bundle.getString("format") + ": dd.MM.yyyy HH:mm:ss");
         timeTo.setToolTipText(bundle.getString("format") + ": dd.MM.yyyy HH:mm:ss");
@@ -162,34 +171,63 @@ class GUI extends JFrame {
         xFromSlider.setMaximum(1000);
         xFromSlider.setValue(-1000);
         JLabel xFrom = new JLabel("-1000");
-        xFromSlider.addChangeListener(e -> xFrom.setText(Integer.toString(xFromSlider.getValue())));
+        xFromSlider.addChangeListener(e -> {
+            xFrom.setText(Integer.toString(xFromSlider.getValue()));
+            printText("", false);
+        });
         yFromSlider.setMinimum(-1000);
         yFromSlider.setMaximum(1000);
         yFromSlider.setValue(-1000);
         JLabel yFrom = new JLabel("-1000");
-        yFromSlider.addChangeListener(e -> yFrom.setText(Integer.toString(yFromSlider.getValue())));
+        yFromSlider.addChangeListener(e ->
+        {
+            yFrom.setText(Integer.toString(yFromSlider.getValue()));
+            printText("", false);
+        });
         sizeFromSlider.setMinimum(10);
         sizeFromSlider.setMaximum(99);
         sizeFromSlider.setValue(35);
         JLabel sizeFrom = new JLabel("35");
-        sizeFromSlider.addChangeListener(e -> sizeFrom.setText(Integer.toString(sizeFromSlider.getValue())));
-
-//        addButton.addActionListener(args0 -> new Thread(this::addCreature).start());
+        sizeFromSlider.addChangeListener(e -> {sizeFrom.setText(Integer.toString(sizeFromSlider.getValue()));
+            printText("", false);
+        });
 
         xFromSlider.setEnabled(false);
         yFromSlider.setEnabled(false);
         sizeFromSlider.setEnabled(false);
-        newCreatureButton.addActionListener(args0 -> new Thread(this::newCreature).start());
+        newCreatureButton.addActionListener(args0 -> {
+            printText("", false);
+            new Thread(this::newCreature).start();});
         addButton.setEnabled(false);
-        addButton.addActionListener(args0 -> checkInput("add"));
+        addButton.addActionListener(args0 -> {
+            printText("", false);
+            checkInput("add");
+        });
         addIfMaxButton.setEnabled(false);
-        addIfMaxButton.addActionListener(args0 -> checkInput("add_if_max"));
+        addIfMaxButton.addActionListener(args0 -> {
+            printText("", false);
+            checkInput("add_if_max");
+        });
         removeButton.setEnabled(false);
-        addIfMaxButton.addActionListener(args0 -> checkInput("remove"));
+        addIfMaxButton.addActionListener(args0 -> {
+            printText("", false);
+            checkInput("remove");
+        });
         changeButton.setEnabled(false);
-        changeButton.addActionListener(args0 -> new Thread(this::checkFilters).start());
+        changeButton.addActionListener(args0 -> {
+            printText("", false);
+
+            new Thread(this::checkFilters).start();
+        });
         cancelButton.setEnabled(false);
-        cancelButton.addActionListener(args0 -> new Thread(this::cancel).start());
+        cancelButton.addActionListener(args0 -> {
+            printText("", false);
+            new Thread(this::cancel).start();
+        });
+        exitButton.addActionListener(args0 -> {
+            printText("", false);
+            new Thread(this::exit).start();
+        });
 
         String[] locationArrange = {
                 "",
@@ -279,6 +317,16 @@ class GUI extends JFrame {
         p9.add(Box.createHorizontalGlue());
         p9.add(locationBox, Component.RIGHT_ALIGNMENT);
 
+        JPanel p999 = new JPanel();
+        p999.setLayout(new BoxLayout(p999, BoxLayout.X_AXIS));
+        p999.add(Box.createRigidArea(new Dimension(7, 0)));
+        p999.add(inventoryText, Component.LEFT_ALIGNMENT);
+        p999.add(Box.createHorizontalGlue());
+        inventoryValue.setPreferredSize(new Dimension(190, 30));
+        inventoryValue.setMaximumSize(new Dimension(190, 30));
+        p999.add(inventoryValue, Component.RIGHT_ALIGNMENT);
+
+
         JPanel p99 = new JPanel();
         p99.setLayout(new BoxLayout(p99, BoxLayout.X_AXIS));
         xValue.setMaximumSize(new Dimension(300, 100));
@@ -366,6 +414,8 @@ class GUI extends JFrame {
         p4.add(Box.createRigidArea(new Dimension(0, 5)));
         p4.add(p9);
         p4.add(Box.createRigidArea(new Dimension(0, 5)));
+        p4.add(p999);
+        p4.add(Box.createRigidArea(new Dimension(0, 5)));
         p4.add(p99);
         p4.add(Box.createRigidArea(new Dimension(0, 30)));
         p4.add(p8);
@@ -390,6 +440,7 @@ class GUI extends JFrame {
 
         JPanel p2 = new JPanel();
         p2.setLayout(new BoxLayout(p2, BoxLayout.X_AXIS));
+        p2.add(Box.createRigidArea(new Dimension(8, 0)));
         p2.add(nameFromTo);
         p2.add(Box.createRigidArea(new Dimension(8, 0)));
         nameTo.setMaximumSize(new Dimension(90, 50));
@@ -416,48 +467,33 @@ class GUI extends JFrame {
         p2.add(Box.createRigidArea(new Dimension(8, 0)));
         p2.add(locationFromTo);
         p2.add(Box.createRigidArea(new Dimension(8, 0)));
+        locationComboBox.setMaximumSize(new Dimension(100, 50));
+        locationComboBox.setPreferredSize(new Dimension(100, 30));
         p2.add(locationComboBox);
         p2.add(Box.createRigidArea(new Dimension(100, 0)));
-
-
-        JPanel p2extended = new JPanel();
-        p2extended.setLayout(new BoxLayout(p2extended, BoxLayout.Y_AXIS));
-        JPanel topSpace = new JPanel();
-        topSpace.setLayout(new BorderLayout());
-        topSpace.add(Box.createRigidArea(new Dimension(0, 8)), BorderLayout.NORTH);
-        JPanel botSpace = new JPanel();
-        botSpace.setLayout(new BorderLayout());
-        botSpace.add(Box.createRigidArea(new Dimension(0, 8)), BorderLayout.NORTH);
-        p2extended.add(topSpace);
-        p2extended.add(p2);
-        p2extended.add(botSpace);
-        botSpace.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
+        p2.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 
         JPanel p3extended = new JPanel();
         p3extended.setLayout(new BorderLayout());
-        p3extended.add(p2extended, BorderLayout.NORTH);
+        p3extended.add(p2, BorderLayout.NORTH);
         p3extended.add(p3, BorderLayout.CENTER);
 
-        JPanel pInfo = new JPanel();
-        pInfo.setLayout(new BoxLayout(pInfo, BoxLayout.Y_AXIS));
-        JPanel topInfoSpace = new JPanel();
-        topInfoSpace.setLayout(new BorderLayout());
-        topInfoSpace.add(Box.createRigidArea(new Dimension(0, 8)), BorderLayout.NORTH);
-        JPanel botInfoSpace = new JPanel();
-        botInfoSpace.setLayout(new BorderLayout());
-        botInfoSpace.add(Box.createRigidArea(new Dimension(0, 8)), BorderLayout.NORTH);
-//        pInfo.add(topSpace);
 
         JPanel userInfo = new JPanel();
         userInfo.setLayout(new BoxLayout(userInfo, BoxLayout.X_AXIS));
-        JButton exitButton = new JButton(bundle.getString("exit"));
-//        exitButton.set
-        pInfo.add(userInfo);
-        pInfo.add(botSpace);
-        botInfoSpace.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
+        exitButton.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
+        loginInfo.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
+        userInfo.add(Box.createHorizontalGlue());
+        userInfo.add(loginInfo);
+        userInfo.add(Box.createRigidArea(new Dimension(8,0)));
+        userInfo.add(exitButton);
+        userInfo.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
+
+        JPanel pInfoExtended = new JPanel();
+        pInfoExtended.setLayout(new BorderLayout());
 
         setLayout(new BorderLayout());
-        add(pInfo, BorderLayout.NORTH);
+        add(userInfo, BorderLayout.NORTH);
         add(p3extended, BorderLayout.CENTER);
         add(p4extended, BorderLayout.EAST);
 
@@ -465,6 +501,14 @@ class GUI extends JFrame {
         setSize(1500, 800);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
+    }
+
+    private void exit() {
+        this.setVisible(false);
+        sender.exit();
+        sender=null;
+        this.dispose();
+        new Auth();
     }
 
     static void setConnectionInfo(boolean isWorking) {
@@ -485,6 +529,7 @@ class GUI extends JFrame {
         hungerValue.setText(String.valueOf(creature.getHunger()));
         locationValue.setText(bundle.getString(creature.getLocation().name().toLowerCase()));
         timeValue.setText(displayDateTimeFormatter.format(creature.getCreationTime()));
+        inventoryValue.setText(creature.getInventory().toString().substring(1, creature.getInventory().size()-1));
     }
 
     private void checkFilters() {
@@ -526,7 +571,7 @@ class GUI extends JFrame {
         infoText.setText(bundle.getString(message));
     }
 
-    void printText(String message, boolean isError) {
+    private void printText(String message, boolean isError) {
         if (isError) infoText.setForeground(Color.RED);
         else infoText.setForeground(Color.GREEN);
         infoText.setText(" " + message);
@@ -669,6 +714,7 @@ class GUI extends JFrame {
         hungerText.setText(bundle.getString("hunger") + ":");
         locationText.setText(bundle.getString("location") + ":");
         timeText.setText(bundle.getString("creationTime") + ":");
+        inventoryText.setText(bundle.getString("inventory") + ":");
         refreshButton.setText(bundle.getString("refresh"));
         topFloorComboBox = bundle.getString("TopFloor");
         groundFloorComboBox = bundle.getString("GroungFloor");
@@ -738,6 +784,7 @@ class GUI extends JFrame {
         familyValue.setEditable(true);
         hungerValue.setEditable(true);
         locationBox.setEnabled(true);
+        inventoryValue.setEditable(true);
         xFromSlider.setEnabled(true);
         yFromSlider.setEnabled(true);
         sizeFromSlider.setEnabled(true);
@@ -757,6 +804,9 @@ class GUI extends JFrame {
         hungerValue.setEditable(false);
         hungerValue.setText("");
         locationBox.setSelectedIndex(0);
+        locationBox.setEnabled(false);
+        inventoryValue.setEditable(false);
+        inventoryValue.setText("");
         xFromSlider.setValue(-1000);
         xFromSlider.setEnabled(false);
         yFromSlider.setValue(-1000);
