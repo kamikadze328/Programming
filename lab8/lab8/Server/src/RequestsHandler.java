@@ -207,7 +207,7 @@ public class RequestsHandler extends Thread {
                     } catch (IOException ignored) {
                     }
                 } catch (IOException ignored) {
-
+                    justExit();
                 }
             }
             client.close();

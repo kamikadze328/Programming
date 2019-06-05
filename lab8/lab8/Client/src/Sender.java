@@ -7,11 +7,12 @@ import java.nio.channels.SocketChannel;
 public class Sender extends Thread {
 
     private SocketAddress server;
-    private Handler handler = new Handler(this);
-    ObjectOutputStream oos;
-    ObjectInputStream ois;
+    private Handler handler = new Handler();
+    private ObjectOutputStream oos;
+    private ObjectInputStream ois;
     private boolean exit;
     String token;
+    private volatile boolean isWorking = false;
 
     Sender(SocketAddress server, String token, GUI gui) {
         this.token = token;
@@ -28,7 +29,7 @@ public class Sender extends Thread {
     public void run() {
         while (!exit) {
             try {
-                checkConnect();
+                oos.writeObject("");
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
@@ -38,20 +39,27 @@ public class Sender extends Thread {
         }
     }
 
-    private void checkConnect() throws IOException, NullPointerException{
-        oos.writeObject("");
-    }
+
 
     void getCollection() {
         try {
             oos.writeObject("get");
-        } catch (IOException |NullPointerException e) {
+        } catch (IOException | NullPointerException e) {
             GUI.setConnectionInfo(false);
+        }
+    }
+    void addCreature(Creature cr){
+        try {
+            while(!isWorking){}
+            oos.writeObject(new Request("add", cr, token));
+        }catch (IOException e){
+            connect();
         }
     }
 
     private boolean connect() {
         SocketChannel sc;
+        isWorking = false;
         try {
             sc = SocketChannel.open(server);
             oos = new ObjectOutputStream(sc.socket().getOutputStream());
@@ -59,12 +67,13 @@ public class Sender extends Thread {
             handler.ois = ois;
             handler.oos = oos;
             GUI.setConnectionInfo(true);
+            isWorking = true;
             return true;
         } catch (IOException e) {
             GUI.setConnectionInfo(false);
             handler.ois = null;
             handler.oos = null;
-            while (true) {
+            while (!exit) {
                 try {
                     Thread.sleep(1000);
                     sc = SocketChannel.open(server);
@@ -73,12 +82,14 @@ public class Sender extends Thread {
                     handler.ois = ois;
                     handler.oos = oos;
                     GUI.setConnectionInfo(true);
+                    isWorking = true;
                     return true;
                 } catch (InterruptedException ex) {
                     Thread.currentThread().interrupt();
                 } catch (IOException ignored) {
                 }
             }
+            return false;
         }
     }
     void exit(){

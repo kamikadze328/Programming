@@ -1,4 +1,8 @@
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -9,6 +13,9 @@ import java.awt.*;
 import java.util.*;
 
 class GUI extends JFrame {
+    private DefaultTableModel collectionModel;
+    JTable table;
+
     private List<Creature> creatureList = new ArrayList<>();
     private ResourceBundle bundle = ResourceBundle.getBundle("bundle", Locale.getDefault(), new UTF8Control());
     static private ResourceBundle staticBundle = ResourceBundle.getBundle("bundle", Locale.getDefault(), new UTF8Control());
@@ -18,7 +25,6 @@ class GUI extends JFrame {
     private Locale svlocale = new Locale("sv");
     private Locale zhlocale = new Locale("zh", "CN");
     private JMenu language = new JMenu(bundle.getString("language"));
-
 
     private static JLabel connectionText = new JLabel();
     private static boolean isConnected = false;
@@ -31,10 +37,10 @@ class GUI extends JFrame {
     private JLabel locationText = new JLabel(bundle.getString("location") + ":");
     private JLabel timeText = new JLabel(bundle.getString("creationTime") + ":");
     private JLabel inventoryText = new JLabel(bundle.getString("inventory") + ":");
+
     private JTextField xValue = new JTextField();
     private JTextField yValue = new JTextField();
     private JTextField sizeValue = new JTextField();
-
     private JTextField nameValue = new JTextField();
     private JTextField familyValue = new JTextField();
     private JTextField hungerValue = new JTextField();
@@ -45,7 +51,6 @@ class GUI extends JFrame {
     Sender sender;
     private Color color;
 
-    private JButton refreshButton = new JButton(bundle.getString("refresh"));
     private JLabel infoText = new JLabel(" " + bundle.getString("greeting"));
     private int filtersTextNumber = 0;
     private String topFloorComboBox = bundle.getString("TopFloor");
@@ -56,6 +61,14 @@ class GUI extends JFrame {
     private String footPathComboBox = bundle.getString("FootPath");
     private String lightHouseComboBox = bundle.getString("LightHouse");
     private String nanComboBox = bundle.getString("NaN");
+    private String FernGreenComboBox = bundle.getString("fernGreen");
+    private String BlackComboBox = bundle.getString("black");
+    private String WhiteComboBox = bundle.getString("white");
+    private String PareGoldComboBox= bundle.getString("pareGold");
+    private String DeepRedComboBox = bundle.getString("deepRed");
+    private String PurpleComboBox= bundle.getString("purple");
+    private String OtherComboBox = bundle.getString("other");
+
     private JLabel nameStarts = new JLabel(bundle.getString("nameFilter"));
     private JLabel nameFromTo = new JLabel(bundle.getString("name"));
     private JTextField nameTo = new JTextField();
@@ -64,9 +77,17 @@ class GUI extends JFrame {
     private JLabel timeFromTo = new JLabel(bundle.getString("time"));
     private JTextField timeFrom = new JTextField();
     private JTextField timeTo = new JTextField();
+    private JTextField xTo = new JTextField();
+    private JTextField yTo = new JTextField();
+    private JTextField sizeTo = new JTextField();
+
+
     private JLabel locationFromTo = new JLabel(bundle.getString("location"));
     private JLabel infoConnectionText = new JLabel("<html><h1 align=\"center\">ВЫ никуда не подключены<br>LOL</h1></html>");
     private JLabel loginInfo;
+    private JLabel tableP = new JLabel(bundle.getString("table"));
+    private JLabel graphics = new JLabel(bundle.getString("graphics"));
+
 
     private JLabel hungerFromTo = new JLabel(bundle.getString("hunger"));
     private JTextField hungerTo = new JTextField();
@@ -79,16 +100,14 @@ class GUI extends JFrame {
     private JSlider yFromSlider = new JSlider();
     private JSlider sizeFromSlider = new JSlider();
 
-
     private JButton changeButton = new JButton(bundle.getString("change"));
     private JButton newCreatureButton = new JButton(bundle.getString("newCreature"));
     private JButton addButton = new JButton(bundle.getString("add"));
     private JButton addIfMaxButton = new JButton(bundle.getString("add_if_max"));
     private JButton removeButton = new JButton(bundle.getString("remove"));
     private JButton exitButton = new JButton(bundle.getString("exit"));
-
-
     private JButton cancelButton = new JButton(bundle.getString("cancel"));
+    private JButton refreshButton = new JButton(bundle.getString("refresh"));
 
     private JComboBox<String> locationBox;
 
@@ -216,7 +235,6 @@ class GUI extends JFrame {
         changeButton.setEnabled(false);
         changeButton.addActionListener(args0 -> {
             printText("", false);
-
             new Thread(this::checkFilters).start();
         });
         cancelButton.setEnabled(false);
@@ -226,10 +244,10 @@ class GUI extends JFrame {
         });
         exitButton.addActionListener(args0 -> {
             printText("", false);
-            new Thread(this::exit).start();
+            exit();
         });
 
-        String[] locationArrange = {
+        String[] locationsArray = {
                 "",
                 topFloorComboBox,
                 groundFloorComboBox,
@@ -240,11 +258,23 @@ class GUI extends JFrame {
                 lightHouseComboBox,
                 nanComboBox
         };
-        locationBox = new JComboBox<>(locationArrange);
+        String[] colorsArray = {
+                "",
+                FernGreenComboBox,
+                BlackComboBox,
+                WhiteComboBox,
+                PareGoldComboBox,
+                DeepRedComboBox,
+                PurpleComboBox,
+                OtherComboBox
+        };
+        locationBox = new JComboBox<>(locationsArray);
         locationBox.setEditable(false);
         locationBox.setEnabled(false);
-        JComboBox<String> locationComboBox = new JComboBox<>(locationArrange);
-        locationComboBox.setEditable(false);
+        JComboBox<String> locationComboBox = new JComboBox<>(locationsArray);
+        JComboBox<String> colorComboBox = new JComboBox<>(colorsArray);
+
+
 
         //Panels
         JPanel p17 = new JPanel();
@@ -436,41 +466,80 @@ class GUI extends JFrame {
         p4extended.add(Box.createRigidArea(new Dimension(10, 0)));
         p4extended.setBorder(BorderFactory.createMatteBorder(0, 2, 0, 0, Color.BLACK));
 
-        p3.setLayout(null);
+        //Table
+        String[] columns = {"Name", "Family", "Hunger", "Creation Time", "Location", "X", "Y", "Size", "Color"};
+        collectionModel = new DefaultTableModel();
+        collectionModel.setColumnIdentifiers(columns);
+        table = new JTable(collectionModel);
+        table.getColumnModel().getColumn(0).setPreferredWidth(120);
+        table.getColumnModel().getColumn(1).setPreferredWidth(120);
+        table.getColumnModel().getColumn(2).setPreferredWidth(120);
+        table.getColumnModel().getColumn(3).setPreferredWidth(120);
+        table.getColumnModel().getColumn(4).setPreferredWidth(120);
+        table.getColumnModel().getColumn(5).setPreferredWidth(120);
+        table.getColumnModel().getColumn(6).setPreferredWidth(120);
+        table.getColumnModel().getColumn(7).setPreferredWidth(120);
+        table.getColumnModel().getColumn(8).setPreferredWidth(120);
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        ListSelectionModel selModel = table.getSelectionModel();
+
+
+
+        JPanel tablePanel = new JPanel();
+        tablePanel.setLayout(new BorderLayout());
+
+
+        JPanel graphicsPanel = new JPanel();
+
+        p3.setLayout(new BorderLayout());
+        Font font3 = new Font("Verdana", Font.PLAIN, 12);
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.setFont(font3);
+        tabbedPane.addTab(tableP.getText(), scrollPane);
+        tabbedPane.addTab(graphics.getText(), graphicsPanel);
+        p3.add(tabbedPane, BorderLayout.CENTER);
+
+
 
         JPanel p2 = new JPanel();
         p2.setLayout(new BoxLayout(p2, BoxLayout.X_AXIS));
-        p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        p2.add(nameFromTo);
-        p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        nameTo.setMaximumSize(new Dimension(90, 50));
-        nameTo.setPreferredSize(new Dimension(90, 30));
+        nameTo.setMaximumSize(new Dimension(119, 50));
+        nameTo.setPreferredSize(new Dimension(119, 30));
         p2.add(nameTo);
-        p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        p2.add(familyFromTo);
-        p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        familyTo.setMaximumSize(new Dimension(60, 50));
-        familyTo.setPreferredSize(new Dimension(60, 30));
+        p2.add(Box.createRigidArea(new Dimension(5, 0)));
+        familyTo.setMaximumSize(new Dimension(119, 50));
+        familyTo.setPreferredSize(new Dimension(119, 30));
         p2.add(familyTo);
-        p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        p2.add(hungerFromTo);
-        p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        hungerTo.setMaximumSize(new Dimension(25, 50));
-        hungerTo.setPreferredSize(new Dimension(25, 30));
+        p2.add(Box.createRigidArea(new Dimension(5, 0)));
+        hungerTo.setMaximumSize(new Dimension(118, 50));
+        hungerTo.setPreferredSize(new Dimension(118, 30));
         p2.add(hungerTo);
-        p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        p2.add(timeFromTo);
-        p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        timeTo.setMaximumSize(new Dimension(120, 50));
-        timeTo.setPreferredSize(new Dimension(120, 30));
+        p2.add(Box.createRigidArea(new Dimension(5, 0)));
+        timeTo.setMaximumSize(new Dimension(118, 50));
+        timeTo.setPreferredSize(new Dimension(118, 30));
         p2.add(timeTo);
-        p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        p2.add(locationFromTo);
-        p2.add(Box.createRigidArea(new Dimension(8, 0)));
-        locationComboBox.setMaximumSize(new Dimension(100, 50));
-        locationComboBox.setPreferredSize(new Dimension(100, 30));
+        p2.add(Box.createRigidArea(new Dimension(5, 0)));
+        locationComboBox.setMaximumSize(new Dimension(118, 50));
+        locationComboBox.setPreferredSize(new Dimension(118, 30));
         p2.add(locationComboBox);
-        p2.add(Box.createRigidArea(new Dimension(100, 0)));
+        p2.add(Box.createRigidArea(new Dimension(5, 0)));
+        xTo.setMaximumSize(new Dimension(118, 50));
+        xTo.setPreferredSize(new Dimension(118, 30));
+        p2.add(xTo);
+        p2.add(Box.createRigidArea(new Dimension(5, 0)));
+        yTo.setMaximumSize(new Dimension(118, 50));
+        yTo.setPreferredSize(new Dimension(118, 30));
+        p2.add(yTo);
+        p2.add(Box.createRigidArea(new Dimension(5, 0)));
+        sizeTo.setMaximumSize(new Dimension(118, 50));
+        sizeTo.setPreferredSize(new Dimension(118, 30));
+        p2.add(sizeTo);
+        p2.add(Box.createRigidArea(new Dimension(5, 0)));
+        colorComboBox.setMaximumSize(new Dimension(118, 50));
+        colorComboBox.setPreferredSize(new Dimension(118, 30));
+        p2.add(colorComboBox);
+        p2.add(Box.createHorizontalGlue());
         p2.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 
         JPanel p3extended = new JPanel();
@@ -656,14 +725,22 @@ class GUI extends JFrame {
                 if (creature.equals(creatureTemp)) {
                     creatureList.remove(creature);
                     tempCr.remove(creatureTemp);
-                    if (!creature.equalsAll(creatureTemp))
+                    if (!creature.equalsAll(creatureTemp)){
                         changedCr.add(creatureTemp);
+                    }
                     break;
                 }
             }
         }
         changedCr.addAll(tempCr);
         creatureList = newCreature;
+
+        collectionModel.setRowCount(0);
+        for (Creature creature : creatureList)
+            addToTable(creature);
+        table.repaint();
+        table.revalidate();
+
             /*circleList = new Circle[creatureList.size()];
             p3.removeAll();
             for (int i = 0; i < creatureList.size(); i++) {
@@ -724,6 +801,13 @@ class GUI extends JFrame {
         footPathComboBox = bundle.getString("FootPath");
         lightHouseComboBox = bundle.getString("LightHouse");
         nanComboBox = bundle.getString("NaN");
+        FernGreenComboBox = bundle.getString("fernGreen");
+        BlackComboBox = bundle.getString("black");
+        WhiteComboBox = bundle.getString("white");
+        PareGoldComboBox= bundle.getString("pareGold");
+        DeepRedComboBox = bundle.getString("deepRed");
+        PurpleComboBox= bundle.getString("purple");
+        OtherComboBox = bundle.getString("other");
         nameStarts.setText(bundle.getString("nameFilter"));
         nameFromTo.setText(bundle.getString("name"));
         familyFromTo.setText(bundle.getString("family"));
@@ -739,6 +823,8 @@ class GUI extends JFrame {
         size.setText(bundle.getString("size")+  ":");
         sizeText.setText(bundle.getString("size")+  ":");
         timeFromTo.setText(bundle.getString("time"));
+        tableP.setText(bundle.getString("table"));
+        graphics.setText(bundle.getString("graphics"));
 
         if (chosenCreature != null) {
             setTopPanelInfo(chosenCreature);
@@ -855,9 +941,15 @@ class GUI extends JFrame {
         }
     }
 
-    private void printToConsole(){
-
-    }
+   private void addToTable(Creature cr) {
+       String hunger = String.valueOf(cr.getHunger());
+       String x = String.valueOf(cr.getHunger());
+       String y = String.valueOf(cr.getHunger());
+       String size = String.valueOf(cr.getHunger());
+       String time = cr.getCreationTime().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
+       collectionModel.addRow(new String[]{
+               cr.getName(), cr.getFamily(), hunger, time, cr.getLocation().toString(), x, y, size, cr.getColor().name()});
+   }
 
     /*private void load(){
         Creature creature = new Creature(nameValue.getText(), )

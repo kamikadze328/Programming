@@ -8,11 +8,6 @@ public class Handler extends Thread {
     GUI gui;
     boolean exit = false;
 
-    Handler(Sender sender) {
-        ois = sender.ois;
-        oos = sender.oos;
-    }
-
     @Override
     public void run() {
         while (!exit) {

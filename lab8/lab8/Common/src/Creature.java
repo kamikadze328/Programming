@@ -27,7 +27,7 @@ public class Creature implements Comparable<Creature>, Serializable {
 
     private Colors color;
 
-    transient private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss", Locale.getDefault());
+    transient DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss", Locale.getDefault());
     private static final long serialVersionUID = -2308846153109753988L;
     Inventory inventory = new Inventory();
 
