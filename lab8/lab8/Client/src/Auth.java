@@ -11,11 +11,12 @@ import java.util.ResourceBundle;
 
 class Auth {
     private User currentUser;
-    Color color= null;
-    String login;
-    String token;
-    ObjectOutputStream oos;
-    ObjectInputStream ois;
+    private Color color= null;
+    private String login;
+    private String token;
+    private ObjectOutputStream oos;
+    private ObjectInputStream ois;
+
     private Locale rulocale = new Locale("ru");
     private Locale sllocale = new Locale("sl");
     private Locale enlocale = new Locale("en", "AU");
@@ -187,6 +188,8 @@ class Auth {
 
         sendButton.addActionListener(e -> {
             setErrorMessage(wait);
+            /*cancelButton.setEnabled(false);
+            sendButton.setEnabled(false);*/
             new Thread(() -> {
                 currentUser.token = loginField.getText();
                 sendToken(currentUser);
@@ -295,13 +298,13 @@ class Auth {
 
     private void sendToken(User user) {
         try {
-            /*SocketChannel sc = SocketChannel.open(server);
-            try {
-                ois.close();
-                oos.close();
+            try{
+                this.oos.close();
+                this.ois.close();
             }catch (IOException ignored){}
+            SocketChannel sc = SocketChannel.open(server);
             oos = new ObjectOutputStream(sc.socket().getOutputStream());
-            ois = new ObjectInputStream(sc.socket().getInputStream());*/
+            ois = new ObjectInputStream(sc.socket().getInputStream());
             user.command = "checkEmail";
             oos.writeObject(user);
             handleServerCommands((String) ois.readObject());

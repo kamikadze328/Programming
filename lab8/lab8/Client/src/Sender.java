@@ -4,15 +4,15 @@ import java.io.ObjectOutputStream;
 import java.net.SocketAddress;
 import java.nio.channels.SocketChannel;
 
-public class Sender {
+class Sender {
 
     private SocketAddress server;
     private Handler handler;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
     private boolean exit;
-    String token;
-    GUI gui;
+    private String token;
+    private GUI gui;
     volatile boolean isWorking = false;
 
     Sender(SocketAddress server, String token, GUI gui) {

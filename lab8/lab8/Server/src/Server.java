@@ -28,8 +28,6 @@ public class Server {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
-
         try {
             server = new ServerSocket(PORT);
             System.out.println("Сервер запущен");

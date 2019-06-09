@@ -6,13 +6,12 @@ import java.nio.channels.SocketChannel;
 
 public class Handler extends Thread {
     ObjectInputStream ois;
-    private ObjectOutputStream oos;
-    GUI gui;
+    private GUI gui;
     private SocketAddress server;
     boolean exit = false;
-    boolean isWorking = false;
+    private boolean isWorking = false;
     private String token;
-    Sender sender;
+    private Sender sender;
 
 
     Handler(SocketAddress server, GUI gui, String token, Sender sender) {
@@ -83,6 +82,7 @@ public class Handler extends Thread {
     private void connect() {
         SocketChannel sc;
         isWorking = false;
+        ObjectOutputStream oos;
         try {
             sc = SocketChannel.open(server);
             oos = new ObjectOutputStream(sc.socket().getOutputStream());

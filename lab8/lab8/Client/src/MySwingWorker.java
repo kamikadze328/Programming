@@ -21,11 +21,7 @@ public class MySwingWorker extends SwingWorker<Void, Void> {
     protected Void doInBackground() {
         try {
             GUI gui = new GUI(locale, color, login);
-            Sender sender = new Sender(new InetSocketAddress("localhost", 5001), token, gui);
-            gui.sender = sender;
-//            long time = System.currentTimeMillis();
-            /*while(System.currentTimeMillis() - time < 1000){}
-            sender.getCollection();*/
+            gui.sender = new Sender(new InetSocketAddress("localhost", 5001), token, gui);
         }catch (Exception e){
             e.printStackTrace();
         }
