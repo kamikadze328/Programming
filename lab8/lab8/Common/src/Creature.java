@@ -1,8 +1,6 @@
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
-import java.util.Locale;
 import java.util.Objects;
 
 public class Creature implements Comparable<Creature>, Serializable {
@@ -27,7 +25,6 @@ public class Creature implements Comparable<Creature>, Serializable {
 
     private Colors color;
 
-    transient DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss", Locale.getDefault());
     private static final long serialVersionUID = -2308846153109753988L;
     Inventory inventory = new Inventory();
 

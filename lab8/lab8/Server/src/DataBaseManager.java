@@ -62,9 +62,9 @@ class DataBaseManager {
             String family = forAction.getFamily();
             pst.setString(1, name);
             pst.setInt(2, forAction.getHunger());
-            pst.setObject(3, forAction.getLocation().toString(), Types.OTHER);
+            pst.setObject(3, forAction.getLocation().toString().replace(" ", ""), Types.OTHER);
             OffsetDateTime time = forAction.getCreationTime();
-            pst.setTimestamp(4, Timestamp.valueOf(LocalDateTime.ofInstant(time.toInstant(), ZoneOffset.UTC)));
+            pst.setTimestamp(4, Timestamp.valueOf(LocalDateTime.ofInstant(time.toInstant(), ZoneOffset.systemDefault())));
             pst.setString(5, family);
             Long userId = getUserId(token);
             if (userId == null) pst.setLong(6, 1);
@@ -515,7 +515,7 @@ class DataBaseManager {
             default:
                 color = Colors.Black;
         }
-        OffsetDateTime time = OffsetDateTime.ofInstant(Instant.ofEpochMilli(timestamp.getTime()), ZoneId.of("UTC"));
+        OffsetDateTime time = OffsetDateTime.ofInstant(Instant.ofEpochMilli(timestamp.getTime()), ZoneId.systemDefault());
         Creature creature = new Creature(name, hunger, location, time, family, x, y, size, color);
         String query1 = "SELECT inventory from Inventory where creature_id = ?";
         try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);

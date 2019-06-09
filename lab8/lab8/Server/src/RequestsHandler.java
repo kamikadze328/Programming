@@ -125,9 +125,9 @@ public class RequestsHandler extends Thread {
                                         if (changed) {
                                             int count = 0;
                                             try {
+                                                LinkedList<Creature> cr = manager.getCreatures();
+                                                Request r = new Request(cr);
                                                 for (ObjectOutputStream oos2 : Server.clients.values()) {
-                                                    LinkedList<Creature> cr = manager.getCreatures();
-                                                    Request r = new Request(cr);
                                                     oos2.writeObject(r);
                                                     count++;
                                                 }
@@ -144,6 +144,7 @@ public class RequestsHandler extends Thread {
                             } catch (SQLException e) {
                                 try {
                                     oos.writeObject("SQLException");
+                                    e.printStackTrace();
                                 } catch (IOException ignored) {
                                 }
                             }
@@ -217,9 +218,11 @@ public class RequestsHandler extends Thread {
     private void sendToAll(int i) {
         int count = 0;
         try {
+            LinkedList<Creature> cr = manager.getCreatures();
+            Request r = new Request(cr);
             for (ObjectOutputStream oos2 : Server.clients.values()) {
                 if (count == i)
-                    oos2.writeObject(new Request(manager.getCreatures()));
+                    oos2.writeObject(r);
                 count++;
             }
         } catch (IOException e) {
