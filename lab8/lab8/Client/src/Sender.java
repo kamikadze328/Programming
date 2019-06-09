@@ -84,7 +84,6 @@ class Sender {
                     ois = new ObjectInputStream(sc.socket().getInputStream());
                     GUI.setConnectionInfo(true);
                     isWorking = true;
-                    return;
                 } catch (InterruptedException ex) {
                     Thread.currentThread().interrupt();
                 } catch (IOException ignored) {
@@ -108,6 +107,16 @@ class Sender {
             oos.close();
             ois.close();
         } catch (IOException ignored) {
+        }
+    }
+
+    void addIfMaxCreature(Creature cr) {
+        try {
+            if (isWorking) oos.writeObject(new Request("add_if_max", cr, token));
+            else gui.printTextToConsole("tryAgain", true);
+        } catch (IOException e) {
+            gui.printTextToConsole("tryAgain", true);
+            connect();
         }
     }
 }

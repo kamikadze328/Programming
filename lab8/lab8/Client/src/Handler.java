@@ -12,6 +12,7 @@ public class Handler extends Thread {
     private boolean isWorking = false;
     private String token;
     private Sender sender;
+    private long time;
 
 
     Handler(SocketAddress server, GUI gui, String token, Sender sender) {
@@ -29,11 +30,14 @@ public class Handler extends Thread {
         while (!exit) {
             if (isWorking) {
                 try {
+                    time = System.currentTimeMillis();
                     Object message = ois.readObject();
+                    if(time - System.currentTimeMillis()> 90000)
+                        exit = true;
                     new Thread(() -> {
                         if (message instanceof String) {
                             String request = (String) message;
-
+                            if(exit) request = "DeadToken";
                             switch (request) {
                                 case "AddedSuccess":
                                 case "RemovedSuccess":
@@ -43,12 +47,12 @@ public class Handler extends Thread {
                                     break;
                                 case "AddedFailing":
                                 case "RemovedFailingDontYours":
-                                case "RemovedFailingDontExists":
                                 case "ChangedFailed":
                                 case "ChangedFailingDontYours":
                                 case "SavedFailing":
                                 case "loadFileError":
                                 case "JSONError":
+                                case "SQLException":
                                     gui.printTextToConsole(request, true);
                                     break;
                                 case "exit":
@@ -67,8 +71,17 @@ public class Handler extends Thread {
                                 gui.printTextToConsole(request.substring(0, 5).toLowerCase(), Integer.parseInt(request.substring(7)));
                             }
                         } else if (message instanceof Request) {
-                            Request request = (Request) message;
-                            gui.refreshCollection(request.creatures);
+                            if (exit) {
+                                gui.printTextToConsole("windowWillBeClosed", true);
+                                try {
+                                    Thread.sleep(5000);
+                                } catch (InterruptedException ignored) {
+                                }
+                                gui.exit();
+                            } else {
+                                Request request = (Request) message;
+                                gui.refreshCollection(request.creatures);
+                            }
                         }
                     }).start();
                 } catch (IOException | NullPointerException | ClassNotFoundException e) {

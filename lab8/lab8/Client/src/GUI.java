@@ -1,7 +1,9 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.FormatStyle;
@@ -13,8 +15,8 @@ class GUI extends JFrame {
     private DefaultTableModel collectionModel;
     private JTable table;
     private boolean clearSelection;
-    private List<Creature> creatureList = new ArrayList<>();
-    private ArrayList<Creature> filtredList;
+    private ArrayList<Creature> creatureList = new ArrayList<>();
+    private ArrayList<Creature> filteredList = new ArrayList<>();
     private ResourceBundle bundle = ResourceBundle.getBundle("bundle", Locale.getDefault());
     static private ResourceBundle staticBundle = ResourceBundle.getBundle("bundle", Locale.getDefault());
     private Locale rulocale = new Locale("ru");
@@ -26,7 +28,6 @@ class GUI extends JFrame {
 
     private static JLabel connectionText = new JLabel();
     private static boolean isConnected = false;
-    private JPanel p3 = new JPanel();
     private ArrayList<Timer> timers;
     private JLabel infoObjectText = new JLabel(bundle.getString("info") + ":");
     private JLabel nameText = new JLabel(bundle.getString("name") + ":");
@@ -42,15 +43,14 @@ class GUI extends JFrame {
     private JTextField nameValue = new JTextField();
     private JTextField familyValue = new JTextField();
     private JTextField hungerValue = new JTextField();
-    private JTextField locationValue = new JTextField();
     private JTextField timeValue = new JTextField();
     private JTextField inventoryValue = new JTextField();
 
     Sender sender;
     private Colors color;
+    private boolean isFiltered = true;
 
     private JLabel infoText = new JLabel(" " + bundle.getString("greeting"));
-    private int filtersTextNumber = 0;
     private String topFloorComboBox = bundle.getString("TopFloor");
     private String groundFloorComboBox = bundle.getString("GroundFloor");
     private String yardComboBox = bundle.getString("Yard");
@@ -67,13 +67,11 @@ class GUI extends JFrame {
     private String PurpleComboBox = bundle.getString("purple");
     private String OtherComboBox = bundle.getString("other");
 
-    private JLabel nameStarts = new JLabel(bundle.getString("nameFilter"));
     private JLabel nameFromTo = new JLabel(bundle.getString("name"));
     private JTextField nameTo = new JTextField();
     private JLabel familyFromTo = new JLabel(bundle.getString("family"));
     private JTextField familyTo = new JTextField();
     private JLabel timeFromTo = new JLabel(bundle.getString("time"));
-    private JTextField timeFrom = new JTextField();
     private JTextField timeTo = new JTextField();
     private JTextField xTo = new JTextField();
     private JTextField yTo = new JTextField();
@@ -81,15 +79,12 @@ class GUI extends JFrame {
 
 
     private JLabel locationFromTo = new JLabel(bundle.getString("location"));
-    private JLabel infoConnectionText = new JLabel("<html><h1 align=\"center\">ВЫ никуда не подключены<br>LOL</h1></html>");
-    private JLabel loginInfo;
+    private JLabel infoConnectionText = new JLabel("<html><h1 align=\"center\">" + bundle.getString("kek") + "</h1></html>");
     private JLabel tableP = new JLabel(bundle.getString("table"));
     private JLabel graphics = new JLabel(bundle.getString("graphics"));
 
     private JLabel hungerFromTo = new JLabel(bundle.getString("hunger"));
     private JTextField hungerTo = new JTextField();
-    private JLabel X = new JLabel("X:");
-    private JLabel Y = new JLabel("Y:");
     private JLabel size = new JLabel(bundle.getString("size") + ":");
     private JLabel sizeText = new JLabel(bundle.getString("size") + ":");
 
@@ -107,13 +102,14 @@ class GUI extends JFrame {
     private JButton refreshButton = new JButton(bundle.getString("refresh"));
 
     private JComboBox<String> locationBox;
-
+    private JComboBox<String> locationComboBox;
+    private JComboBox<String> colorComboBox;
     private DateTimeFormatter displayDateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT, FormatStyle.MEDIUM).withLocale(Locale.getDefault());
     private Creature chosenCreature;
-    private DateTimeFormatter filterDateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm:ss");
+    private DateTimeFormatter filterDateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm:ss");
 
     GUI(Locale locale, Color color, String login) {
-        loginInfo = new JLabel(bundle.getString("user") + ": " + login);
+        JLabel loginInfo = new JLabel(bundle.getString("user") + ": " + login);
         switch (Integer.toString(color.getRGB())) {
             case "-15039176":
                 this.color = Colors.FernGreen;
@@ -135,12 +131,10 @@ class GUI extends JFrame {
             default:
                 this.color = Colors.Purple;
         }
-        changeLanguage(locale);
+
         nameValue.setEditable(false);
         familyValue.setEditable(false);
         hungerValue.setEditable(false);
-        locationValue.setEditable(false);
-        locationValue.setEnabled(false);
         timeValue.setEditable(false);
         inventoryValue.setEditable(false);
         xValue.setEditable(false);
@@ -160,11 +154,11 @@ class GUI extends JFrame {
         language.add(sv_item);
         language.add(sl_item);
         language.add(zh_item);
-        en_item.addActionListener(arg0 -> changeLanguage(enlocale));
-        ru_item.addActionListener(arg0 -> changeLanguage(rulocale));
-        sv_item.addActionListener(arg0 -> changeLanguage(svlocale));
-        sl_item.addActionListener(arg0 -> changeLanguage(sllocale));
-        zh_item.addActionListener(arg0 -> changeLanguage(zhlocale));
+        en_item.addActionListener(arg0 -> changeLanguage(enlocale, false));
+        ru_item.addActionListener(arg0 -> changeLanguage(rulocale, false));
+        sv_item.addActionListener(arg0 -> changeLanguage(svlocale, false));
+        sl_item.addActionListener(arg0 -> changeLanguage(sllocale, false));
+        zh_item.addActionListener(arg0 -> changeLanguage(zhlocale, false));
         menuBar.add(language);
         setJMenuBar(menuBar);
 
@@ -201,8 +195,7 @@ class GUI extends JFrame {
             new Thread(sender::getCollection).start();
         });
 
-        timeFrom.setToolTipText(bundle.getString("format") + ": dd.MM.yyyy HH:mm:ss");
-        timeTo.setToolTipText(bundle.getString("format") + ": dd.MM.yyyy HH:mm:ss");
+        timeTo.setToolTipText(bundle.getString("format") + ": dd.MM.yy HH:mm:ss");
         xFromSlider.setMinimum(-1000);
         xFromSlider.setMaximum(1000);
         xFromSlider.setValue(-1000);
@@ -255,8 +248,8 @@ class GUI extends JFrame {
                 String family = (String) table.getModel().getValueAt(index, 1);
                 for (Creature cr : creatureList) {
                     if (cr.getName().equals(name) && cr.getFamily().equals(family)) {
-                        sender.removeCreature(cr);
                         cancel();
+                        sender.removeCreature(cr);
                         break;
                     }
                 }
@@ -265,10 +258,7 @@ class GUI extends JFrame {
         changeButton.setEnabled(false);
         changeButton.addActionListener(args0 -> {
             printText("", false);
-            new Thread(() -> {
-                Integer id;
-                checkInput("change");
-            }).start();
+            new Thread(() -> checkInput("change")).start();
 
 
         });
@@ -306,9 +296,19 @@ class GUI extends JFrame {
         locationBox = new JComboBox<>(locationsArray);
         locationBox.setEditable(false);
         locationBox.setEnabled(false);
-        JComboBox<String> locationComboBox = new JComboBox<>(locationsArray);
-        JComboBox<String> colorComboBox = new JComboBox<>(colorsArray);
+        locationComboBox = new JComboBox<>(locationsArray);
+        colorComboBox = new JComboBox<>(colorsArray);
 
+        nameTo.getDocument().addDocumentListener((FiltersListener) this::checkFilters);
+        familyTo.getDocument().addDocumentListener((FiltersListener) this::checkFilters);
+        hungerTo.getDocument().addDocumentListener((FiltersListener) this::checkFilters);
+        timeTo.getDocument().addDocumentListener((FiltersListener) this::checkFilters);
+        xTo.getDocument().addDocumentListener((FiltersListener) this::checkFilters);
+        yTo.getDocument().addDocumentListener((FiltersListener) this::checkFilters);
+        sizeTo.getDocument().addDocumentListener((FiltersListener) this::checkFilters);
+        final ActionListener actionListener = e -> new Thread(this::checkFilters).start();
+        colorComboBox.addActionListener(actionListener);
+        locationComboBox.addActionListener(actionListener);
 
         //Panels
         JPanel p17 = new JPanel();
@@ -329,6 +329,7 @@ class GUI extends JFrame {
 
         JPanel p15 = new JPanel();
         p15.setLayout(new BoxLayout(p15, BoxLayout.X_AXIS));
+        infoConnectionText.setAlignmentX(Component.CENTER_ALIGNMENT);
         p15.add(infoConnectionText);
 
         JPanel p13 = new JPanel();
@@ -413,7 +414,8 @@ class GUI extends JFrame {
         JPanel p8 = new JPanel();
         p8.setLayout(new BoxLayout(p8, BoxLayout.X_AXIS));
         xFromSlider.setMaximumSize(new Dimension(150, 17));
-        p8.add(X, Component.LEFT_ALIGNMENT);
+        JLabel x = new JLabel("X:");
+        p8.add(x, Component.LEFT_ALIGNMENT);
         p8.add(Box.createRigidArea(new Dimension(100, 10)));
         p8.add(xFromSlider);
         p8.add(Box.createHorizontalGlue());
@@ -422,7 +424,8 @@ class GUI extends JFrame {
         JPanel p7 = new JPanel();
         p7.setLayout(new BoxLayout(p7, BoxLayout.X_AXIS));
         yFromSlider.setMaximumSize(new Dimension(150, 17));
-        p7.add(Y, Component.LEFT_ALIGNMENT);
+        JLabel y = new JLabel("Y:");
+        p7.add(y, Component.LEFT_ALIGNMENT);
         p7.add(Box.createRigidArea(new Dimension(100, 10)));
         p7.add(yFromSlider);
         p7.add(Box.createHorizontalGlue());
@@ -464,6 +467,7 @@ class GUI extends JFrame {
         p4.add(Box.createRigidArea(new Dimension(0, 10)));
         p4.add(p16);
         p4.add(Box.createRigidArea(new Dimension(0, 10)));
+        p15.setAlignmentX(Component.CENTER_ALIGNMENT);
         p4.add(p15);
         p4.add(Box.createVerticalGlue());
         p4.add(p13);
@@ -560,6 +564,7 @@ class GUI extends JFrame {
 
         JPanel graphicsPanel = new JPanel();
 
+        JPanel p3 = new JPanel();
         p3.setLayout(new BorderLayout());
         Font font3 = new Font("Verdana", Font.PLAIN, 12);
         JTabbedPane tabbedPane = new JTabbedPane();
@@ -567,7 +572,6 @@ class GUI extends JFrame {
         tabbedPane.addTab(tableP.getText(), scrollPane);
         tabbedPane.addTab(graphics.getText(), graphicsPanel);
         p3.add(tabbedPane, BorderLayout.CENTER);
-
 
         //Panels
         JPanel p2 = new JPanel();
@@ -615,7 +619,6 @@ class GUI extends JFrame {
         p3extended.add(p2, BorderLayout.NORTH);
         p3extended.add(p3, BorderLayout.CENTER);
 
-
         JPanel userInfo = new JPanel();
         userInfo.setLayout(new BoxLayout(userInfo, BoxLayout.X_AXIS));
         exitButton.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
@@ -633,7 +636,7 @@ class GUI extends JFrame {
         add(userInfo, BorderLayout.NORTH);
         add(p3extended, BorderLayout.CENTER);
         add(p4extended, BorderLayout.EAST);
-
+        changeLanguage(locale, true);
         setTitle(bundle.getString("title"));
         setSize(1500, 800);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -659,47 +662,33 @@ class GUI extends JFrame {
         }
     }
 
-    private void setTopPanelInfo(Creature creature) {
-        chosenCreature = creature;
-        nameValue.setText(creature.getName());
-        familyValue.setText(creature.getFamily());
-        hungerValue.setText(String.valueOf(creature.getHunger()));
-        locationValue.setText(bundle.getString(creature.getLocation().name().toLowerCase()));
-        timeValue.setText(displayDateTimeFormatter.format(creature.getCreationTime()));
-        inventoryValue.setText(creature.getInventory().toString().substring(1, creature.getInventory().size() - 1));
-    }
-
     private void checkFilters() {
-        changeButton.setEnabled(false);
-        /*if ((notANumeric(sizeFrom.getText()) && !sizeFrom.getText().isEmpty()) || (notANumeric(sizeTo.getText()) && !sizeTo.getText().isEmpty())) {
+        if (!xTo.getText().isEmpty() && (notANumeric(xTo.getText()) || (Integer.valueOf(xTo.getText()) > 1000 || Integer.valueOf(xTo.getText()) < -1000)))
+            printText(bundle.getString("incorrectX"), true);
+        else if (!yTo.getText().isEmpty() && (notANumeric(yTo.getText()) || (Integer.valueOf(yTo.getText()) > 1000 || Integer.valueOf(yTo.getText()) < -1000)))
+            printText(bundle.getString("incorrectY"), true);
+        else if (!sizeTo.getText().isEmpty() && (notANumeric(sizeTo.getText()) || (Integer.valueOf(sizeTo.getText()) < 10 || Integer.valueOf(sizeTo.getText()) > 99)))
             printText(bundle.getString("incorrectSize"), true);
-            filtersTextNumber = 1;
-            changeButton.setEnabled(true);
-        } else *//*if ((notANumeric(powerFrom.getText()) && !powerFrom.getText().isEmpty()) || (notANumeric(powerTo.getText()) && !powerTo.getText().isEmpty())) {
-            printText(bundle.getString("incorrectPower"), true);
-            filtersTextNumber = 2;
-            changeButton.setEnabled(true);
-        } else {*/
-        try {
-            if (!timeFrom.getText().isEmpty()) {
-                filterDateTimeFormatter.parse(timeFrom.getText());
-            }
-            if (!timeTo.getText().isEmpty()) {
+        else if (!hungerTo.getText().isEmpty() && (notANumeric(hungerTo.getText()) || Integer.valueOf(hungerTo.getText()) < 1))
+            printText(bundle.getString("incorrectHunger"), true);
+        else if (!timeTo.getText().isEmpty()) {
+            try {
                 filterDateTimeFormatter.parse(timeTo.getText());
+                printText("", false);
+                applyFilters();
+            } catch (DateTimeParseException e) {
+                printText(bundle.getString("incorrectDate") + ": dd.MM.yy HH:mm:ss!", true);
             }
-            printText(bundle.getString("filtersCorrect"), false);
-            filtersTextNumber = 4;
-//            applyFilters();
-        } catch (DateTimeParseException e) {
-            printText(bundle.getString("incorrectDate") + " dd.MM.yyyy HH:mm:ss!", true);
-            filtersTextNumber = 3;
-            changeButton.setEnabled(true);
+
+        } else {
+            if (isFiltered)
+                printText("", false);
+            applyFilters();
         }
-        //  }
     }
 
     private boolean notANumeric(String str) {
-        return !str.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+");
+        return !str.matches("[-+]?\\d+");
     }
 
     void printTextToConsole(String message, boolean isError) {
@@ -711,7 +700,7 @@ class GUI extends JFrame {
     private void printText(String message, boolean isError) {
         if (isError) infoText.setForeground(Color.RED);
         else infoText.setForeground(Color.GREEN);
-        infoText.setText(" " + message);
+        infoText.setText(message);
     }
 
     void printTextToConsole(String message, int i) {
@@ -719,71 +708,45 @@ class GUI extends JFrame {
         infoText.setText(bundle.getString(message) + " " + bundle.getString("creatures") + ": " + i);
     }
 
-    /*private void applyFilters() {
-        filtredList = new ArrayList<>();
+    private void applyFilters() {
+        String colorFl = colorComboBox.getSelectedItem().toString().replace(" ", "");
+        String locationFl = locationComboBox.getSelectedItem().toString().replace(" ", "");
+        filteredList.clear();
         creatureList.stream()
-                .filter(o -> o.getHunger() >= hungerFromSlider.getValue() && o.creature.getHunger() <= hungerToSlider.getValue())
-                .filter(o -> o.creature.getX() >= xFromSlider.getValue() && o.creature.getX() <= xToSlider.getValue())
-                .filter(o -> {
-                    if (dateFrom.getText().isEmpty() || o.creature.getCreationDate().isAfter(LocalDateTime.parse(dateFrom.getText(), filterDateTimeFormatter))) {
-                        return dateTo.getText().isEmpty() || o.creature.getCreationDate().isBefore(LocalDateTime.parse(dateTo.getText(), filterDateTimeFormatter));
-                    }
-                    return false;
-                })
-                .filter(o -> powerFrom.getText().isEmpty() || o.creature.getPower() >= Integer.parseInt(powerFrom.getText()))
-                .filter(o -> powerTo.getText().isEmpty() || o.creature.getPower() <= Integer.parseInt(powerTo.getText()))
-                .filter(o -> sizeFrom.getText().isEmpty() || o.creature.getSize() >= Double.parseDouble(sizeFrom.getText()))
-                .filter(o -> sizeTo.getText().isEmpty() || o.creature.getSize() <= Double.parseDouble(sizeTo.getText()))
-                .filter(o -> o.creature.getName().startsWith(nameField.getText()))
-                .filter(o -> o.creature.getColor().equals(Colors.Blue) && blueCheckBox.isSelected() ||
-                        o.creature.getColor().equals(Colors.Sapphire) && sapphireCheckBox.isSelected() ||
-                        o.creature.getColor().equals(Colors.Navy) && navyCheckBox.isSelected() ||
-                        o.creature.getColor().equals(Colors.Cyan) && cyanCheckBox.isSelected() ||
-                        o.creature.getColor().equals(Colors.Mint) && mintCheckBox.isSelected() ||
-                        o.creature.getColor().equals(Colors.Emerald) && emeraldCheckBox.isSelected())
-                .forEach(filteredCircles::add);
+                .filter(o -> hungerTo.getText().isEmpty() || o.getHunger() == Integer.valueOf(hungerTo.getText()))
+                .filter(o -> xTo.getText().isEmpty() || o.getX() == Integer.valueOf(xTo.getText()))
+                .filter(o -> yTo.getText().isEmpty() || o.getY() == Integer.valueOf(yTo.getText()))
+                .filter(o -> sizeTo.getText().isEmpty() || o.getSize() == Integer.valueOf(sizeTo.getText()))
+                .filter(o -> timeTo.getText().isEmpty() || o.getCreationTime()
+                        .format(filterDateTimeFormatter
+                                .withZone(ZoneId.systemDefault()))
+                        .equals(timeTo.getText()))
+                .filter(o -> o.getName().startsWith(nameTo.getText()))
+                .filter(o -> o.getFamily().startsWith(familyTo.getText()))
+                .filter(o -> colorFl.equals("") || colorFl.equals(o.getColor().toString()))
+                .filter(o -> locationFl.equals("") || locationFl.equals(o.getLocation().toString()))
+                .forEach(filteredList::add);
 
-        if (filteredCircles.size() == 0) {
-            changeButton.setEnabled(true);
-            printText(bundle.getString("noObjectsFound"), false);
-            filtersTextNumber = 5;
-        } else {
-            cancelButton.setEnabled(true);
-            printText(filteredCircles.size() + " " + bundle.getString("objectsFound"), false);
-            filtersTextNumber = 6;
-            timers = new ArrayList<>();
-            for (Circle circle : filteredCircles) {
-                timers.add(new Timer());
-                timers.get(timers.size() - 1).schedule(new TimerTask() {
-                    int counter = 0;
-
-                    @Override
-                    public void run() {
-                        circle.transition();
-                        p3.revalidate();
-                        p3.repaint();
-                        counter++;
-                        if (counter == 70) {
-                            stopAnimation();
-                        }
-                    }
-                }, 100, 100);
-            }
+        if (filteredList.size() == 0)
+            printText(bundle.getString("NoCreaturesFound"), false);
+        else {
+            cancel();
+            refreshTable(filteredList);
         }
-    }*/
+    }
 
-    private void stopAnimation() {
+    /*private void stopAnimation() {
         for (Timer timer : timers) {
             timer.cancel();
         }
-        /*for (Circle c : filteredCircles) {
+        for (Circle c : filteredCircles) {
             c.setNormalColor();
-        }*/
+        }
         p3.revalidate();
         p3.repaint();
         changeButton.setEnabled(true);
         cancelButton.setEnabled(false);
-    }
+    }*/
 
     synchronized void refreshCollection(List<Creature> tempCr) {
         ArrayList<Creature> newCreature = new ArrayList<>(tempCr);
@@ -810,16 +773,11 @@ class GUI extends JFrame {
         }
         creatureList.clear();
         creatureList = newCreature;
-        clearSelection = true;
-        table.clearSelection();
-        collectionModel.setRowCount(0);
-        for (Creature creature : creatureList)
-            addToTable(creature);
-        clearSelection = false;
-        table.repaint();
-        table.revalidate();
-
-            /*circleList = new Circle[creatureList.size()];
+        refreshTable(creatureList);
+        isFiltered = false;
+        checkFilters();
+        isFiltered = true;
+/*circleList = new Circle[creatureList.size()];
             p3.removeAll();
             for (int i = 0; i < creatureList.size(); i++) {
                 Circle c = new Circle(creatureList.get(i), this);
@@ -837,26 +795,19 @@ class GUI extends JFrame {
             filtersTextNumber = 8;*/
     }
 
+    private void refreshTable(ArrayList<Creature> list) {
+        clearSelection = true;
+        table.clearSelection();
+        collectionModel.setRowCount(0);
+        for (Creature creature : list)
+            addToTable(creature);
+        clearSelection = false;
+        table.repaint();
+        table.revalidate();
+    }
 
-/*    private void firstTimeRefresh() {
-        while (true) {
-//            List<Creature> tempCreatureList = sender.getCollection();
-//            if (tempCreatureList != null) {
-                *//*creatureList = tempCreatureList;
-                circleList = new Circle[creatureList.size()];
-                for (int i = 0; i < creatureList.size(); i++) {
-                    Circle c = new Circle(creatureList.get(i), this);
-                    circleList[i] = c;
-                    p3.add(c);
-                }*//*
-            p3.revalidate();
-            p3.repaint();
-            break;
-        }
-    }*/
-
-
-    private void changeLanguage(Locale locale) {
+    private void changeLanguage(Locale locale, boolean isFirst) {
+        printText("", false);
         bundle = ResourceBundle.getBundle("bundle", locale);
         staticBundle = ResourceBundle.getBundle("bundle", locale);
         displayDateTimeFormatter = displayDateTimeFormatter.withLocale(locale);
@@ -886,11 +837,11 @@ class GUI extends JFrame {
         DeepRedComboBox = bundle.getString("deepRed");
         PurpleComboBox = bundle.getString("purple");
         OtherComboBox = bundle.getString("other");
-        nameStarts.setText(bundle.getString("nameFilter"));
         nameFromTo.setText(bundle.getString("name"));
         familyFromTo.setText(bundle.getString("family"));
         timeFromTo.setText(bundle.getString("time"));
         locationFromTo.setText(bundle.getString("location"));
+        infoConnectionText.setText("<html><h1 align=\"center\">" + bundle.getString("kek") + "</h1></html>");
         hungerFromTo.setText(bundle.getString("hunger"));
         changeButton.setText(bundle.getString("change"));
         newCreatureButton.setText(bundle.getString("newCreature"));
@@ -904,45 +855,19 @@ class GUI extends JFrame {
         timeFromTo.setText(bundle.getString("time"));
         tableP.setText(bundle.getString("table"));
         graphics.setText(bundle.getString("graphics"));
-
-        if (chosenCreature != null) {
-            setTopPanelInfo(chosenCreature);
-        }
-        /*switch (filtersTextNumber) {
-            case 0:
-                printText("greeting", false);
-                break;
-            case 1:
-                printText("incorrectSize", true);
-                break;
-            case 2:
-                printText("incorrectPower", true);
-                break;
-            case 3:
-                printText("incorrectDate" + " dd-MM-yyyy!", true);
-                break;
-            case 4:
-                printText(bundle.getString("filtersCorrect"), false);
-                break;
-            case 5:
-                printText(bundle.getString("noObjectsFound"), false);
-                break;
-            case 6:
-                //  printText(filteredCircles.size() + " " + bundle.getString("objectsFound"), false);
-                break;
-            case 7:
-                printText(bundle.getString("acquired") + " " + creatureList.size() + " " + bundle.getString("elements"), false);
-                break;
-            case 8:
-                printText(bundle.getString("tryAgain"), true);
-                break;*/
-
+        table.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("name"));
+        table.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("family"));
+        table.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("hunger"));
+        table.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("creationTime"));
+        table.getColumnModel().getColumn(4).setHeaderValue(bundle.getString("location"));
+        table.getColumnModel().getColumn(7).setHeaderValue(bundle.getString("size"));
+        table.getColumnModel().getColumn(8).setHeaderValue(bundle.getString("color"));
+        if (!isFirst) refreshTable(filteredList);
     }
 
     private void newCreature() {
         addButton.setEnabled(true);
         addIfMaxButton.setEnabled(true);
-        removeButton.setEnabled(true);
         cancelButton.setEnabled(true);
         newCreatureButton.setEnabled(false);
         changeButton.setEnabled(false);
@@ -995,15 +920,15 @@ class GUI extends JFrame {
         } else if (notANumeric(hungerValue.getText())) {
             printText(bundle.getString("hunger") + " " + bundle.getString("isnNumber"), true);
         } else if (Double.parseDouble(hungerValue.getText()) <= 0) {
-            printText(bundle.getString("hunger") + " " + bundle.getString("isntPositive"), true);
+            printText(bundle.getString("hunger") + " " + bundle.getString("isnPositive"), true);
         } else if (locationBox.getSelectedItem().equals("")) {
             printText(bundle.getString("location") + " " + bundle.getString("isnChosen"), true);
         } else {
             Creature creature = new Creature(nameValue.getText(), (int) Double.parseDouble(hungerValue.getText()), Location.valueOf(((String) locationBox.getSelectedItem()).replace(" ", "")), OffsetDateTime.now(), familyValue.getText(), xFromSlider.getValue(), yFromSlider.getValue(), sizeFromSlider.getValue(), color);
             switch (command) {
                 case "add":
-                    sender.addCreature(creature);
                     cancel();
+                    sender.addCreature(creature);
                     break;
                 case "change":
                     int index = table.getSelectedRow();
@@ -1019,18 +944,8 @@ class GUI extends JFrame {
                     sender.changeCreature(creature);
                     break;
                 case "add_if_max":
-                    if (true) {
-                        printText(bundle.getString("added"), false);
-                        cancel();
-                    } else {
-                        printText(bundle.getString("NotMax"), false);
-                    }
-                    break;
-
-                case "remove":
                     cancel();
-//                    Auth.sm.remove_greater(creature);
-
+                    sender.addIfMaxCreature(creature);
                     break;
             }
         }
@@ -1043,7 +958,7 @@ class GUI extends JFrame {
         String size = String.valueOf(cr.getSize());
         String time = cr.getCreationTime().format(displayDateTimeFormatter);
         collectionModel.addRow(new String[]{
-                cr.getName(), cr.getFamily(), hunger, time, cr.getLocation().toString(), x, y, size, cr.getColor().name()});
+                cr.getName(), cr.getFamily(), hunger, time, bundle.getString(cr.getLocation().toString().replace(" ", "")), x, y, size, cr.getColor().name()});
     }
 
     /*private void load(){
