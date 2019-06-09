@@ -12,40 +12,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f85ff96e-cdfa-429b-a99f-4c22a8851cf9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Client/res/bundle.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/res/bundle_en_AU.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/res/bundle_ru.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/res/bundle_sl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/res/bundle_sv.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/res/bundle_zh_CN.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/src/MyDefaultTableModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/Client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Client.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/res/bundle.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/res/bundle_en_AU.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/res/bundle_ru.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/res/bundle_sl.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/res/bundle_sv.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/res/bundle_zh_CN.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/Auth.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/Auth.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/GUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/Handler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/Handler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/MySwingWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/MySwingWorker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/Sender.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/Sender.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/UTF8Control.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/src/Colors.java" beforeDir="false" afterPath="$PROJECT_DIR$/Common/src/Colors.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/src/Creature.java" beforeDir="false" afterPath="$PROJECT_DIR$/Common/src/Creature.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/src/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/Common/src/Request.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/CollectionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/CollectionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/DataBaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/DataBaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/RequestsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/RequestsHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Client/bundle.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Client/bundle_en_AU.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Client/bundle_ru.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Client/bundle_sl.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Client/bundle_sv.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Client/bundle_zh_CN.properties" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -148,11 +115,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Client/src/GUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="724" column="32" lean-forward="true" selection-start-line="724" selection-start-column="32" selection-end-line="724" selection-end-column="32" />
+            <state relative-caret-position="322">
+              <caret line="692" column="14" selection-start-line="692" selection-start-column="14" selection-end-line="692" selection-end-column="14" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#30622#30623#0" expanded="true" />
+                <element signature="e#30624#30625#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -334,6 +301,11 @@
               <item name="lab8" type="462c0819:PsiDirectoryNode" />
               <item name="Common" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lab8" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lab8" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="lab8" type="b2602c69:ProjectViewProjectNode" />
@@ -529,7 +501,7 @@
       <workItem from="1558998122760" duration="52389000" />
       <workItem from="1559298487512" duration="93757000" />
       <workItem from="1559726925807" duration="1637000" />
-      <workItem from="1559754178280" duration="57000000" />
+      <workItem from="1559754178280" duration="57282000" />
     </task>
     <task id="LOCAL-00001" summary="Добавлена lab7(ведётся работа)">
       <created>1556126978996</created>
@@ -685,17 +657,30 @@
       <option name="project" value="LOCAL" />
       <updated>1559754417402</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Локаль в виде классов">
+      <created>1560041026109</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1560041026109</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Работа с таблицами&#10;Есть не все команды, но...">
+      <created>1560041086341</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1560041086341</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="843726000" />
+    <option name="totallyTimeSpent" value="844008000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17986578" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17986578" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -704,7 +689,7 @@
       <window_info id="Image Layers" order="6" />
       <window_info anchor="bottom" id="Database Console" order="0" sideWeight="0.49463087" weight="0.38360175" />
       <window_info anchor="bottom" id="Duplicate detector" order="1" weight="0.3286119" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.48389262" visible="true" weight="0.3338214" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.48389262" visible="true" weight="0.3338214" />
       <window_info anchor="bottom" content_ui="combo" id="Debug" order="3" sideWeight="0.45973155" weight="0.3660322" />
       <window_info anchor="bottom" id="Version Control" order="4" sideWeight="0.4986577" weight="0.329429" />
       <window_info anchor="bottom" id="Terminal" order="5" weight="0.329429" />
@@ -795,7 +780,9 @@
     <MESSAGE value="Вёрстка похожа на нормальную" />
     <MESSAGE value="Авторизация готова" />
     <MESSAGE value="Авторизация + ожидание недоступного сервера" />
-    <option name="LAST_COMMIT_MESSAGE" value="Авторизация + ожидание недоступного сервера" />
+    <MESSAGE value="Локаль в виде классов" />
+    <MESSAGE value="Работа с таблицами&#10;Есть не все команды, но..." />
+    <option name="LAST_COMMIT_MESSAGE" value="Работа с таблицами&#10;Есть не все команды, но..." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1248,11 +1235,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/src/GUI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="724" column="32" lean-forward="true" selection-start-line="724" selection-start-column="32" selection-end-line="724" selection-end-column="32" />
+        <state relative-caret-position="322">
+          <caret line="692" column="14" selection-start-line="692" selection-start-column="14" selection-end-line="692" selection-end-column="14" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#30622#30623#0" expanded="true" />
+            <element signature="e#30624#30625#0" expanded="true" />
           </folding>
         </state>
       </provider>
