@@ -90,7 +90,7 @@ class DataBaseManager {
         }
     }
 
-    private Long getCreatureId(String name, String family) throws SQLException {
+    Long getCreatureId(String name, String family) throws SQLException {
         String query = "SELECT creature_id from creatures where name = ? AND family = ?";
         try (Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
              PreparedStatement pst = connection.prepareStatement(query)) {
@@ -130,8 +130,7 @@ class DataBaseManager {
                             newCreature.setCreationTime(OffsetDateTime.ofInstant(Instant.ofEpochMilli(time.getTime()), ZoneId.of("UTC")));
                             if (addCreature(newCreature, token))
                                 return "ChangedSuccess";
-                            else while (!addCreature(oldCreature, token)) {
-                            }
+                            else while (!addCreature(oldCreature, token)) {}
                             return "ChangedFailed";
                         } else if(answer.contains("DontYours"))
                             return "ChangedFailingDontYours";
@@ -530,8 +529,11 @@ class DataBaseManager {
                 }
             }
         }
+        creature.setId((int) (long)getCreatureId(creature.getName(), creature.getFamily()));
         return creature;
     }
+
+
 }
 
 

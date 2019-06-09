@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 class CollectionManager {
@@ -90,7 +90,8 @@ class CollectionManager {
     String change(Creature forAction, String token)throws SQLException {
         String answer = DBmanager.change(forAction, token);
         if (answer.contains("Success")) {
-            Creatures.removeIf(forAction::equals);
+            Creatures.removeIf(forAction::equalsId);
+            forAction.setId((int) (long)DBmanager.getCreatureId(forAction.getName(), forAction.getFamily()));
             Creatures.add(forAction);
         }
         return answer;
@@ -98,6 +99,7 @@ class CollectionManager {
 
     boolean addIfMax(Creature forAction, String token) throws SQLException {
         if (DBmanager.addIfMax(forAction, token)) {
+            forAction.setId((int) (long)DBmanager.getCreatureId(forAction.getName(), forAction.getFamily()));
             Creatures.add(forAction);
             return true;
         } else
@@ -106,6 +108,7 @@ class CollectionManager {
 
     boolean add(Creature forAction, String token) throws SQLException{
         if (DBmanager.addCreature(forAction, token)) {
+            forAction.setId((int) (long)DBmanager.getCreatureId(forAction.getName(), forAction.getFamily()));
             Creatures.add(forAction);
             return true;
         }
@@ -142,8 +145,8 @@ class CollectionManager {
         return "DELETED: " + deleted;
     }
 
-    List<Creature> getCreatures() {
-        return Creatures;
+    LinkedList<Creature> getCreatures() {
+        return new LinkedList<>(Creatures);
     }
 
 

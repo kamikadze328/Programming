@@ -4,13 +4,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.LinkedList;
 
 public class RequestsHandler extends Thread {
     private Socket client;
     private CollectionManager manager;
     private DataBaseManager DBman;
     private boolean exit = false;
-    private ObjectOutputStream oos;
 
     RequestsHandler(Socket socket, CollectionManager manager, DataBaseManager DBman) {
         this.client = socket;
@@ -21,7 +21,7 @@ public class RequestsHandler extends Thread {
     @Override
     public void run() {
         try (ObjectInputStream ois = new ObjectInputStream(client.getInputStream())) {
-            oos = new ObjectOutputStream(client.getOutputStream());
+            ObjectOutputStream oos1 = new ObjectOutputStream(client.getOutputStream());
             while (!exit) {
                 try {
                     Object message = ois.readObject();
@@ -32,23 +32,23 @@ public class RequestsHandler extends Thread {
                         File fileClients = request.fileClients;
                         String fileServer = request.fileServer;
                         String token = request.token;
+                        ObjectOutputStream oos = Server.clients.get(token);
                         new Thread(() -> {
                             try {
                                 boolean get = false;
                                 boolean changed = false;
-                                boolean ok = false;
                                 String answer;
                                 answer = DBman.checkToken(token);
                                 if (answer != null) {
-                                    oos.writeObject(answer);
-                                    justExit();
-                                } else {
-                                    for(ObjectOutputStream oos1 : Server.clients){
-                                        if(oos.equals(oos1))
-                                            ok=true;
+                                    try {
+                                        oos.writeObject(answer);
+                                        Server.remove(token);
+                                        oos.close();
+                                    }catch (NullPointerException ignored){
+                                        Server.remove(token);
                                     }
-                                    if (!ok)
-                                        Server.clients.add(oos);
+                                    justExit(token);
+                                } else {
                                     switch (command) {
                                         case "get":
                                             oos.writeObject(new Request(manager.getCreatures()));
@@ -57,7 +57,7 @@ public class RequestsHandler extends Thread {
 
                                         case "clear":
                                             answer = manager.clear(token);
-                                            if(Integer.parseInt(answer.substring(9))>0)
+                                            if (Integer.parseInt(answer.substring(9)) > 0)
                                                 changed = true;
                                             break;
 
@@ -65,44 +65,41 @@ public class RequestsHandler extends Thread {
                                             if (manager.add(creature, token)) {
                                                 answer = "AddedSuccess";
                                                 changed = true;
-                                                oos.writeObject(new Request(manager.getCreatures()));
                                             } else
                                                 answer = "AddedFailing";
                                             break;
 
                                         case "change":
                                             answer = manager.change(creature, token);
-                                            if(answer.contains("Success"))
-                                                changed=true;
+                                            if (answer.contains("Success"))
+                                                changed = true;
                                             break;
                                         case "remove":
                                             answer = manager.remove(creature, token);
-                                            if(answer.contains("Success"))
-                                                changed=true;
+                                            if (answer.contains("Success"))
+                                                changed = true;
                                             break;
 
                                         case "add_if_max":
-                                            if (manager.addIfMax(creature, token)){
+                                            if (manager.addIfMax(creature, token)) {
                                                 answer = "AddedSuccess";
                                                 changed = true;
-                                            }
-                                            else
+                                            } else
                                                 answer = "AddedFailing";
                                             break;
 
                                         case "import":
                                             int added = manager.load(fileServer, token);
-                                            if (added >= 0){
+                                            if (added >= 0) {
                                                 answer = "ADDED: " + added;
-                                                if(added>0) changed=true;
-                                            }
-                                            else
+                                                if (added > 0) changed = true;
+                                            } else
                                                 answer = "JSONError";
                                             break;
 
                                         case "load":
                                             answer = manager.loadFile(fileClients, token);
-                                            if(Integer.parseInt(answer.substring(7))>0)
+                                            if (Integer.parseInt(answer.substring(7)) > 0)
                                                 changed = true;
                                             break;
 
@@ -114,22 +111,31 @@ public class RequestsHandler extends Thread {
                                             break;
 
                                         case "exit":
-                                            justExit();
+                                            justExit(token);
                                             break;
+
+                                        case "addUser":
+                                            get = true;
+                                            if(Server.clients.containsKey(token))
+                                                Server.remove(token);
+                                            Server.add(oos1, token);
                                     }
                                     if (!exit && !get) {
                                         oos.writeObject(answer);
                                         if (changed) {
                                             int count = 0;
                                             try {
-                                                for (ObjectOutputStream sender : Server.clients) {
-                                                    sender.writeObject(new Request(manager.getCreatures()));
+                                                for (ObjectOutputStream oos2 : Server.clients.values()) {
+                                                    LinkedList<Creature> cr = manager.getCreatures();
+                                                    Request r = new Request(cr);
+                                                    oos2.writeObject(r);
                                                     count++;
                                                 }
-                                            }catch (IOException e){
-                                                Server.clients.remove(count);
-                                                if(Server.clients.size()>= count)
-                                                sendToAll(count);
+
+                                            } catch (IOException e) {
+                                                Server.remove(count);
+                                                if (Server.clients.size() >= count)
+                                                    sendToAll(count);
                                             }
                                         }
                                     }
@@ -157,8 +163,8 @@ public class RequestsHandler extends Thread {
                                         DBman.deleteDeadUsers();
                                         if (DBman.checkLogin(login)) {
                                             answer = DBman.logIn(login, password);
-                                            if (!answer.equals("WrongPassword"))
-                                                Server.add(oos);
+                                            String color = "COLOR: " + DBman.getColor(login);
+                                            oos1.writeObject(color);
                                         } else
                                             answer = "LoginDoesntExist";
                                         break;
@@ -181,8 +187,7 @@ public class RequestsHandler extends Thread {
                                             answer = DBman.signUp(login, password);
                                         if (answer.contains("TOKEN: ")) {
                                             String color = "COLOR: " + DBman.getColor(login);
-                                            oos.writeObject(color);
-                                            Server.add(oos);
+                                            oos1.writeObject(color);
                                         }
                                         break;
 
@@ -190,10 +195,10 @@ public class RequestsHandler extends Thread {
                                         answer = "IncorrectCommand";
                                         break;
                                 }
-                                oos.writeObject(answer);
+                                oos1.writeObject(answer);
                             } catch (SQLException e) {
                                 try {
-                                    oos.writeObject("SQLException");
+                                    oos1.writeObject("SQLException");
                                 } catch (IOException ignored) {
                                 }
                             } catch (IOException ignored) {
@@ -202,12 +207,6 @@ public class RequestsHandler extends Thread {
                     }
                 } catch (ClassNotFoundException e) {
                     System.out.println(e.getMessage());
-                    try {
-                        oos.writeObject("WTF");
-                    } catch (IOException ignored) {
-                    }
-                } catch (IOException ignored) {
-                    justExit();
                 }
             }
             client.close();
@@ -215,22 +214,26 @@ public class RequestsHandler extends Thread {
         }
     }
 
-    private void sendToAll(int count) {
+    private void sendToAll(int i) {
+        int count = 0;
         try {
-            for (int i = count; i <= Server.clients.size(); i++) {
-                Server.clients.get(i).writeObject(new Request(manager.getCreatures()));
+            for (ObjectOutputStream oos2 : Server.clients.values()) {
+                if (count == i)
+                    oos2.writeObject(new Request(manager.getCreatures()));
                 count++;
             }
         } catch (IOException e) {
-            Server.clients.remove(count);
+            Server.remove(count);
             if (Server.clients.size() >= count)
                 sendToAll(count);
         }
     }
 
-    private void justExit() throws IOException {
-        Server.remove(oos);
-        oos.close();
+    private void justExit(String token) throws IOException{
+        if(Server.clients.containsKey(token)) {
+            Server.clients.get(token).writeObject("exit");
+            Server.remove(token);
+        }
         exit = true;
     }
 }

@@ -4,12 +4,12 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Server {
-
-    static ArrayList<ObjectOutputStream> clients = new ArrayList<>();
+    static ConcurrentHashMap<String, ObjectOutputStream> clients = new ConcurrentHashMap<>();
     private static ServerSocket server;
+
     public static void main(String[] args) {
         Runtime.getRuntime().addShutdownHook(new Thread(() ->
                 System.out.println("Выход")
@@ -30,7 +30,7 @@ public class Server {
         }
 
 
-        try{
+        try {
             server = new ServerSocket(PORT);
             System.out.println("Сервер запущен");
             System.out.println("Сервер работает клиентов(port = " + PORT + ")");
@@ -43,13 +43,22 @@ public class Server {
         }
     }
 
-    static void add(ObjectOutputStream client) {
-        clients.add(client);
+    static void add(ObjectOutputStream client, String token) {
+        clients.put(token, client);
     }
 
-    static void remove(ObjectOutputStream client) {
-        clients.remove(client);
+    static void remove(String token) {
+        clients.remove(token);
     }
 
-
+    static void remove(int i) {
+        int count = 0;
+        for (String keys : clients.keySet()) {
+            if (count == i) {
+                clients.remove(keys);
+                break;
+            }
+            count++;
+        }
+    }
 }

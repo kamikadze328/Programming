@@ -4,97 +4,110 @@ import java.io.ObjectOutputStream;
 import java.net.SocketAddress;
 import java.nio.channels.SocketChannel;
 
-public class Sender extends Thread {
+public class Sender {
 
     private SocketAddress server;
-    private Handler handler = new Handler();
+    private Handler handler;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
     private boolean exit;
     String token;
-    private volatile boolean isWorking = false;
+    GUI gui;
+    volatile boolean isWorking = false;
 
     Sender(SocketAddress server, String token, GUI gui) {
         this.token = token;
         this.server = server;
-        handler.gui = gui;
-        while(!connect()){}
+        this.gui = gui;
+        handler = new Handler(server, gui, token, this);
         handler.start();
     }
 
-    /**
-     * Trying to connect infinitely to notify user when server is off without refreshing
-     */
-    @Override
-    public void run() {
-        while (!exit) {
-            try {
-                oos.writeObject("");
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            } catch (IOException e) {
-                connect();
-            }
-        }
-    }
-
-
-
     void getCollection() {
         try {
-            oos.writeObject("get");
+            oos.writeObject(new Request("get", token));
         } catch (IOException | NullPointerException e) {
+            gui.printTextToConsole("tryAgain", true);
             GUI.setConnectionInfo(false);
         }
     }
-    void addCreature(Creature cr){
+
+    void addCreature(Creature cr) {
         try {
-            while(!isWorking){}
-            oos.writeObject(new Request("add", cr, token));
-        }catch (IOException e){
+            if (isWorking) oos.writeObject(new Request("add", cr, token));
+            else gui.printTextToConsole("tryAgain", true);
+        } catch (IOException e) {
+            gui.printTextToConsole("tryAgain", true);
             connect();
         }
     }
 
-    private boolean connect() {
+    void removeCreature(Creature cr) {
+        try {
+            if (isWorking)
+                oos.writeObject(new Request("remove", cr, token));
+            else gui.printTextToConsole("tryAgain", true);
+        } catch (IOException e) {
+            gui.printTextToConsole("tryAgain", true);
+            connect();
+        }
+    }
+
+    void changeCreature(Creature cr) {
+        try {
+            if (isWorking) oos.writeObject(new Request("change", cr, token));
+            else gui.printTextToConsole("tryAgain", true);
+        } catch (IOException e) {
+            gui.printTextToConsole("tryAgain", true);
+            connect();
+        }
+    }
+
+    void connect() {
         SocketChannel sc;
         isWorking = false;
         try {
-            sc = SocketChannel.open(server);
-            oos = new ObjectOutputStream(sc.socket().getOutputStream());
-            ois = new ObjectInputStream(sc.socket().getInputStream());
-            handler.ois = ois;
-            handler.oos = oos;
-            GUI.setConnectionInfo(true);
-            isWorking = true;
-            return true;
+            if(!exit) {
+                sc = SocketChannel.open(server);
+                oos = new ObjectOutputStream(sc.socket().getOutputStream());
+                ois = new ObjectInputStream(sc.socket().getInputStream());
+                GUI.setConnectionInfo(true);
+                isWorking = true;
+            }
         } catch (IOException e) {
             GUI.setConnectionInfo(false);
-            handler.ois = null;
-            handler.oos = null;
             while (!exit) {
                 try {
                     Thread.sleep(1000);
                     sc = SocketChannel.open(server);
                     oos = new ObjectOutputStream(sc.socket().getOutputStream());
                     ois = new ObjectInputStream(sc.socket().getInputStream());
-                    handler.ois = ois;
-                    handler.oos = oos;
                     GUI.setConnectionInfo(true);
                     isWorking = true;
-                    return true;
+                    return;
                 } catch (InterruptedException ex) {
                     Thread.currentThread().interrupt();
                 } catch (IOException ignored) {
                 }
             }
-            return false;
         }
     }
-    void exit(){
+
+    void exit() {
         exit = true;
-        handler.exit = true;
-        handler=null;
+        try {
+            oos.writeObject(new Request("exit", token));
+        } catch (IOException ignored) {
+        }
+        try {
+            handler.exit = true;
+            handler.ois.close();
+        } catch (IOException ignored) {
+        }
+        try {
+            oos.close();
+            ois.close();
+        } catch (IOException ignored) {
+        }
     }
 }

@@ -1,18 +1,18 @@
 import java.io.File;
 import java.io.Serializable;
-import java.util.List;
+import java.util.LinkedList;
 
 class Request implements Serializable {
     private static final long serialVersionUID = 4831994753580089564L;
     String command;
     Creature creature;
-    List<Creature> creatures;
+    LinkedList<Creature> creatures;
     File fileClients;
     String token;
     String fileServer;
     boolean success;
 
-    Request(List<Creature> creatures){
+    Request(LinkedList<Creature> creatures){
         this.creatures = creatures;
     }
 

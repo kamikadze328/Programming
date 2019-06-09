@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.channels.SocketChannel;
@@ -12,13 +14,15 @@ class Auth {
     Color color= null;
     String login;
     String token;
+    ObjectOutputStream oos;
+    ObjectInputStream ois;
     private Locale rulocale = new Locale("ru");
     private Locale sllocale = new Locale("sl");
     private Locale enlocale = new Locale("en", "AU");
     private Locale svlocale = new Locale("sv");
     private Locale zhlocale = new Locale("zh", "CN");
     private Locale chosenLocale = Locale.getDefault();
-    private ResourceBundle bundle = ResourceBundle.getBundle("bundle", chosenLocale, new UTF8Control());
+    private ResourceBundle bundle = ResourceBundle.getBundle("bundle", chosenLocale);
 
     private JLabel tokenText = new JLabel(bundle.getString("token"));
     private JMenu language = new JMenu(bundle.getString("language"));
@@ -252,12 +256,13 @@ class Auth {
         if (checkInput(user)) {
             try {
                 SocketChannel sc = SocketChannel.open(server);
-                ObjectOutputStream oos = new ObjectOutputStream(sc.socket().getOutputStream());
-                ObjectInputStream ois = new ObjectInputStream(sc.socket().getInputStream());
+                oos = new ObjectOutputStream(sc.socket().getOutputStream());
+                ois = new ObjectInputStream(sc.socket().getInputStream());
                 user.command = "logIn";
                 oos.writeObject(user);
                 currentUser = user;
                 handleServerCommands((String) ois.readObject());
+                if(color!=null) handleServerCommands((String) ois.readObject());
             } catch (IOException | ClassNotFoundException e) {
                 logInButton.setEnabled(true);
                 signUpButton.setEnabled(true);
@@ -272,8 +277,8 @@ class Auth {
         if (checkInput(user)) {
             try {
                 SocketChannel sc = SocketChannel.open(server);
-                ObjectOutputStream oos = new ObjectOutputStream(sc.socket().getOutputStream());
-                ObjectInputStream ois = new ObjectInputStream(sc.socket().getInputStream());
+                oos = new ObjectOutputStream(sc.socket().getOutputStream());
+                ois = new ObjectInputStream(sc.socket().getInputStream());
                 user.command = "signUp";
                 oos.writeObject(user);
                 currentUser = user;
@@ -290,9 +295,13 @@ class Auth {
 
     private void sendToken(User user) {
         try {
-            SocketChannel sc = SocketChannel.open(server);
-            ObjectOutputStream oos = new ObjectOutputStream(sc.socket().getOutputStream());
-            ObjectInputStream ois = new ObjectInputStream(sc.socket().getInputStream());
+            /*SocketChannel sc = SocketChannel.open(server);
+            try {
+                ois.close();
+                oos.close();
+            }catch (IOException ignored){}
+            oos = new ObjectOutputStream(sc.socket().getOutputStream());
+            ois = new ObjectInputStream(sc.socket().getInputStream());*/
             user.command = "checkEmail";
             oos.writeObject(user);
             handleServerCommands((String) ois.readObject());
@@ -332,7 +341,7 @@ class Auth {
 
     private void changeLanguage(Locale locale) {
         chosenLocale = locale;
-        bundle = ResourceBundle.getBundle("bundle", locale, new UTF8Control());
+        bundle = ResourceBundle.getBundle("bundle", locale);
         frame.setTitle(bundle.getString("titleAuth"));
         language.setText(bundle.getString("language"));
         loginText.setText(bundle.getString("login"));
@@ -368,7 +377,7 @@ class Auth {
                 passwordField.setEditable(true);
                 setErrorMessage(userAlreadyExists);
                 break;
-            case"LoginDoesntExist":
+            case "LoginDoesntExist":
                 logInButton.setEnabled(true);
                 signUpButton.setEnabled(true);
                 loginField.setEditable(true);
@@ -398,7 +407,7 @@ class Auth {
                 cancelButton.doClick();
                 setErrorMessage(signUpError);
                 break;
-            case"WrongPassword":
+            case "WrongPassword":
                 logInButton.setEnabled(true);
                 signUpButton.setEnabled(true);
                 loginField.setEditable(true);
@@ -416,32 +425,18 @@ class Auth {
                 setErrorMessage(incorrectCommand);
                 break;
         }
-        if(command.contains("COLOR: ")){
-            switch (command.substring(7)) {
-                case "FernGreen":
-                    color = Colors.FernGreen.getRgbColor();
-                    break;
-                case "White":
-                    color = Colors.White.getRgbColor();
-                    break;
-                case "PareGold":
-                    color = Colors.PareGold.getRgbColor();
-                    break;
-                case "DeepRed":
-                    color = Colors.DeepRed.getRgbColor();
-                    break;
-                case "Purple":
-                    color = Colors.Purple.getRgbColor();
-                    break;
-                case "Black":
-                    color = Colors.Black.getRgbColor();
-                default:
-                    color = new Color(Integer.parseInt(command.substring(7)));
-            }
+        if (command.contains("COLOR: ")) {
+            color = new Color(Integer.parseInt(command.substring(7)));
 
-        }else if(command.contains("TOKEN: ")){
+        } else if (command.contains("TOKEN: ")) {
             token = command.substring(7);
             login = currentUser.login;
+            try {
+                oos.close();
+                ois.close();
+            } catch (IOException ignored) {
+            }
+
             work();
         }
     }

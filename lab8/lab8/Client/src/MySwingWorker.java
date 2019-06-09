@@ -22,9 +22,10 @@ public class MySwingWorker extends SwingWorker<Void, Void> {
         try {
             GUI gui = new GUI(locale, color, login);
             Sender sender = new Sender(new InetSocketAddress("localhost", 5001), token, gui);
-            sender.start();
             gui.sender = sender;
-            sender.getCollection();
+//            long time = System.currentTimeMillis();
+            /*while(System.currentTimeMillis() - time < 1000){}
+            sender.getCollection();*/
         }catch (Exception e){
             e.printStackTrace();
         }

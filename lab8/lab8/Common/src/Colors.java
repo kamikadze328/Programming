@@ -9,7 +9,6 @@ public enum Colors {
     Purple(new Color(111, 90, 163));
 
 
-
     private final Color rgbColor;
 
     Colors(Color rgbColor) {

@@ -111,9 +111,16 @@ public class Creature implements Comparable<Creature>, Serializable {
         if (otherObject == null) return false;
         if (getClass() != otherObject.getClass()) return false;
         Creature other = (Creature) otherObject;
-        return /*getName().equals(other.getName()) &&
-                getFamily().equals((other.getFamily()));*/
-                getId().equals(other.getId());
+        return getName().equals(other.getName()) &&
+                getFamily().equals((other.getFamily()));
+    }
+
+    public boolean equalsId(Object otherObject){
+        if (this == otherObject) return true;
+        if (otherObject == null) return false;
+        if (getClass() != otherObject.getClass()) return false;
+        Creature other = (Creature) otherObject;
+        return getId().equals(other.getId());
     }
 
     public boolean equalsAll(Object otherObject) {
@@ -123,7 +130,6 @@ public class Creature implements Comparable<Creature>, Serializable {
         Creature other = (Creature) otherObject;
         return getName().equals(other.getName()) &&
                 getFamily().equals((other.getFamily()))&&
-                getId().equals(other.getId())&&
                 getHunger()==(other.getHunger()) &&
                 getLocation().equals(other.getLocation()) &&
                 getX()==(other.getX()) &&
@@ -141,7 +147,7 @@ public class Creature implements Comparable<Creature>, Serializable {
     }
 
     public String toString() {
-        return "\n" + getFamily() + " " + getName();
+        return getFamily() + " " + getName();
     }
 
     class Inventory implements Serializable {
@@ -165,5 +171,9 @@ public class Creature implements Comparable<Creature>, Serializable {
     LinkedList<String> getInventory() {
         if (inventory == null) inventory = new Inventory();
         return inventory.getInventory();
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }
