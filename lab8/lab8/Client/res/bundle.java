@@ -27,7 +27,6 @@ public class bundle extends ListResourceBundle {
             {"send", "Send"},
             {"title", "Creature Collection Viewer"},
             {"language", "Language"},
-            {"isWorking", "isWorking"},
             {"exit", "exit"},
             {"info", "Creature info"},
             {"name", "Name"},
@@ -39,7 +38,6 @@ public class bundle extends ListResourceBundle {
             {"inventory", "Inventory"},
             {"user", "User"},
             {"format", "format"},
-            {"nameFilter", "Name starts with"},
             {"FootPath", "FootPath"},
             {"LightHouse", "Light House"},
             {"Hangar", "Hangar"},
@@ -67,11 +65,10 @@ public class bundle extends ListResourceBundle {
             {"RemovedSuccess", "Removed Success"},
             {"SavedSuccess", "Saved Success"},
             {"AddedFailing", "Added Failing"},
-            {"RemovedFailingDontYours", "Creature don't yours"},
-            {"RemovedFailingDontExists", ""},
+            {"RemovedFailingDontYours", "Removed Failing: Creature doesn't Yours!"},
             {"SavedFailing", "Saved failing"},
             {"loadFileError", "Load file failing"},
-            {"JSONError", ""},
+            {"JSONError", "Invalid JSON format"},
             {"greeting", "I wonder what will happen..."},
             {"newCreature", "New"},
             {"creatures", "creatures"},
@@ -80,57 +77,25 @@ public class bundle extends ListResourceBundle {
             {"remove", "Remove"},
             {"isEmpty", "field is empty!"},
             {"isnNumber", "value is not a number!"},
-            {"isntPositive", "can be positive!"},
+            {"isnPositive", "can be positive!"},
             {"isnChosen", "isn't chosen"},
             {"added", "Added"},
             {"tryAgain", "Server is unavailable, try again later"},
             {"incorrectDate", "Date format is"},
-            {"filtersCorrect", "Filters are correct"},
 
             {"ChangedSuccess", "Changed Success"},
             {"ChangedFailing", "Changed Failing"},
-            {"ChangedFailingDontYours","Changed Failing: Don't Yours"},
-            {"windowWillBeClosed", "Dead Token. Window will be closed!"}
-    };
-}
+            {"ChangedFailingDontYours","Changed Failing: Creature doesn't Yours!"},
+            {"windowWillBeClosed", "Dead Token. Window will be closed!"},
+            {"incorrectX", "Incorrect X!"},
+            {"incorrectY", "Incorrect Y!"},
+            {"incorrectSize", "Incorrect Size!"},
+            {"incorrectHunger", "Incorrect Hunger!"},
+            {"incorrectDate", "Incorrect Date"},
+            {"NoCreaturesFound", "No Creatures found"},
+            {"deleted", "Deleted"},
+            {"kek", "You are not connected<br>LOL"},
+            {"color", "Color"}
 
-/*
-public class bundle_en_AU extends ListResourceBundle {
-    public Object[][] getContents() { return contents; }
-    private Object[][] contents = {
-            {"s1", "Yes"},
-            {"s2", "No"},
     };
 }
-public class bundle extends ListResourceBundle {
-    public Object[][] getContents() { return contents; }
-    private Object[][] contents = {
-            {"s1", "Yes"},
-            {"s2", "No"},
-    };
-}
-public class bundle_sl extends ListResourceBundle {
-    public Object[][] getContents() { return contents; }
-    private Object[][] contents = {
-            {"s1", "Yes"},
-            {"s2", "No"},
-    };
-}
-
-public class bundle_sv  extends ListResourceBundle {
-    public Object[][] getContents() { return contents; }
-    private Object[][] contents = {
-            {"s1", "Yes"},
-            {"s2", "No"},
-    };
-}
-
-public class bundle_zh_CN extends ListResourceBundle {
-    public Object[][] getContents() { return contents; }
-    private Object[][] contents = {
-            {"s1", "Yes"},
-            {"s2", "No"},
-    };
-}
-
-*/
