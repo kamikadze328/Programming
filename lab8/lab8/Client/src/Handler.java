@@ -12,7 +12,6 @@ public class Handler extends Thread {
     private boolean isWorking = false;
     private String token;
     private Sender sender;
-    private long time;
 
 
     Handler(SocketAddress server, GUI gui, String token, Sender sender) {
@@ -30,9 +29,9 @@ public class Handler extends Thread {
         while (!exit) {
             if (isWorking) {
                 try {
-                    time = System.currentTimeMillis();
+                    long time = System.currentTimeMillis();
                     Object message = ois.readObject();
-                    if(System.currentTimeMillis() - time> 90000)
+                    if(System.currentTimeMillis() - time > 90000)
                         exit = true;
                     new Thread(() -> {
                         if (message instanceof String) {
