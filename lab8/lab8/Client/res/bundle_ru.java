@@ -78,6 +78,7 @@ public class bundle_ru extends ListResourceBundle {
             {"NoCreaturesFound", "Существ не найдено"},
             {"deleted", "Удалено"},
             {"kek", "Вы никуда не подключены<br>ЛОЛ"},
-            {"color", "Цвет"}
+            {"color", "Цвет"},
+            {"clear", "Очистить"}
     };
 }

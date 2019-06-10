@@ -78,7 +78,9 @@ public class bundle_en_AU extends ListResourceBundle {
             {"NoCreaturesFound", "No Creatures found"},
             {"deleted", "Deleted"},
             {"kek", "You are not connected<br>LOL"},
-            {"color", "Color"}
+            {"color", "Color"},
+            {"clear", "Clear"}
+
     };
 }
 

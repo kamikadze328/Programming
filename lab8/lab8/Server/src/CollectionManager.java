@@ -11,12 +11,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 class CollectionManager {
 
-    private File importFile;
     private CopyOnWriteArrayList<Creature> Creatures;
     private DataBaseManager DBmanager;
 
-    CollectionManager(File file, DataBaseManager DBmanager) {
-        importFile = file;
+    CollectionManager(DataBaseManager DBmanager) {
         this.DBmanager = DBmanager;
         Creatures = DBmanager.synchronize();
     }
@@ -41,7 +39,7 @@ class CollectionManager {
      * @param JsonString строка в формате json
      * @param token token
      * @return количество добавленных существ
-     * @throws SQLException
+     * @throws SQLException SQlException
      */
     int load(String JsonString, String token) throws SQLException{
         try {
@@ -117,23 +115,15 @@ class CollectionManager {
 
 
     synchronized boolean save() {
-        File saveFile = importFile;
+        SimpleDateFormat formater = new SimpleDateFormat("MM.dd_hh:mm:ss");
+        File saveFile = new File("saveFile" + formater.format(new Date()) + ".json");
         Gson gson = new Gson();
         try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(saveFile, false))) {
             osw.write(gson.toJson(Creatures));
             osw.flush();
             return true;
         } catch (IOException | NullPointerException e) {
-            Date d = new Date();
-            SimpleDateFormat formater = new SimpleDateFormat("MM.dd_hh:mm:ss");
-            saveFile = new File("saveFile" + formater.format(d) + ".json");
-            try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(saveFile, true))) {
-                osw.write(gson.toJson(Creatures));
-                osw.flush();
-                return true;
-            } catch (IOException ex) {
-                return false;
-            }
+            return false;
         }
     }
 

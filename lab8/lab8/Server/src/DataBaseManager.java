@@ -127,7 +127,7 @@ class DataBaseManager {
                         oldCreature = initFromDataBase(name, hunger, location, time, family, creatureId, x, y, size, color);
                         String answer = removeCreature(oldCreature, token);
                         if (answer.contains("Success")) {
-                            newCreature.setCreationTime(OffsetDateTime.ofInstant(Instant.ofEpochMilli(time.getTime()), ZoneId.of("UTC")));
+                            newCreature.setCreationTime(OffsetDateTime.ofInstant(Instant.ofEpochMilli(time.getTime()), ZoneId.systemDefault()));
                             if (addCreature(newCreature, token))
                                 return "ChangedSuccess";
                             else while (!addCreature(oldCreature, token)) {}

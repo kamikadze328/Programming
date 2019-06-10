@@ -79,6 +79,7 @@ public class bundle_sv extends ListResourceBundle {
             {"deleted", "Raderade"},
             {"kek", "Du är inte ansluten <br> LOL"},
             {"color", "Färg"},
+            {"clear", "Klar"}
 
     };
 }
