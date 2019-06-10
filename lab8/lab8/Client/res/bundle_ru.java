@@ -79,6 +79,8 @@ public class bundle_ru extends ListResourceBundle {
             {"deleted", "Удалено"},
             {"kek", "Вы никуда не подключены<br>ЛОЛ"},
             {"color", "Цвет"},
-            {"clear", "Очистить"}
+            {"clear", "Очистить"},
+            {"all", "Все"}
+
     };
 }

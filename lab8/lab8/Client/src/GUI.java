@@ -55,6 +55,7 @@ class GUI extends JFrame {
 
     private JLabel infoText = new JLabel(" " + bundle.getString("greeting"));
     private String topFloorComboBox = bundle.getString("TopFloor");
+    private String all = bundle.getString("all");
     private String groundFloorComboBox = bundle.getString("GroundFloor");
     private String yardComboBox = bundle.getString("Yard");
     private String hillComboBox = bundle.getString("Hill");
@@ -281,6 +282,17 @@ class GUI extends JFrame {
         });
 
         String[] locationsArray = {
+                all,
+                topFloorComboBox,
+                groundFloorComboBox,
+                yardComboBox,
+                hillComboBox,
+                hangarComboBox,
+                footPathComboBox,
+                lightHouseComboBox,
+                nanComboBox
+        };
+        String[] locationsArray1 = {
                 "",
                 topFloorComboBox,
                 groundFloorComboBox,
@@ -292,7 +304,7 @@ class GUI extends JFrame {
                 nanComboBox
         };
         String[] colorsArray = {
-                "",
+                all,
                 FernGreenComboBox,
                 BlackComboBox,
                 WhiteComboBox,
@@ -301,7 +313,8 @@ class GUI extends JFrame {
                 PurpleComboBox,
                 OtherComboBox
         };
-        locationBox = new JComboBox<>(locationsArray);
+
+        locationBox = new JComboBox<>(locationsArray1);
         locationBox.setEditable(false);
         locationBox.setEnabled(false);
         locationComboBox = new JComboBox<>(locationsArray);
@@ -438,7 +451,6 @@ class GUI extends JFrame {
         p5.add(Box.createRigidArea(new Dimension(5, 0)));
         p5.add(cancelButton);
 
-
         JPanel p55 = new JPanel();
         p55.setLayout(new BoxLayout(p55, BoxLayout.X_AXIS));
         p55.add(addButton);
@@ -446,7 +458,6 @@ class GUI extends JFrame {
         p55.add(addIfMaxButton);
         p55.add(Box.createRigidArea(new Dimension(10, 0)));
         p55.add(removeButton);
-
 
         JPanel p4 = new JPanel();
         p4.setLayout(new BoxLayout(p4, BoxLayout.Y_AXIS));
@@ -730,8 +741,13 @@ class GUI extends JFrame {
 
     private void applyFilters() {
         String colorFl = colorComboBox.getSelectedItem().toString().replace(" ", "");
+        if(colorComboBox.getSelectedIndex()==0) colorFl = "";
         String locationFl = locationComboBox.getSelectedItem().toString().replace(" ", "");
+        if(locationComboBox.getSelectedIndex()==0) locationFl = "";
+
         filteredList.clear();
+        String finalColorFl = colorFl;
+        String finalLocationFl = locationFl;
         creatureList.stream()
                 .filter(o -> hungerTo.getText().isEmpty() || o.getHunger() == Integer.valueOf(hungerTo.getText()))
                 .filter(o -> xTo.getText().isEmpty() || o.getX() == Integer.valueOf(xTo.getText()))
@@ -743,8 +759,8 @@ class GUI extends JFrame {
                         .equals(timeTo.getText()))
                 .filter(o -> o.getName().startsWith(nameTo.getText()))
                 .filter(o -> o.getFamily().startsWith(familyTo.getText()))
-                .filter(o -> colorFl.equals("") || colorFl.equals(o.getColor().toString()))
-                .filter(o -> locationFl.equals("") || locationFl.equals(o.getLocation().toString()))
+                .filter(o -> finalColorFl.equals("") || finalColorFl.equals(o.getColor().toString()))
+                .filter(o -> finalLocationFl.equals("") || finalLocationFl.equals(o.getLocation().toString()))
                 .forEach(filteredList::add);
 
         if (filteredList.size() == 0)
@@ -843,6 +859,7 @@ class GUI extends JFrame {
         inventoryText.setText(bundle.getString("inventory") + ":");
         refreshButton.setText(bundle.getString("refresh"));
         topFloorComboBox = bundle.getString("TopFloor");
+        all = bundle.getString("all");
         groundFloorComboBox = bundle.getString("GroundFloor");
         yardComboBox = bundle.getString("Yard");
         hillComboBox = bundle.getString("Hill");

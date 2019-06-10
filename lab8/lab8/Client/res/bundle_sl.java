@@ -79,6 +79,8 @@ public class bundle_sl extends ListResourceBundle {
             {"deleted", "Črta"},
             {"kek", "Niste povezani<br>LOL"},
             {"color", "Barva"},
-            {"clear", "Jasno"}
+            {"clear", "Jasno"},
+            {"all", "All"}
+
     };
 }

@@ -12,18 +12,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f85ff96e-cdfa-429b-a99f-4c22a8851cf9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/Client_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/Client_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/Server_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/Server_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/res/bundle.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/res/bundle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/res/bundle_en_AU.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/res/bundle_en_AU.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/res/bundle_ru.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/res/bundle_ru.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/res/bundle_sl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/res/bundle_sl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/res/bundle_sv.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/res/bundle_sv.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/GUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/Handler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/Handler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/MyDefaultTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/MyDefaultTableModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/Sender.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/Sender.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/CollectionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/CollectionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/DataBaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/DataBaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/Server.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -107,61 +104,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Client/src/GUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="434" column="51" selection-start-line="434" selection-start-column="51" selection-end-line="434" selection-end-column="51" />
+            <state relative-caret-position="152">
+              <caret line="745" column="27" selection-start-line="745" selection-start-column="27" selection-end-line="745" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#31651#31652#0" expanded="true" />
+                <element signature="e#32182#32183#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/res/bundle.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="271">
-              <caret line="98" column="26" lean-forward="true" selection-start-line="98" selection-end-line="99" />
-              <folding>
-                <element signature="e#123#124#0" expanded="true" />
-                <element signature="e#154#155#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/res/bundle_en_AU.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="254">
-              <caret line="81" column="30" lean-forward="true" selection-start-line="80" selection-start-column="30" selection-end-line="81" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/res/bundle_sl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="271">
-              <caret line="81" column="30" lean-forward="true" selection-start-line="80" selection-start-column="30" selection-end-line="81" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/res/bundle_sv.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="254">
-              <caret line="81" column="27" selection-start-line="81" selection-start-column="27" selection-end-line="81" selection-end-column="27" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/res/bundle_zh_CN.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="53" selection-start-line="2" selection-start-column="53" selection-end-line="2" selection-end-column="53" />
             </state>
           </provider>
         </entry>
@@ -174,15 +122,6 @@
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/src/MyDefaultTableModel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="10" column="42" lean-forward="true" selection-start-line="10" selection-start-column="42" selection-end-line="10" selection-end-column="42" />
             </state>
           </provider>
         </entry>
@@ -203,7 +142,7 @@
         <entry file="file://$PROJECT_DIR$/Client/src/Sender.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="266">
-              <caret line="48" column="35" lean-forward="true" selection-start-line="48" selection-start-column="35" selection-end-line="48" selection-end-column="35" />
+              <caret line="48" column="35" selection-start-line="48" selection-start-column="35" selection-end-line="48" selection-end-column="35" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -225,7 +164,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>color</find>
       <find>addC</find>
       <find>addCre</find>
       <find>data</find>
@@ -255,6 +193,7 @@
       <find>remo</find>
       <find>zone</find>
       <find>addto</find>
+      <find>&quot;&quot;</find>
     </findStrings>
     <replaceStrings>
       <replace>&quot;</replace>
@@ -362,19 +301,7 @@
             <path>
               <item name="lab8" type="b2602c69:ProjectViewProjectNode" />
               <item name="lab8" type="462c0819:PsiDirectoryNode" />
-              <item name="Client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lab8" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lab8" type="462c0819:PsiDirectoryNode" />
-              <item name="Common" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="lab8" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lab8" type="462c0819:PsiDirectoryNode" />
-              <item name="Common" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="lab8" type="b2602c69:ProjectViewProjectNode" />
@@ -413,7 +340,7 @@
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
@@ -569,7 +496,7 @@
       <workItem from="1558998122760" duration="52389000" />
       <workItem from="1559298487512" duration="93757000" />
       <workItem from="1559726925807" duration="1637000" />
-      <workItem from="1559754178280" duration="99571000" />
+      <workItem from="1559754178280" duration="100945000" />
     </task>
     <task id="LOCAL-00001" summary="Добавлена lab7(ведётся работа)">
       <created>1556126978996</created>
@@ -767,11 +694,25 @@
       <option name="project" value="LOCAL" />
       <updated>1560124566948</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Доработка и улучшение">
+      <created>1560132373259</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1560132373259</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Полностью готово всё(ха-ха), кроме визуализации объектов">
+      <created>1560132436228</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1560132436228</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="886297000" />
+    <option name="totallyTimeSpent" value="887671000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -784,9 +725,9 @@
       <window_info id="Capture Tool" order="4" />
       <window_info id="Favorites" order="5" side_tool="true" />
       <window_info id="Image Layers" order="6" />
-      <window_info anchor="bottom" id="Database Console" order="0" sideWeight="0.49463087" visible="true" weight="0.4407028" />
+      <window_info anchor="bottom" id="Database Console" order="0" sideWeight="0.49463087" weight="0.4407028" />
       <window_info anchor="bottom" id="Duplicate detector" order="1" weight="0.3286119" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.48322147" weight="0.3338214" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.48322147" visible="true" weight="0.3338214" />
       <window_info anchor="bottom" content_ui="combo" id="Debug" order="3" sideWeight="0.4590604" weight="0.38360175" />
       <window_info anchor="bottom" id="Version Control" order="4" sideWeight="0.4986577" weight="0.329429" />
       <window_info anchor="bottom" id="Terminal" order="5" weight="0.329429" />
@@ -882,7 +823,9 @@
     <MESSAGE value="Добавлены все языки кроме китайского" />
     <MESSAGE value="Добавлена фильтрация&#10;Исправлены мелкие баги" />
     <MESSAGE value="Доработка" />
-    <option name="LAST_COMMIT_MESSAGE" value="Доработка" />
+    <MESSAGE value="Доработка и улучшение" />
+    <MESSAGE value="Полностью готово всё(ха-ха), кроме визуализации объектов" />
+    <option name="LAST_COMMIT_MESSAGE" value="Полностью готово всё(ха-ха), кроме визуализации объектов" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -961,7 +904,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/Client/src/GUI.java</url>
-          <line>791</line>
+          <line>808</line>
           <properties />
           <option name="timeStamp" value="274" />
         </line-breakpoint>
@@ -1307,14 +1250,14 @@
     <entry file="file://$PROJECT_DIR$/Client/src/MyDefaultTableModel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
-          <caret line="10" column="42" lean-forward="true" selection-start-line="10" selection-start-column="42" selection-end-line="10" selection-end-column="42" />
+          <caret line="10" column="42" selection-start-line="10" selection-start-column="42" selection-end-line="10" selection-end-column="42" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/src/Sender.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="266">
-          <caret line="48" column="35" lean-forward="true" selection-start-line="48" selection-start-column="35" selection-end-line="48" selection-end-column="35" />
+          <caret line="48" column="35" selection-start-line="48" selection-start-column="35" selection-end-line="48" selection-end-column="35" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1341,10 +1284,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Client/res/bundle_zh_CN.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="53" selection-start-line="2" selection-start-column="53" selection-end-line="2" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Client/res/bundle.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="271">
-          <caret line="98" column="26" lean-forward="true" selection-start-line="98" selection-end-line="99" />
+          <caret line="99" column="24" selection-start-line="99" selection-end-line="100" />
           <folding>
             <element signature="e#123#124#0" expanded="true" />
             <element signature="e#154#155#0" expanded="true" />
@@ -1354,46 +1304,39 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/res/bundle_en_AU.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="81" column="30" lean-forward="true" selection-start-line="80" selection-start-column="30" selection-end-line="81" selection-end-column="30" />
+        <state relative-caret-position="288">
+          <caret line="83" selection-start-line="83" selection-end-line="83" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/res/bundle_ru.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="81" column="31" selection-start-line="81" selection-start-column="31" selection-end-line="81" selection-end-column="31" />
+        <state relative-caret-position="294">
+          <caret line="82" column="24" selection-start-line="82" selection-start-column="24" selection-end-line="82" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/res/bundle_sl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="81" column="30" lean-forward="true" selection-start-line="80" selection-start-column="30" selection-end-line="81" selection-end-column="30" />
+        <state relative-caret-position="288">
+          <caret line="82" column="24" selection-start-line="82" selection-start-column="24" selection-end-line="82" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/res/bundle_sv.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="81" column="27" selection-start-line="81" selection-start-column="27" selection-end-line="81" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/res/bundle_zh_CN.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="53" selection-start-line="2" selection-start-column="53" selection-end-line="2" selection-end-column="53" />
+        <state relative-caret-position="152">
+          <caret line="75" column="42" lean-forward="true" selection-start-line="75" selection-start-column="42" selection-end-line="75" selection-end-column="42" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/src/GUI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="434" column="51" selection-start-line="434" selection-start-column="51" selection-end-line="434" selection-end-column="51" />
+        <state relative-caret-position="152">
+          <caret line="745" column="27" selection-start-line="745" selection-start-column="27" selection-end-line="745" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#31651#31652#0" expanded="true" />
+            <element signature="e#32182#32183#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1404,11 +1347,12 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
-          <last-edited>Client:jar</last-edited>
+          <last-edited>Server:jar</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
@@ -1452,7 +1396,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>Server</last-edited>
+          <last-edited>Client</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

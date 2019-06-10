@@ -96,7 +96,8 @@ public class bundle extends ListResourceBundle {
             {"deleted", "Deleted"},
             {"kek", "You are not connected<br>LOL"},
             {"color", "Color"},
-            {"clear", "Clear"}
+            {"clear", "Clear"},
+            {"all", "All"}
 
     };
 }
