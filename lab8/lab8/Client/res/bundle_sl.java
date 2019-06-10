@@ -80,7 +80,6 @@ public class bundle_sl extends ListResourceBundle {
             {"kek", "Niste povezani<br>LOL"},
             {"color", "Barva"},
             {"clear", "Jasno"},
-            {"all", "All"}
 
     };
 }

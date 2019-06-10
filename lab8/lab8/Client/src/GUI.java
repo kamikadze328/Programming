@@ -52,6 +52,7 @@ class GUI extends JFrame {
     Sender sender;
     private Colors color;
     private boolean isFiltered = true;
+    private JPanel graphicsPanel;
 
     private JLabel infoText = new JLabel(" " + bundle.getString("greeting"));
     private String topFloorComboBox = bundle.getString("TopFloor");
@@ -80,17 +81,18 @@ class GUI extends JFrame {
     private JTextField xTo = new JTextField();
     private JTextField yTo = new JTextField();
     private JTextField sizeTo = new JTextField();
-
+    private JLabel xText = new JLabel("X:");
+    private JLabel yText = new JLabel("Y:");
 
     private JLabel locationFromTo = new JLabel(bundle.getString("location"));
     private JLabel infoConnectionText = new JLabel("<html><h1 align=\"center\">" + bundle.getString("kek") + "</h1></html>");
     private JLabel tableP = new JLabel(bundle.getString("table"));
     private JLabel graphics = new JLabel(bundle.getString("graphics"));
-
     private JLabel hungerFromTo = new JLabel(bundle.getString("hunger"));
     private JTextField hungerTo = new JTextField();
     private JLabel size = new JLabel(bundle.getString("size") + ":");
     private JLabel sizeText = new JLabel(bundle.getString("size") + ":");
+    JLabel loginInfo;
 
     private JSlider xFromSlider = new JSlider();
     private JSlider yFromSlider = new JSlider();
@@ -113,8 +115,12 @@ class GUI extends JFrame {
     private Creature chosenCreature;
     private DateTimeFormatter filterDateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm:ss");
 
+    private Font font = new Font("Sans-Serif", Font.PLAIN, 16);
+    private Font font1 = new Font("Calibri", Font.BOLD, 16);
+    private Font defaultFont = language.getFont();
+
     GUI(Locale locale, Color color, String login) {
-        JLabel loginInfo = new JLabel(bundle.getString("user") + ": " + login);
+        loginInfo = new JLabel(bundle.getString("user") + ": " + login);
         switch (Integer.toString(color.getRGB())) {
             case "-15039176":
                 this.color = Colors.FernGreen;
@@ -145,8 +151,7 @@ class GUI extends JFrame {
         xValue.setEditable(false);
         yValue.setEditable(false);
         sizeValue.setEditable(false);
-        JLabel xText = new JLabel("X:");
-        JLabel yText = new JLabel("Y:");
+
 
         JMenuBar menuBar = new JMenuBar();
         JMenuItem en_item = new JMenuItem("Australian");
@@ -168,23 +173,24 @@ class GUI extends JFrame {
         setJMenuBar(menuBar);
 
         //Right panel elements
-        Font font = new Font("Sans-Serif", Font.PLAIN, 16);
-        Font font1 = new Font("Calibri", Font.BOLD, 16);
 
-        infoObjectText.setFont(font1);
-        nameText.setFont(font1);
-        familyText.setFont(font1);
-        hungerText.setFont(font1);
-        timeText.setFont(font1);
-        locationText.setFont(font1);
-        inventoryText.setFont(font1);
-        xValue.setFont(font1);
-        yValue.setFont(font1);
-        sizeValue.setFont(font1);
-        yText.setFont(font1);
-        xText.setFont(font1);
-        sizeText.setFont(font1);
-        loginInfo.setFont(font1);
+        if(!locale.equals(new Locale("zh", "CN"))){
+            infoObjectText.setFont(font1);
+            nameText.setFont(font1);
+            familyText.setFont(font1);
+            hungerText.setFont(font1);
+            timeText.setFont(font1);
+            locationText.setFont(font1);
+            inventoryText.setFont(font1);
+            xValue.setFont(font1);
+            yValue.setFont(font1);
+            sizeValue.setFont(font1);
+            yText.setFont(font1);
+            xText.setFont(font1);
+            sizeText.setFont(font1);
+            loginInfo.setFont(font1);
+        }
+
 
         connectionText.setBackground(Color.BLACK);
         connectionText.setOpaque(true);
@@ -567,7 +573,7 @@ class GUI extends JFrame {
         JPanel tablePanel = new JPanel();
         tablePanel.setLayout(new BorderLayout());
 
-        JPanel graphicsPanel = new JPanel();
+        graphicsPanel = new JPanel();
 
         JPanel p3 = new JPanel();
         p3.setLayout(new BorderLayout());
@@ -845,6 +851,37 @@ class GUI extends JFrame {
     private void changeLanguage(Locale locale, boolean isFirst) {
         printText("", false);
         bundle = ResourceBundle.getBundle("bundle", locale);
+        if(!locale.equals(new Locale("zh", "CN"))){
+            infoObjectText.setFont(font1);
+            nameText.setFont(font1);
+            familyText.setFont(font1);
+            hungerText.setFont(font1);
+            timeText.setFont(font1);
+            locationText.setFont(font1);
+            inventoryText.setFont(font1);
+            xValue.setFont(font1);
+            yValue.setFont(font1);
+            sizeValue.setFont(font1);
+            yText.setFont(font1);
+            xText.setFont(font1);
+            sizeText.setFont(font1);
+            loginInfo.setFont(font1);
+        }else{
+            infoObjectText.setFont(defaultFont);
+            nameText.setFont(defaultFont);
+            familyText.setFont(defaultFont);
+            hungerText.setFont(defaultFont);
+            timeText.setFont(defaultFont);
+            locationText.setFont(defaultFont);
+            inventoryText.setFont(defaultFont);
+            xValue.setFont(defaultFont);
+            yValue.setFont(defaultFont);
+            sizeValue.setFont(defaultFont);
+            yText.setFont(defaultFont);
+            xText.setFont(defaultFont);
+            sizeText.setFont(defaultFont);
+            loginInfo.setFont(defaultFont);
+        }
         staticBundle = ResourceBundle.getBundle("bundle", locale);
         displayDateTimeFormatter = displayDateTimeFormatter.withLocale(locale);
         connectionText.setText(" " + (isConnected ? staticBundle.getString("connected") : staticBundle.getString("disconnected")));
@@ -859,7 +896,6 @@ class GUI extends JFrame {
         inventoryText.setText(bundle.getString("inventory") + ":");
         refreshButton.setText(bundle.getString("refresh"));
         topFloorComboBox = bundle.getString("TopFloor");
-        all = bundle.getString("all");
         groundFloorComboBox = bundle.getString("GroundFloor");
         yardComboBox = bundle.getString("Yard");
         hillComboBox = bundle.getString("Hill");

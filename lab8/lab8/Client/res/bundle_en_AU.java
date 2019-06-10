@@ -80,7 +80,6 @@ public class bundle_en_AU extends ListResourceBundle {
             {"kek", "You are not connected<br>LOL"},
             {"color", "Color"},
             {"clear", "Clear"},
-            {"all", "All"}
 
 
     };

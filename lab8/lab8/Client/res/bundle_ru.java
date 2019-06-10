@@ -80,7 +80,6 @@ public class bundle_ru extends ListResourceBundle {
             {"kek", "Вы никуда не подключены<br>ЛОЛ"},
             {"color", "Цвет"},
             {"clear", "Очистить"},
-            {"all", "Все"}
 
     };
 }

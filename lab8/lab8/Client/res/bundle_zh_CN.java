@@ -80,6 +80,5 @@ public class bundle_zh_CN extends ListResourceBundle {
             {"kek", "连接丢失了<br>哈哈"},
             {"color", "颜色"},
             {"clear", "清除"},
-            {"all", "所有"}
     };
 }

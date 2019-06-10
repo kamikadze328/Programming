@@ -51,9 +51,15 @@ class Auth {
     private JButton sendButton = new JButton(bundle.getString("send"));
     private JButton cancelButton = new JButton(bundle.getString("cancel"));
 
+    private Font font = new Font("Comic Sans MS", Font.PLAIN, 14);
+    private Font font1 = new Font("Comic Sans MS", Font.BOLD, 13);
+    private Font font2 = new Font("Times New Roman", Font.BOLD, 14);
+    Font defaultFont;
+
     private SocketAddress server = new InetSocketAddress("localhost", 5001);
 
     Auth() {
+        defaultFont = language.getFont();
         loginText.setHorizontalAlignment(SwingConstants.CENTER);
         passwordText.setHorizontalAlignment(SwingConstants.CENTER);
         logTooShort.setForeground(Color.RED);
@@ -81,33 +87,28 @@ class Auth {
         logInButton.setMaximumSize(new Dimension(20, 20));
         logInButton.setMinimumSize(new Dimension(20, 20));*/
 
-
-
-        Font font = new Font("Comic Sans MS", Font.PLAIN, 14);
-        Font font1 = new Font("Comic Sans MS", Font.BOLD, 13);
-        Font font2 = new Font("Times New Roman", Font.BOLD, 14);
-
-        loginText.setFont(font);
-        passwordText.setFont(font);
-        logInButton.setFont(font1);
-        signUpButton.setFont(font1);
-        cancelButton.setFont(font1);
-        sendButton.setFont(font1);
-        passTooShort.setFont(font2);
-        logTooShort.setFont(font2);
-        userAlreadyExists.setFont(font2);
-        wrongEmail.setFont(font2);
-        serverUnavailable.setFont(font2);
-        deadToken.setFont(font2);
-        wrongToken.setFont(font2);
-        signUpError.setFont(font2);
-        SQLException.setFont(font2);
-        incorrectCommand.setFont(font2);
-        tokenText.setFont(font);
-        wait.setFont(font2);
-        wrongPassword.setFont(font2);
-        userDoesntExist.setFont(font2);
-
+        if(!chosenLocale.equals(zhlocale)) {
+            loginText.setFont(font);
+            passwordText.setFont(font);
+            logInButton.setFont(font1);
+            signUpButton.setFont(font1);
+            cancelButton.setFont(font1);
+            sendButton.setFont(font1);
+            passTooShort.setFont(font2);
+            logTooShort.setFont(font2);
+            userAlreadyExists.setFont(font2);
+            wrongEmail.setFont(font2);
+            serverUnavailable.setFont(font2);
+            deadToken.setFont(font2);
+            wrongToken.setFont(font2);
+            signUpError.setFont(font2);
+            SQLException.setFont(font2);
+            incorrectCommand.setFont(font2);
+            tokenText.setFont(font);
+            wait.setFont(font2);
+            wrongPassword.setFont(font2);
+            userDoesntExist.setFont(font2);
+        }
         userDoesntExist.setVisible(false);
         wrongPassword.setVisible(false);
         wait.setVisible(false);
@@ -344,6 +345,49 @@ class Auth {
 
     private void changeLanguage(Locale locale) {
         chosenLocale = locale;
+        if(chosenLocale.equals(zhlocale)) {
+            loginText.setFont(defaultFont);
+            passwordText.setFont(defaultFont);
+            logInButton.setFont(defaultFont);
+            signUpButton.setFont(defaultFont);
+            cancelButton.setFont(defaultFont);
+            sendButton.setFont(defaultFont);
+            passTooShort.setFont(defaultFont);
+            logTooShort.setFont(defaultFont);
+            userAlreadyExists.setFont(defaultFont);
+            wrongEmail.setFont(defaultFont);
+            serverUnavailable.setFont(defaultFont);
+            deadToken.setFont(defaultFont);
+            wrongToken.setFont(defaultFont);
+            signUpError.setFont(defaultFont);
+            SQLException.setFont(defaultFont);
+            incorrectCommand.setFont(defaultFont);
+            tokenText.setFont(defaultFont);
+            wait.setFont(defaultFont);
+            wrongPassword.setFont(defaultFont);
+            userDoesntExist.setFont(defaultFont);
+        } else{
+            loginText.setFont(font);
+            passwordText.setFont(font);
+            logInButton.setFont(font1);
+            signUpButton.setFont(font1);
+            cancelButton.setFont(font1);
+            sendButton.setFont(font1);
+            passTooShort.setFont(font2);
+            logTooShort.setFont(font2);
+            userAlreadyExists.setFont(font2);
+            wrongEmail.setFont(font2);
+            serverUnavailable.setFont(font2);
+            deadToken.setFont(font2);
+            wrongToken.setFont(font2);
+            signUpError.setFont(font2);
+            SQLException.setFont(font2);
+            incorrectCommand.setFont(font2);
+            tokenText.setFont(font);
+            wait.setFont(font2);
+            wrongPassword.setFont(font2);
+            userDoesntExist.setFont(font2);
+        }
         bundle = ResourceBundle.getBundle("bundle", locale);
         frame.setTitle(bundle.getString("titleAuth"));
         language.setText(bundle.getString("language"));
