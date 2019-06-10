@@ -32,7 +32,7 @@ public class Handler extends Thread {
                 try {
                     time = System.currentTimeMillis();
                     Object message = ois.readObject();
-                    if(time - System.currentTimeMillis()> 90000)
+                    if(System.currentTimeMillis() - time> 90000)
                         exit = true;
                     new Thread(() -> {
                         if (message instanceof String) {
@@ -59,11 +59,7 @@ public class Handler extends Thread {
                                     exit = true;
                                     break;
                                 case "DeadToken":
-                                    gui.printTextToConsole("windowWillBeClosed", true);
-                                    try {
-                                        Thread.sleep(5000);
-                                    }catch (InterruptedException ignored){}
-                                    gui.exit();
+                                    exit();
                             }
                             if (request.contains("DELETED: ")) {
                                 gui.printTextToConsole(request.substring(0, 7).toLowerCase(), Integer.parseInt(request.substring(9)));
@@ -71,14 +67,9 @@ public class Handler extends Thread {
                                 gui.printTextToConsole(request.substring(0, 5).toLowerCase(), Integer.parseInt(request.substring(7)));
                             }
                         } else if (message instanceof Request) {
-                            if (exit) {
-                                gui.printTextToConsole("windowWillBeClosed", true);
-                                try {
-                                    Thread.sleep(5000);
-                                } catch (InterruptedException ignored) {
-                                }
-                                gui.exit();
-                            } else {
+                            if (exit)
+                                exit();
+                            else {
                                 Request request = (Request) message;
                                 gui.refreshCollection(request.creatures);
                             }
@@ -126,5 +117,13 @@ public class Handler extends Thread {
         }catch (InterruptedException e){
             Thread.currentThread().interrupt();
         }
+    }
+    private void exit(){
+        gui.printTextToConsole("windowWillBeClosed", true);
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException ignored) {
+        }
+        gui.exit();
     }
 }

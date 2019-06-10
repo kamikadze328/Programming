@@ -41,7 +41,15 @@ class Sender {
             connect();
         }
     }
-
+    void clearCreatures(){
+        try {
+            if (isWorking) oos.writeObject(new Request("clear", token));
+            else gui.printTextToConsole("tryAgain", true);
+        } catch (IOException e) {
+            gui.printTextToConsole("tryAgain", true);
+            connect();
+        }
+    }
     void removeCreature(Creature cr) {
         try {
             if (isWorking)

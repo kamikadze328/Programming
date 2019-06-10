@@ -1,5 +1,8 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.time.OffsetDateTime;
@@ -12,7 +15,7 @@ import java.util.Timer;
 import java.util.*;
 
 class GUI extends JFrame {
-    private DefaultTableModel collectionModel;
+    private DefaultTableModel tableModel;
     private JTable table;
     private boolean clearSelection;
     private ArrayList<Creature> creatureList = new ArrayList<>();
@@ -95,6 +98,7 @@ class GUI extends JFrame {
     private JButton changeButton = new JButton(bundle.getString("change"));
     private JButton newCreatureButton = new JButton(bundle.getString("newCreature"));
     private JButton addButton = new JButton(bundle.getString("add"));
+    private JButton clearButton = new JButton(bundle.getString("clear"));
     private JButton addIfMaxButton = new JButton(bundle.getString("add_if_max"));
     private JButton removeButton = new JButton(bundle.getString("remove"));
     private JButton exitButton = new JButton(bundle.getString("exit"));
@@ -233,6 +237,10 @@ class GUI extends JFrame {
         addButton.addActionListener(args0 -> {
             printText("", false);
             new Thread(() -> checkInput("add")).start();
+        });
+        clearButton.addActionListener(args0 -> {
+            printText("", false);
+            new Thread(sender::clearCreatures).start();
         });
         addIfMaxButton.setEnabled(false);
         addIfMaxButton.addActionListener(args0 -> {
@@ -391,26 +399,6 @@ class GUI extends JFrame {
         inventoryValue.setMaximumSize(new Dimension(190, 30));
         p999.add(inventoryValue, Component.RIGHT_ALIGNMENT);
 
-
-        JPanel p99 = new JPanel();
-        p99.setLayout(new BoxLayout(p99, BoxLayout.X_AXIS));
-        xValue.setMaximumSize(new Dimension(300, 100));
-        yValue.setMaximumSize(new Dimension(300, 100));
-        sizeValue.setMaximumSize(new Dimension(300, 100));
-
-        p99.add(Box.createRigidArea(new Dimension(7, 0)));
-        p99.add(xText);
-        p99.add(Box.createRigidArea(new Dimension(7, 0)));
-        p99.add(xValue);
-        p99.add(Box.createRigidArea(new Dimension(20, 0)));
-        p99.add(yText);
-        p99.add(Box.createRigidArea(new Dimension(7, 0)));
-        p99.add(yValue);
-        p99.add(Box.createRigidArea(new Dimension(20, 0)));
-        p99.add(sizeText);
-        p99.add(Box.createRigidArea(new Dimension(7, 0)));
-        p99.add(sizeValue);
-
         JPanel p8 = new JPanel();
         p8.setLayout(new BoxLayout(p8, BoxLayout.X_AXIS));
         xFromSlider.setMaximumSize(new Dimension(150, 17));
@@ -443,18 +431,20 @@ class GUI extends JFrame {
         JPanel p5 = new JPanel();
         p5.setLayout(new BoxLayout(p5, BoxLayout.X_AXIS));
         p5.add(changeButton);
-        p5.add(Box.createRigidArea(new Dimension(15, 0)));
+        p5.add(Box.createRigidArea(new Dimension(5, 0)));
         p5.add(newCreatureButton);
-        p5.add(Box.createRigidArea(new Dimension(15, 0)));
+        p5.add(Box.createRigidArea(new Dimension(5, 0)));
+        p5.add(clearButton);
+        p5.add(Box.createRigidArea(new Dimension(5, 0)));
         p5.add(cancelButton);
 
 
         JPanel p55 = new JPanel();
         p55.setLayout(new BoxLayout(p55, BoxLayout.X_AXIS));
         p55.add(addButton);
-        p55.add(Box.createRigidArea(new Dimension(15, 0)));
+        p55.add(Box.createRigidArea(new Dimension(10, 0)));
         p55.add(addIfMaxButton);
-        p55.add(Box.createRigidArea(new Dimension(15, 0)));
+        p55.add(Box.createRigidArea(new Dimension(10, 0)));
         p55.add(removeButton);
 
 
@@ -483,8 +473,6 @@ class GUI extends JFrame {
         p4.add(p9);
         p4.add(Box.createRigidArea(new Dimension(0, 5)));
         p4.add(p999);
-        p4.add(Box.createRigidArea(new Dimension(0, 5)));
-        p4.add(p99);
         p4.add(Box.createRigidArea(new Dimension(0, 30)));
         p4.add(p8);
         p4.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -506,9 +494,15 @@ class GUI extends JFrame {
 
         //Table
         String[] columns = {"Name", "Family", "Hunger", "Creation Time", "Location", "X", "Y", "Size", "Color"};
-        collectionModel = new MyDefaultTableModel();
-        collectionModel.setColumnIdentifiers(columns);
-        table = new JTable(collectionModel);
+        tableModel = new MyDefaultTableModel();
+        tableModel.setColumnIdentifiers(columns);
+        table = new JTable(tableModel);
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+        renderer.setHorizontalAlignment(SwingConstants.LEFT);
+        for (int columnIndex = 0; columnIndex < tableModel.getColumnCount(); columnIndex++)
+            table.getColumnModel().getColumn(columnIndex).setCellRenderer(renderer);
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
+        table.setRowSorter(sorter);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.getColumnModel().getColumn(0).setPreferredWidth(120);
         table.getColumnModel().getColumn(1).setPreferredWidth(120);
@@ -534,9 +528,9 @@ class GUI extends JFrame {
                             locationBox.setSelectedItem(cr.getLocation().toString());
                             timeValue.setText((String) table.getModel().getValueAt(index, 3));
                             inventoryValue.setText(cr.getInventory().toString().substring(1, cr.getInventory().toString().length() - 1));
-                            xValue.setText(Integer.toString(cr.getX()));
-                            yValue.setText(Integer.toString(cr.getY()));
-                            sizeValue.setText(Integer.toString(cr.getSize()));
+                            xFromSlider.setValue(cr.getX());
+                            yFromSlider.setValue(cr.getY());
+                            sizeFromSlider.setValue(cr.getSize());
                             break;
                         }
                     }
@@ -572,6 +566,32 @@ class GUI extends JFrame {
         tabbedPane.addTab(tableP.getText(), scrollPane);
         tabbedPane.addTab(graphics.getText(), graphicsPanel);
         p3.add(tabbedPane, BorderLayout.CENTER);
+        tabbedPane.addChangeListener(e->
+            new Thread(()->{
+            JTabbedPane sourceTabbedPane = (JTabbedPane) e.getSource();
+            int index = sourceTabbedPane.getSelectedIndex();
+            if (index == 0) {
+                nameTo.setEnabled(true);
+                familyTo.setEnabled(true);
+                hungerTo.setEnabled(true);
+                timeTo.setEnabled(true);
+                locationComboBox.setEnabled(true);
+                xTo.setEnabled(true);
+                yTo.setEnabled(true);
+                sizeTo.setEnabled(true);
+                colorComboBox.setEnabled(true);
+            } else {
+                nameTo.setEnabled(false);
+                familyTo.setEnabled(false);
+                hungerTo.setEnabled(false);
+                timeTo.setEnabled(false);
+                locationComboBox.setEnabled(false);
+                xTo.setEnabled(false);
+                yTo.setEnabled(false);
+                sizeTo.setEnabled(false);
+                colorComboBox.setEnabled(false);
+            }
+        }).start());
 
         //Panels
         JPanel p2 = new JPanel();
@@ -798,7 +818,7 @@ class GUI extends JFrame {
     private void refreshTable(ArrayList<Creature> list) {
         clearSelection = true;
         table.clearSelection();
-        collectionModel.setRowCount(0);
+        tableModel.setRowCount(0);
         for (Creature creature : list)
             addToTable(creature);
         clearSelection = false;
@@ -846,6 +866,7 @@ class GUI extends JFrame {
         changeButton.setText(bundle.getString("change"));
         newCreatureButton.setText(bundle.getString("newCreature"));
         addButton.setText(bundle.getString("add"));
+        clearButton.setText(bundle.getString("clear"));
         addIfMaxButton.setText(bundle.getString("add_if_max"));
         removeButton.setText(bundle.getString("remove"));
         cancelButton.setText(bundle.getString("cancel"));
@@ -919,12 +940,18 @@ class GUI extends JFrame {
             printText(bundle.getString("hunger") + " " + bundle.getString("isEmpty"), true);
         } else if (notANumeric(hungerValue.getText())) {
             printText(bundle.getString("hunger") + " " + bundle.getString("isnNumber"), true);
-        } else if (Double.parseDouble(hungerValue.getText()) <= 0) {
+        } else if (Integer.parseInt(hungerValue.getText()) <= 0) {
             printText(bundle.getString("hunger") + " " + bundle.getString("isnPositive"), true);
         } else if (locationBox.getSelectedItem().equals("")) {
             printText(bundle.getString("location") + " " + bundle.getString("isnChosen"), true);
         } else {
-            Creature creature = new Creature(nameValue.getText(), (int) Double.parseDouble(hungerValue.getText()), Location.valueOf(((String) locationBox.getSelectedItem()).replace(" ", "")), OffsetDateTime.now(), familyValue.getText(), xFromSlider.getValue(), yFromSlider.getValue(), sizeFromSlider.getValue(), color);
+            Creature creature = new Creature(nameValue.getText(), Integer.parseInt(hungerValue.getText()), Location.valueOf(((String) locationBox.getSelectedItem()).replace(" ", "")), OffsetDateTime.now(), familyValue.getText(), xFromSlider.getValue(), yFromSlider.getValue(), sizeFromSlider.getValue(), color);
+            if (!inventoryValue.getText().isEmpty()) {
+                String inv = inventoryValue.getText();
+                String[] result = inv.replace(" ", "").split(",");
+                for(String str : result)
+                    creature.getInventory().add(str);
+            }
             switch (command) {
                 case "add":
                     cancel();
@@ -952,13 +979,9 @@ class GUI extends JFrame {
     }
 
     private void addToTable(Creature cr) {
-        String hunger = String.valueOf(cr.getHunger());
-        String x = String.valueOf(cr.getX());
-        String y = String.valueOf(cr.getY());
-        String size = String.valueOf(cr.getSize());
         String time = cr.getCreationTime().format(displayDateTimeFormatter);
-        collectionModel.addRow(new String[]{
-                cr.getName(), cr.getFamily(), hunger, time, bundle.getString(cr.getLocation().toString().replace(" ", "")), x, y, size, cr.getColor().name()});
+        tableModel.addRow(new Object[]{
+                cr.getName(), cr.getFamily(), cr.getHunger(), time, cr.getLocation().toString(), cr.getX(), cr.getY(), cr.getSize(), cr.getColor().name()});
     }
 
     /*private void load(){
