@@ -10,7 +10,6 @@ class Request implements Serializable {
     File fileClients;
     String token;
     String fileServer;
-    boolean success;
 
     Request(CopyOnWriteArrayList<Creature> creatures){
         this.creatures = creatures;

@@ -13,7 +13,6 @@ import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.Timer;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 class GUI extends JFrame {
@@ -37,7 +36,6 @@ class GUI extends JFrame {
 
     private static JLabel connectionText = new JLabel();
     private static boolean isConnected = false;
-    private ArrayList<Timer> timers;
     private JLabel infoObjectText = new JLabel(bundle.getString("info") + ":");
     private JLabel nameText = new JLabel(bundle.getString("name") + ":");
     private JLabel familyText = new JLabel(bundle.getString("family") + ":");
@@ -795,19 +793,6 @@ class GUI extends JFrame {
             refreshTable(filteredList);
         }
     }
-
-    /*private void stopAnimation() {
-        for (Timer timer : timers) {
-            timer.cancel();
-        }
-        for (WinniePooh c : filteredCircles) {
-            c.setNormalColor();
-        }
-        p3.revalidate();
-        p3.repaint();
-        changeButton.setEnabled(true);
-        cancelButton.setEnabled(false);
-    }*/
 
     synchronized void refreshCollection(CopyOnWriteArrayList<Creature> tempCr) {
         CopyOnWriteArrayList<Creature> newCreature = new CopyOnWriteArrayList<>(tempCr);

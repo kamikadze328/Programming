@@ -3,8 +3,6 @@ import java.io.Serializable;
 class User implements Serializable {
     private static final long serialVersionUID = 965492277031384770L;
 
-    private Integer id;
-
     String login;
 
     String password;
@@ -13,7 +11,6 @@ class User implements Serializable {
 
     String token = "";
 
-    User() {}
 
     User(String login, String password) {
         this.login = login;
@@ -22,13 +19,5 @@ class User implements Serializable {
 
     String getLogin() {
         return login;
-    }
-
-    String getPassword() {
-        return password;
-    }
-
-    void setGenaratedPassword(String password){
-        this.password = password;
     }
 }

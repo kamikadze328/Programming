@@ -70,7 +70,6 @@ public class RequestsHandler extends Thread {
                                                     changed = true;
                                                 } else
                                                     answer = "AddedFailing";
-
                                             break;
 
                                         case "change":

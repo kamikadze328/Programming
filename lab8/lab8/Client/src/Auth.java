@@ -54,7 +54,7 @@ class Auth {
     private Font font = new Font("Comic Sans MS", Font.PLAIN, 14);
     private Font font1 = new Font("Comic Sans MS", Font.BOLD, 13);
     private Font font2 = new Font("Times New Roman", Font.BOLD, 14);
-    Font defaultFont;
+    private Font defaultFont;
 
     private SocketAddress server = new InetSocketAddress("localhost", 5001);
 
@@ -78,14 +78,6 @@ class Auth {
         cancelButton.setVisible(false);
         loginField.setPreferredSize(new Dimension(130, 20));
         passwordField.setPreferredSize(new Dimension(130, 20));
-        /*loginField.setMaximumSize(new Dimension(220, 20));
-        loginField.setMinimumSize(new Dimension(220, 20));
-        passwordField.setMaximumSize(new Dimension(220, 20));
-        passwordField.setMinimumSize(new Dimension(220, 20));
-        signUpButton.setMaximumSize(new Dimension(220, 20));
-        signUpButton.setMinimumSize(new Dimension(220, 20));
-        logInButton.setMaximumSize(new Dimension(20, 20));
-        logInButton.setMinimumSize(new Dimension(20, 20));*/
 
         if(!chosenLocale.equals(zhlocale)) {
             loginText.setFont(font);
