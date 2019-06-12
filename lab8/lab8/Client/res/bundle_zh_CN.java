@@ -24,7 +24,7 @@ public class bundle_zh_CN extends ListResourceBundle {
             {"signUpError", "注册帐号失败"},
             {"SQLException", "数据库不可用"},
             {"incorrectCommand", "命令不正确"},
-            {"send", "寄去了"},
+            {"send", "寄去"},
             {"title", "图形用户界面"},
             {"language", "语"},
             {"exit", "退出"},

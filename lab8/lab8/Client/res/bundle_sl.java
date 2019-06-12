@@ -65,7 +65,6 @@ public class bundle_sl extends ListResourceBundle {
             {"added", "Dodano"},
             {"tryAgain", "Strežnik ni na voljo, poskusite znova pozneje"},
             {"incorrectDate", "Datum oblika je"},
-
             {"ChangedSuccess", "Spremenjeno Uspeh"},
             {"ChangedFailing", "Spremenjeno stanje ni"},
             {"ChangedFailingDontYours", "Spremenjeno Če ne: bitje ne Yours!"},

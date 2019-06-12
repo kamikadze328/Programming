@@ -4,7 +4,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.LinkedList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class RequestsHandler extends Thread {
     private Socket client;
@@ -32,6 +32,7 @@ public class RequestsHandler extends Thread {
                         File fileClients = request.fileClients;
                         String fileServer = request.fileServer;
                         String token = request.token;
+                        CopyOnWriteArrayList<Creature> mbNewCreature = request.creatures;
                         ObjectOutputStream oos = Server.clients.get(token);
                         new Thread(() -> {
                             try {
@@ -51,7 +52,9 @@ public class RequestsHandler extends Thread {
                                 } else {
                                     switch (command) {
                                         case "get":
-                                            oos.writeObject(new Request(manager.getCreatures()));
+                                            CopyOnWriteArrayList<Creature> cr = manager.getCreatures();
+                                            Request r = new Request(cr);
+                                            oos.writeObject(r);
                                             get = true;
                                             break;
 
@@ -70,7 +73,14 @@ public class RequestsHandler extends Thread {
                                             break;
 
                                         case "change":
-                                            answer = manager.change(creature, token);
+                                            if (mbNewCreature == null)
+                                                answer = manager.change(creature, token);
+                                            else for (Creature creat : mbNewCreature) {
+                                                if (!manager.change(creat, token).contains("Success"))
+                                                    break;
+                                                else answer = "ChangedSuccess";
+                                            }
+
                                             if (answer.contains("Success"))
                                                 changed = true;
                                             break;
@@ -116,7 +126,7 @@ public class RequestsHandler extends Thread {
 
                                         case "addUser":
                                             get = true;
-                                            if(Server.clients.containsKey(token))
+                                            if (Server.clients.containsKey(token))
                                                 Server.remove(token);
                                             Server.add(oos1, token);
                                     }
@@ -125,7 +135,7 @@ public class RequestsHandler extends Thread {
                                         if (changed) {
                                             int count = 0;
                                             try {
-                                                LinkedList<Creature> cr = manager.getCreatures();
+                                                CopyOnWriteArrayList<Creature> cr = manager.getCreatures();
                                                 Request r = new Request(cr);
                                                 for (ObjectOutputStream oos2 : Server.clients.values()) {
                                                     oos2.writeObject(r);
@@ -218,7 +228,7 @@ public class RequestsHandler extends Thread {
     private void sendToAll(int i) {
         int count = 0;
         try {
-            LinkedList<Creature> cr = manager.getCreatures();
+            CopyOnWriteArrayList<Creature> cr = manager.getCreatures();
             Request r = new Request(cr);
             for (ObjectOutputStream oos2 : Server.clients.values()) {
                 if (count == i)

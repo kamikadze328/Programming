@@ -65,7 +65,6 @@ public class bundle_en_AU extends ListResourceBundle {
             {"added", "Added"},
             {"tryAgain", "Server is unavailable, try again later"},
             {"incorrectDate", "Date format is"},
-
             {"ChangedSuccess", "Changed Success"},
             {"ChangedFailing", "Changed Failing"},
             {"ChangedFailingDontYours","Changed Failing: Creature doesn't Yours!"},
@@ -81,6 +80,7 @@ public class bundle_en_AU extends ListResourceBundle {
             {"color", "Color"},
             {"clear", "Clear"},
 
+            {"CreaturesDoesntChanged", "Creatures didnt't changed"}
 
     };
 }

@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 class CollectionManager {
@@ -16,7 +15,7 @@ class CollectionManager {
 
     CollectionManager(DataBaseManager DBmanager) {
         this.DBmanager = DBmanager;
-        Creatures = DBmanager.synchronize();
+            Creatures = DBmanager.synchronize();
     }
 
     String loadFile(File file, String token) throws SQLException{
@@ -135,8 +134,8 @@ class CollectionManager {
         return "DELETED: " + deleted;
     }
 
-    LinkedList<Creature> getCreatures() {
-        return new LinkedList<>(Creatures);
+    CopyOnWriteArrayList<Creature> getCreatures() {
+        return new CopyOnWriteArrayList<>(Creatures);
     }
 
 

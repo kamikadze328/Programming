@@ -3,6 +3,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.SocketAddress;
 import java.nio.channels.SocketChannel;
+import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 class Sender {
 
@@ -64,6 +66,16 @@ class Sender {
     void changeCreature(Creature cr) {
         try {
             if (isWorking) oos.writeObject(new Request("change", cr, token));
+            else gui.printTextToConsole("tryAgain", true);
+        } catch (IOException e) {
+            gui.printTextToConsole("tryAgain", true);
+            connect();
+        }
+    }
+
+    void changeCreature(ArrayList<Creature> mbNewCreature) {
+        try {
+            if (isWorking) oos.writeObject(new Request("change", new CopyOnWriteArrayList<>(mbNewCreature), token));
             else gui.printTextToConsole("tryAgain", true);
         } catch (IOException e) {
             gui.printTextToConsole("tryAgain", true);

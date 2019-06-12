@@ -398,6 +398,8 @@ class Auth {
         logTooShort.setText(bundle.getString("logTooShort"));
         passTooShort.setText(bundle.getString("passTooShort"));
         wrongEmail.setText(bundle.getString("wrongEmail"));
+        cancelButton.setText(bundle.getString("cancel"));
+        sendButton.setText(bundle.getString("send"));
         userAlreadyExists.setText(bundle.getString("userAlreadyExists"));
         serverUnavailable.setText(bundle.getString("disconnected"));
         tokenText.setText(bundle.getString("token"));

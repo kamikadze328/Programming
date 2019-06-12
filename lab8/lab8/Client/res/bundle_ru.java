@@ -65,7 +65,6 @@ public class bundle_ru extends ListResourceBundle {
             {"added", "Добавлено"},
             {"tryAgain", "Сервер недоступен, попробуйте ещё раз"},
             {"incorrectDate", "Формат даты: "},
-
             {"ChangedSuccess", "Успешно изменено"},
             {"ChangedFailing", "Не удалось изменить"},
             {"ChangedFailingDontYours","Не удалось изменить: не Ваше Существо!"},
@@ -80,6 +79,9 @@ public class bundle_ru extends ListResourceBundle {
             {"kek", "Вы никуда не подключены<br>ЛОЛ"},
             {"color", "Цвет"},
             {"clear", "Очистить"},
+
+            {"CreaturesDoesntChanged", "Существа не изменились"}
+
 
     };
 }

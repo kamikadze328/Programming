@@ -22,8 +22,7 @@ public class MySwingWorker extends SwingWorker<Void, Void> {
         try {
             GUI gui = new GUI(locale, color, login);
             gui.sender = new Sender(new InetSocketAddress("localhost", 5001), token, gui);
-        }catch (Exception e){
-            e.printStackTrace();
+        }catch (Exception ignored){
         }
         return null;
     }

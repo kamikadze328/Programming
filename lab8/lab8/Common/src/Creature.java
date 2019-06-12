@@ -103,7 +103,7 @@ public class Creature implements Comparable<Creature>, Serializable {
         return color;
     }
 
-    public boolean equals(Object otherObject) {
+    public boolean equalsOnly(Object otherObject) {
         if (this == otherObject) return true;
         if (otherObject == null) return false;
         if (getClass() != otherObject.getClass()) return false;
@@ -120,7 +120,7 @@ public class Creature implements Comparable<Creature>, Serializable {
         return getId().equals(other.getId());
     }
 
-    public boolean equalsAll(Object otherObject) {
+    public boolean equals(Object otherObject) {
         if (this == otherObject) return true;
         if (otherObject == null) return false;
         if (getClass() != otherObject.getClass()) return false;
@@ -135,7 +135,7 @@ public class Creature implements Comparable<Creature>, Serializable {
     }
 
     public int hashCode() {
-        return Objects.hash(name, family);
+        return Objects.hash(name, family, x, y);
     }
 
     @Override
@@ -172,5 +172,17 @@ public class Creature implements Comparable<Creature>, Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public void setX(Integer x) {
+        this.x = x;
+    }
+
+    public void setY(Integer y) {
+        this.y = y;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
     }
 }

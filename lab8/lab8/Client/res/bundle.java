@@ -82,7 +82,6 @@ public class bundle extends ListResourceBundle {
             {"added", "Added"},
             {"tryAgain", "Server is unavailable, try again later"},
             {"incorrectDate", "Date format is"},
-
             {"ChangedSuccess", "Changed Success"},
             {"ChangedFailing", "Changed Failing"},
             {"ChangedFailingDontYours","Changed Failing: Creature doesn't Yours!"},
@@ -97,7 +96,9 @@ public class bundle extends ListResourceBundle {
             {"kek", "You are not connected<br>LOL"},
             {"color", "Color"},
             {"clear", "Clear"},
-            {"all", "All"}
+            {"all", "All"},
+
+            {"CreaturesDoesntChanged", "Creatures didnt't changed"},
 
     };
 }

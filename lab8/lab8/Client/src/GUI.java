@@ -10,9 +10,11 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.FormatStyle;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Timer;
-import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 class GUI extends JFrame {
     private DefaultTableModel tableModel;
@@ -20,9 +22,9 @@ class GUI extends JFrame {
     private boolean clearSelection;
     private boolean isTable = true;
     private boolean isnChange = false;
-    private ArrayList<Creature> creatureList = new ArrayList<>();
-    private ArrayList<Creature> filteredList = new ArrayList<>();
-    private Circle[] circleList = {};
+    private CopyOnWriteArrayList<Creature> creatureList = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<Creature> filteredList = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<WinniePooh> winniePoohList;
     private ResourceBundle bundle = ResourceBundle.getBundle("bundle", Locale.getDefault());
     static private ResourceBundle staticBundle = ResourceBundle.getBundle("bundle", Locale.getDefault());
     private Locale rulocale = new Locale("ru");
@@ -41,6 +43,7 @@ class GUI extends JFrame {
     private JLabel hungerText = new JLabel(bundle.getString("hunger") + ":");
     private JLabel locationText = new JLabel(bundle.getString("location") + ":");
     private JLabel timeText = new JLabel(bundle.getString("creationTime") + ":");
+    private JLabel colorText = new JLabel(bundle.getString("color") + ":");
     private JLabel inventoryText = new JLabel(bundle.getString("inventory") + ":");
 
     private JTextField xValue = new JTextField();
@@ -50,6 +53,7 @@ class GUI extends JFrame {
     private JTextField familyValue = new JTextField();
     private JTextField hungerValue = new JTextField();
     private JTextField timeValue = new JTextField();
+    private JTextField colorValue = new JTextField();
     private JTextField inventoryValue = new JTextField();
 
     Sender sender;
@@ -137,6 +141,7 @@ class GUI extends JFrame {
         familyValue.setEditable(false);
         hungerValue.setEditable(false);
         timeValue.setEditable(false);
+        colorValue.setEditable(false);
         inventoryValue.setEditable(false);
         xValue.setEditable(false);
         yValue.setEditable(false);
@@ -164,12 +169,13 @@ class GUI extends JFrame {
 
         //Right panel elements
 
-        if(!locale.equals(new Locale("zh", "CN"))){
+        if (!locale.equals(new Locale("zh", "CN"))) {
             infoObjectText.setFont(font1);
             nameText.setFont(font1);
             familyText.setFont(font1);
             hungerText.setFont(font1);
             timeText.setFont(font1);
+            colorText.setFont(font1);
             locationText.setFont(font1);
             inventoryText.setFont(font1);
             xValue.setFont(font1);
@@ -204,7 +210,7 @@ class GUI extends JFrame {
         JLabel xFrom = new JLabel("0");
         xFromSlider.addChangeListener(e -> {
             xFrom.setText(Integer.toString(xFromSlider.getValue()));
-            if(!isTable&&!isnChange)
+            if (!isTable && !isnChange)
                 new Thread(this::refreshGraphics).start();
         });
         yFromSlider.setMinimum(0);
@@ -213,7 +219,7 @@ class GUI extends JFrame {
         JLabel yFrom = new JLabel("0");
         yFromSlider.addChangeListener(e -> {
             yFrom.setText(Integer.toString(yFromSlider.getValue()));
-            if (!isTable&&!isnChange)
+            if (!isTable && !isnChange)
                 new Thread(this::refreshGraphics).start();
         });
         sizeFromSlider.setMinimum(10);
@@ -222,7 +228,7 @@ class GUI extends JFrame {
         JLabel sizeFrom = new JLabel("35");
         sizeFromSlider.addChangeListener(e -> {
             sizeFrom.setText(Integer.toString(sizeFromSlider.getValue()));
-            if (!isTable&&!isnChange)
+            if (!isTable && !isnChange)
                 new Thread(this::refreshGraphics).start();
         });
 
@@ -251,11 +257,8 @@ class GUI extends JFrame {
         removeButton.addActionListener(args0 -> {
             printText("", false);
             new Thread(() -> {
-                int index = table.getSelectedRow();
-                String name = (String) table.getModel().getValueAt(index, 0);
-                String family = (String) table.getModel().getValueAt(index, 1);
                 for (Creature cr : creatureList) {
-                    if (cr.getName().equals(name) && cr.getFamily().equals(family)) {
+                    if (cr.equalsOnly(chosenCreature)) {
                         cancel();
                         sender.removeCreature(cr);
                         break;
@@ -266,7 +269,9 @@ class GUI extends JFrame {
         changeButton.setEnabled(false);
         changeButton.addActionListener(args0 -> {
             printText("", false);
-            new Thread(() -> checkInput("change")).start();
+                new Thread(() -> checkInput("change")).start();
+
+
 
 
         });
@@ -278,6 +283,7 @@ class GUI extends JFrame {
         exitButton.addActionListener(args0 -> {
             printText("", false);
             new Thread(this::exit).start();
+
         });
 
         String topFloorComboBox = bundle.getString("TopFloor");
@@ -417,6 +423,15 @@ class GUI extends JFrame {
         p9.add(Box.createHorizontalGlue());
         p9.add(locationBox, Component.RIGHT_ALIGNMENT);
 
+        JPanel p99 = new JPanel();
+        p99.setLayout(new BoxLayout(p99, BoxLayout.X_AXIS));
+        colorValue.setPreferredSize(new Dimension(190, 30));
+        colorValue.setMaximumSize(new Dimension(190, 30));
+        p99.add(Box.createRigidArea(new Dimension(7, 0)));
+        p99.add(colorText, Component.LEFT_ALIGNMENT);
+        p99.add(Box.createHorizontalGlue());
+        p99.add(colorValue, Component.RIGHT_ALIGNMENT);
+
         JPanel p999 = new JPanel();
         p999.setLayout(new BoxLayout(p999, BoxLayout.X_AXIS));
         p999.add(Box.createRigidArea(new Dimension(7, 0)));
@@ -497,6 +512,8 @@ class GUI extends JFrame {
         p4.add(Box.createRigidArea(new Dimension(0, 5)));
         p4.add(p9);
         p4.add(Box.createRigidArea(new Dimension(0, 5)));
+        p4.add(p99);
+        p4.add(Box.createRigidArea(new Dimension(0, 5)));
         p4.add(p999);
         p4.add(Box.createRigidArea(new Dimension(0, 30)));
         p4.add(p8);
@@ -571,38 +588,38 @@ class GUI extends JFrame {
         tabbedPane.addTab(tableP.getText(), scrollPane);
         tabbedPane.addTab(graphics.getText(), graphicsPanel);
         p3.add(tabbedPane, BorderLayout.CENTER);
-        tabbedPane.addChangeListener(e->
-            new Thread(()->{
-            JTabbedPane sourceTabbedPane = (JTabbedPane) e.getSource();
-            int index = sourceTabbedPane.getSelectedIndex();
-            cancel();
-            if (index == 0) {
-                isTable = true;
-                nameTo.setEnabled(true);
-                familyTo.setEnabled(true);
-                hungerTo.setEnabled(true);
-                timeTo.setEnabled(true);
-                locationComboBox.setEnabled(true);
-                xTo.setEnabled(true);
-                yTo.setEnabled(true);
-                sizeTo.setEnabled(true);
-                colorComboBox.setEnabled(true);
-            } else {
-                isTable = false;
-                clearSelection = true;
-                table.getSelectionModel().clearSelection();
-                clearSelection = false;
-                nameTo.setEnabled(false);
-                familyTo.setEnabled(false);
-                hungerTo.setEnabled(false);
-                timeTo.setEnabled(false);
-                locationComboBox.setEnabled(false);
-                xTo.setEnabled(false);
-                yTo.setEnabled(false);
-                sizeTo.setEnabled(false);
-                colorComboBox.setEnabled(false);
-            }
-        }).start());
+        tabbedPane.addChangeListener(e ->
+                new Thread(() -> {
+                    JTabbedPane sourceTabbedPane = (JTabbedPane) e.getSource();
+                    int index = sourceTabbedPane.getSelectedIndex();
+                    cancel();
+                    if (index == 0) {
+                        isTable = true;
+                        nameTo.setEnabled(true);
+                        familyTo.setEnabled(true);
+                        hungerTo.setEnabled(true);
+                        timeTo.setEnabled(true);
+                        locationComboBox.setEnabled(true);
+                        xTo.setEnabled(true);
+                        yTo.setEnabled(true);
+                        sizeTo.setEnabled(true);
+                        colorComboBox.setEnabled(true);
+                    } else {
+                        isTable = false;
+                        clearSelection = true;
+                        table.getSelectionModel().clearSelection();
+                        clearSelection = false;
+                        nameTo.setEnabled(false);
+                        familyTo.setEnabled(false);
+                        hungerTo.setEnabled(false);
+                        timeTo.setEnabled(false);
+                        locationComboBox.setEnabled(false);
+                        xTo.setEnabled(false);
+                        yTo.setEnabled(false);
+                        sizeTo.setEnabled(false);
+                        colorComboBox.setEnabled(false);
+                    }
+                }).start());
 
         //Panels
         JPanel p2 = new JPanel();
@@ -676,8 +693,9 @@ class GUI extends JFrame {
 
     void exit() {
         this.setVisible(false);
-        sender.exit();
-        sender = null;
+        try {
+            sender.exit();
+        }catch (NullPointerException ignored){}
         this.dispose();
         new Auth();
     }
@@ -727,6 +745,10 @@ class GUI extends JFrame {
         else infoText.setForeground(Color.GREEN);
         infoText.setText(bundle.getString(message));
     }
+    void printTextToConsole(int i) {
+        infoText.setForeground(Color.RED);
+        infoText.setText(bundle.getString("windowWillBeClosed") + " "+i);
+    }
 
     private void printText(String message, boolean isError) {
         if (isError) infoText.setForeground(Color.RED);
@@ -741,9 +763,9 @@ class GUI extends JFrame {
 
     private void applyFilters() {
         String colorFl = colorComboBox.getSelectedItem().toString().replace(" ", "");
-        if(colorComboBox.getSelectedIndex()==0) colorFl = "";
+        if (colorComboBox.getSelectedIndex() == 0) colorFl = "";
         String locationFl = locationComboBox.getSelectedItem().toString().replace(" ", "");
-        if(locationComboBox.getSelectedIndex()==0) locationFl = "";
+        if (locationComboBox.getSelectedIndex() == 0) locationFl = "";
 
         filteredList.clear();
         String finalColorFl = colorFl;
@@ -775,7 +797,7 @@ class GUI extends JFrame {
         for (Timer timer : timers) {
             timer.cancel();
         }
-        for (Circle c : filteredCircles) {
+        for (WinniePooh c : filteredCircles) {
             c.setNormalColor();
         }
         p3.revalidate();
@@ -784,42 +806,33 @@ class GUI extends JFrame {
         cancelButton.setEnabled(false);
     }*/
 
-    synchronized void refreshCollection(List<Creature> tempCr) {
-        ArrayList<Creature> newCreature = new ArrayList<>(tempCr);
-        ArrayList<Creature> changedCr;
+    synchronized void refreshCollection(CopyOnWriteArrayList<Creature> tempCr) {
+        CopyOnWriteArrayList<Creature> newCreature = new CopyOnWriteArrayList<>(tempCr);
+        CopyOnWriteArrayList<Creature> changedCr;
         if (creatureList.size() > 0) {
-            changedCr = new ArrayList<>();
-            Iterator<Creature> iter = tempCr.iterator();
-            while (iter.hasNext()) {
-                Creature crtemp = iter.next();
-                Iterator<Creature> iter1 = creatureList.iterator();
-                while (iter1.hasNext()) {
-                    Creature cr = iter1.next();
-                    if (cr.equals(crtemp)) {
-                        iter1.remove();
-                        iter.remove();
-                        if (!cr.equalsAll(crtemp)) {
-                            changedCr.add(crtemp);
-                        }
-                        break;
-                    }
+            changedCr = new CopyOnWriteArrayList<>();
+            for (Creature crtemp : tempCr) {
+                for (Creature cr : creatureList) {
+                    if (cr.equalsOnly(crtemp) && !cr.equals(crtemp))
+                        changedCr.add(crtemp);
                 }
             }
             changedCr.addAll(tempCr);
         }
+
         creatureList.clear();
         creatureList = newCreature;
         refreshTable(creatureList);
         refreshGraphics(creatureList);
 
-        if (isTable){
+        if (isTable) {
             isFiltered = false;
             checkFilters();
             isFiltered = true;
         }
     }
 
-    private void refreshTable(ArrayList<Creature> list) {
+    private void refreshTable(CopyOnWriteArrayList<Creature> list) {
         clearSelection = true;
         table.clearSelection();
         tableModel.setRowCount(0);
@@ -830,44 +843,56 @@ class GUI extends JFrame {
         table.revalidate();
     }
 
-    private void refreshGraphics(ArrayList<Creature> list){
-        circleList = new Circle[list.size()];
+    private void refreshGraphics(CopyOnWriteArrayList<Creature> list) {
+        winniePoohList = new CopyOnWriteArrayList<>();
         graphicsPanel.removeAll();
-        for (int i = 0; i < list.size(); i++) {
-            Circle c = new Circle(list.get(i), this);
-            circleList[i] = c;
-            graphicsPanel.add(c);
+        for (Creature creature : list) {
+            WinniePooh c = new WinniePooh(creature, this);
+            winniePoohList.add(c);
+            add(c);
         }
         graphicsPanel.revalidate();
         graphicsPanel.repaint();
     }
 
     private void refreshGraphics() {
-        for (int i = 0; i < circleList.length; i++) {
-            if (circleList[i].creature.equals(chosenCreature)) {
-                graphicsPanel.remove(circleList[i]);
+        for (WinniePooh winniePooh : winniePoohList) {
+            if (winniePooh.creature.equalsOnly(chosenCreature)) {
+                winniePoohList.remove(winniePooh);
+                remove(winniePooh);
                 chosenCreature.setX(xFromSlider.getValue());
                 chosenCreature.setY(yFromSlider.getValue());
                 chosenCreature.setSize(sizeFromSlider.getValue());
-                Circle c = new Circle(chosenCreature, this);
-                circleList[i] = c;
-                graphicsPanel.add(c);
+                WinniePooh c = new WinniePooh(chosenCreature, this);
+                add(c);
+                winniePoohList.add(c);
                 break;
             }
         }
         graphicsPanel.revalidate();
         graphicsPanel.repaint();
     }
+    private void remove(WinniePooh c){
+        graphicsPanel.remove(c.rightHand);
+        graphicsPanel.remove(c.balloon);
+        graphicsPanel.remove(c);
+    }
+    private void add(WinniePooh c){
+        graphicsPanel.add(c);
+        graphicsPanel.add(c.balloon);
+        graphicsPanel.add(c.rightHand);
+    }
 
     private void changeLanguage(Locale locale, boolean isFirst) {
         printText("", false);
         bundle = ResourceBundle.getBundle("bundle", locale);
-        if(!locale.equals(new Locale("zh", "CN"))){
+        if (!locale.equals(new Locale("zh", "CN"))) {
             infoObjectText.setFont(font1);
             nameText.setFont(font1);
             familyText.setFont(font1);
             hungerText.setFont(font1);
             timeText.setFont(font1);
+            colorText.setFont(font1);
             locationText.setFont(font1);
             inventoryText.setFont(font1);
             xValue.setFont(font1);
@@ -877,12 +902,13 @@ class GUI extends JFrame {
             xText.setFont(font1);
             sizeText.setFont(font1);
             loginInfo.setFont(font1);
-        }else{
+        } else {
             infoObjectText.setFont(defaultFont);
             nameText.setFont(defaultFont);
             familyText.setFont(defaultFont);
             hungerText.setFont(defaultFont);
             timeText.setFont(defaultFont);
+            colorText.setFont(defaultFont);
             locationText.setFont(defaultFont);
             inventoryText.setFont(defaultFont);
             xValue.setFont(defaultFont);
@@ -904,6 +930,7 @@ class GUI extends JFrame {
         hungerText.setText(bundle.getString("hunger") + ":");
         locationText.setText(bundle.getString("location") + ":");
         timeText.setText(bundle.getString("creationTime") + ":");
+        colorText.setText(bundle.getString("color") + ":");
         inventoryText.setText(bundle.getString("inventory") + ":");
         refreshButton.setText(bundle.getString("refresh"));
         all = bundle.getString("all");
@@ -981,6 +1008,7 @@ class GUI extends JFrame {
         xValue.setText("");
         yValue.setText("");
         timeValue.setText("");
+        colorValue.setText("");
         sizeValue.setText("");
         isnChange = false;
     }
@@ -1013,13 +1041,32 @@ class GUI extends JFrame {
                     break;
                 case "change":
                     creature.setId(chosenCreature.getId());
-                    cancel();
-                    sender.changeCreature(creature);
+                    if (!isTable) {
+                        ArrayList<Creature> mbNewCreature = new ArrayList<>();
+                        for (WinniePooh winniePooh : winniePoohList) {
+                            if (winniePooh.creature.equalsId(creature))
+                                winniePooh.creature = creature;
+                            if (winniePooh.creature.getColor().name().equals(color.name()) && creatureList.stream().noneMatch(winniePooh.creature::equals))
+                                mbNewCreature.add(winniePooh.creature);
+                        }
+                        if (mbNewCreature.size() == 1)
+                            sender.changeCreature(creature);
+                        else if (mbNewCreature.size() > 1)
+                            sender.changeCreature(mbNewCreature);
+                        else printTextToConsole("CreaturesDoesntChanged", true);
+                        if(mbNewCreature.size()>0) cancel();
+                    } else if (creature.equals(chosenCreature))
+                        printTextToConsole("CreaturesDoesntChanged", true);
+                    else {
+                        sender.changeCreature(creature);
+                        cancel();
+                    }
                     break;
                 case "add_if_max":
                     cancel();
                     sender.addIfMaxCreature(creature);
                     break;
+
             }
         }
         isnChange = false;
@@ -1031,9 +1078,10 @@ class GUI extends JFrame {
                 cr.getName(), cr.getFamily(), cr.getHunger(), time, cr.getLocation().toString(), cr.getX(), cr.getY(), cr.getSize(), cr.getColor().name()});
     }
 
-    void setCreatureInfo(Creature cr){
+    void setCreatureInfo(Creature cr) {
         isnChange = true;
-        chosenCreature = cr;
+        chosenCreature = new Creature(cr.getName(), cr.getHunger(), cr.getLocation(), cr.getCreationTime(), cr.getFamily(), cr.getX(), cr.getY(), cr.getSize(), cr.getColor());
+        chosenCreature.setId(cr.getId());
         nameValue.setText(cr.getName());
         familyValue.setText(cr.getFamily());
         hungerValue.setText((Integer.toString(cr.getHunger())));
@@ -1051,27 +1099,43 @@ class GUI extends JFrame {
             default:
                 location = cr.getLocation().toString();
         }
+        String color;
+        switch (cr.getColor().name()) {
+            case "FernGreen":
+                color = "Fern Green";
+                break;
+            case "PareGold":
+                color = "Pare Gold";
+                break;
+            case "DeepRed":
+                color = "Deep Red";
+                break;
+            default:
+                color = cr.getColor().name();
+        }
         locationBox.setSelectedItem(location);
         timeValue.setText(cr.getCreationTime().format(displayDateTimeFormatter));
+        colorValue.setText(color);
         inventoryValue.setText(cr.getInventory().toString().substring(1, cr.getInventory().toString().length() - 1));
         xFromSlider.setValue(cr.getX());
         yFromSlider.setValue(cr.getY());
         sizeFromSlider.setValue(cr.getSize());
-        nameValue.setEditable(true);
-        familyValue.setEditable(true);
-        hungerValue.setEditable(true);
-        inventoryValue.setEditable(true);
-        xFromSlider.setEnabled(true);
-        yFromSlider.setEnabled(true);
-        sizeFromSlider.setEnabled(true);
-        newCreatureButton.setEnabled(false);
-        changeButton.setEnabled(true);
+        if(isTable||this.color.name().equals(cr.getColor().name())) {
+            nameValue.setEditable(true);
+            familyValue.setEditable(true);
+            hungerValue.setEditable(true);
+            inventoryValue.setEditable(true);
+            xFromSlider.setEnabled(true);
+            yFromSlider.setEnabled(true);
+            sizeFromSlider.setEnabled(true);
+            newCreatureButton.setEnabled(false);
+            changeButton.setEnabled(true);
+            removeButton.setEnabled(true);
+            addButton.setEnabled(false);
+            locationBox.setEnabled(true);
+            addIfMaxButton.setEnabled(false);
+        } else newCreatureButton.setEnabled(false);
         cancelButton.setEnabled(true);
-        removeButton.setEnabled(true);
-        addButton.setEnabled(false);
-        locationBox.setEnabled(true);
-        addIfMaxButton.setEnabled(false);
         isnChange = false;
-
     }
 }

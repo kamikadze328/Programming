@@ -118,10 +118,14 @@ public class Handler extends Thread {
         }
     }
     private void exit(){
-        gui.printTextToConsole("windowWillBeClosed", true);
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException ignored) {
+        int count = 5;
+        while (count > -1) {
+            gui.printTextToConsole(count);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ignored) {
+            }
+            count--;
         }
         gui.exit();
     }
