@@ -11,22 +11,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f85ff96e-cdfa-429b-a99f-4c22a8851cf9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Client/res/test.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/src/WinniePooh.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/res/bundle.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/res/bundle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/res/bundle_en_AU.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/res/bundle_en_AU.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/res/bundle_ru.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/res/bundle_ru.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/res/bundle_sl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/res/bundle_sl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/res/bundle_sv.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/res/bundle_sv.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/res/bundle_zh_CN.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/res/bundle_zh_CN.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/Auth.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/Auth.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/GUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/Handler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/Handler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/MySwingWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/MySwingWorker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/Sender.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/Sender.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/src/Creature.java" beforeDir="false" afterPath="$PROJECT_DIR$/Common/src/Creature.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/src/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/Common/src/Request.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/CollectionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/CollectionManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/WinniePooh.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/WinniePooh.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/DataBaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/DataBaseManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server/src/RequestsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/RequestsHandler.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -109,116 +104,44 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/src/Sender.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1156">
-              <caret line="74" selection-start-line="74" selection-end-line="74" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/df89af4f-8ea5-48c8-9544-15aa22ea83d6/console.sql">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="26" column="44" selection-start-line="26" selection-start-column="44" selection-end-line="26" selection-end-column="44" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Client/src/WinniePooh.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3111">
-              <caret line="187" selection-start-line="187" selection-end-line="187" />
+            <state relative-caret-position="74">
+              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#6621#6622#0" expanded="true" />
+                <element signature="e#6647#6648#0" expanded="true" />
+                <element signature="e#6610#6611#0" expanded="true" />
+                <element signature="e#6694#6695#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/src/Auth.java">
+        <entry file="file://$PROJECT_DIR$/Client/res/bundle_ru.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1360">
-              <caret line="89" column="28" selection-start-line="89" selection-start-column="28" selection-end-line="89" selection-end-column="28" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="254">
+              <caret line="83" column="84" selection-start-line="83" selection-start-column="84" selection-end-line="83" selection-end-column="84" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Common/src/Creature.java">
+        <entry file="file://$PROJECT_DIR$/Client/res/bundle_en_AU.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2499">
-              <caret line="174" selection-start-line="174" selection-end-line="174" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1873#1874#0" expanded="true" />
-                <element signature="e#1898#1899#0" expanded="true" />
-                <element signature="e#1924#1925#0" expanded="true" />
-                <element signature="e#1953#1954#0" expanded="true" />
-                <element signature="e#1977#1978#0" expanded="true" />
-                <element signature="e#2004#2005#0" expanded="true" />
-                <element signature="e#2027#2028#0" expanded="true" />
-                <element signature="e#2056#2057#0" expanded="true" />
-                <element signature="e#2540#2541#0" expanded="true" />
-                <element signature="e#2568#2569#0" expanded="true" />
-                <element signature="e#4774#4775#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="254">
+              <caret line="83" column="75" selection-start-line="83" selection-start-column="75" selection-end-line="83" selection-end-column="75" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/src/Handler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="850">
-              <caret line="54" column="46" selection-start-line="54" selection-end-line="55" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Client/src/GUI.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17544">
-              <caret line="1050" column="25" selection-start-line="1050" selection-start-column="25" selection-end-line="1050" selection-end-column="25" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#32461#32462#0" expanded="true" />
-                <element signature="e#32509#32510#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Server/src/DataBaseManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="329">
-              <caret line="105" lean-forward="true" selection-start-line="105" selection-end-line="105" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Client/res/bundle.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="295">
-              <caret line="101" selection-start-line="101" selection-end-line="101" />
+            <state relative-caret-position="282">
+              <caret line="98" column="27" selection-start-line="98" selection-start-column="27" selection-end-line="98" selection-end-column="27" />
               <folding>
                 <element signature="e#123#124#0" expanded="true" />
                 <element signature="e#154#155#0" expanded="true" />
@@ -228,10 +151,65 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Client/res/bundle_sl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="260">
+              <caret line="83" column="76" selection-start-line="83" selection-start-column="76" selection-end-line="83" selection-end-column="76" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Client/res/bundle_sv.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="271">
+              <caret line="84" column="86" selection-start-line="84" selection-start-column="86" selection-end-line="84" selection-end-column="86" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Client/res/bundle_zh_CN.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="83" column="52" selection-start-line="83" selection-start-column="52" selection-end-line="83" selection-end-column="52" />
+              <folding>
+                <element signature="e#129#130#0" expanded="true" />
+                <element signature="e#160#161#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/src/DataBaseManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="173">
+              <caret line="135" column="50" lean-forward="true" selection-start-line="135" selection-start-column="50" selection-end-line="135" selection-end-column="50" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Server/src/RequestsHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1224">
-              <caret line="78" column="67" selection-start-line="78" selection-start-column="67" selection-end-line="78" selection-end-column="67" />
+            <state relative-caret-position="105">
+              <caret line="77" column="67" selection-start-line="77" selection-start-column="67" selection-end-line="77" selection-end-column="67" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/src/CollectionManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="173">
+              <caret line="87" column="36" selection-start-line="87" selection-start-column="36" selection-end-line="87" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -253,9 +231,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>remo</find>
-      <find>addto</find>
-      <find>&quot;&quot;</find>
       <find>zo</find>
       <find>zone</find>
       <find>font</find>
@@ -283,10 +258,14 @@
       <find>right</find>
       <find>rightH</find>
       <find>name = ?</find>
+      <find>gree</find>
+      <find>99</find>
+      <find>200</find>
     </findStrings>
     <replaceStrings>
       <replace>&quot;</replace>
       <replace>&quot;}</replace>
+      <replace>150</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -325,29 +304,29 @@
         <option value="df89af4f-8ea5-48c8-9544-15aa22ea83d6/database/test/schema/public/object-type/location" />
         <option value="$PROJECT_DIR$/Client/src/FiltersListener.java" />
         <option value="$PROJECT_DIR$/Server/src/Server.java" />
-        <option value="$PROJECT_DIR$/Server/src/DataBaseManager.java" />
         <option value="$PROJECT_DIR$/Client/src/MyDefaultTableModel.java" />
-        <option value="$PROJECT_DIR$/Client/res/bundle_sv.java" />
         <option value="$PROJECT_DIR$/Common/src/Location.java" />
-        <option value="$PROJECT_DIR$/Client/res/bundle_zh_CN.java" />
         <option value="$PROJECT_DIR$/Client/src/Auth.java" />
         <option value="$PROJECT_DIR$/Client/src/MySwingWorker.java" />
         <option value="$PROJECT_DIR$/Server/src/CollectionManager.java" />
         <option value="$PROJECT_DIR$/Common/src/Creature.java" />
-        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/df89af4f-8ea5-48c8-9544-15aa22ea83d6/console.sql" />
         <option value="$PROJECT_DIR$/Common/src/Request.java" />
-        <option value="$PROJECT_DIR$/Server/src/RequestsHandler.java" />
-        <option value="$PROJECT_DIR$/Client/src/Handler.java" />
         <option value="$PROJECT_DIR$/Client/src/Sender.java" />
-        <option value="$PROJECT_DIR$/Client/res/bundle_en_AU.java" />
-        <option value="$PROJECT_DIR$/Client/res/bundle_ru.java" />
-        <option value="$PROJECT_DIR$/Client/res/bundle_sl.java" />
         <option value="$PROJECT_DIR$/Client/src/Circle.java" />
         <option value="$PROJECT_DIR$/Client/res/test.java" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/.datagrid/cell" />
-        <option value="$PROJECT_DIR$/Client/src/WinniePooh.java" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/df89af4f-8ea5-48c8-9544-15aa22ea83d6/console.sql" />
+        <option value="$PROJECT_DIR$/Server/src/RequestsHandler.java" />
+        <option value="$PROJECT_DIR$/Server/src/DataBaseManager.java" />
+        <option value="$PROJECT_DIR$/Client/src/Handler.java" />
         <option value="$PROJECT_DIR$/Client/src/GUI.java" />
+        <option value="$PROJECT_DIR$/Client/src/WinniePooh.java" />
         <option value="$PROJECT_DIR$/Client/res/bundle.java" />
+        <option value="$PROJECT_DIR$/Client/res/bundle_sl.java" />
+        <option value="$PROJECT_DIR$/Client/res/bundle_ru.java" />
+        <option value="$PROJECT_DIR$/Client/res/bundle_sv.java" />
+        <option value="$PROJECT_DIR$/Client/res/bundle_en_AU.java" />
+        <option value="$PROJECT_DIR$/Client/res/bundle_zh_CN.java" />
       </list>
     </option>
   </component>
@@ -355,7 +334,8 @@
     <scope name="lab5" pattern="src:com.kamikadze328.vk.Reader||src:com.kamikadze328.vk.Main||src:com.kamikadze328.vk.CollectionManager||src:com.kamikadze328.vk.Creature" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-10" />
+    <option name="x" value="867" />
+    <option name="y" value="-24" />
     <option name="width" value="980" />
     <option name="height" value="1040" />
   </component>
@@ -403,14 +383,13 @@
             <path>
               <item name="lab8" type="b2602c69:ProjectViewProjectNode" />
               <item name="lab8" type="462c0819:PsiDirectoryNode" />
-              <item name="Client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="WinniePooh.java" type="529ef68f:ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
+              <item name="Common" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="lab8" type="b2602c69:ProjectViewProjectNode" />
               <item name="lab8" type="462c0819:PsiDirectoryNode" />
               <item name="Common" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="lab8" type="b2602c69:ProjectViewProjectNode" />
@@ -451,7 +430,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553771760460" />
     <property name="database.console.LAST_STATE" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../Programming-Labs-1course-master/LAB888" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -627,7 +606,7 @@
       <workItem from="1559754178280" duration="107680000" />
       <workItem from="1560180529352" duration="21907000" />
       <workItem from="1560209889283" duration="48654000" />
-      <workItem from="1560329814681" duration="349000" />
+      <workItem from="1560329814681" duration="17616000" />
     </task>
     <task id="LOCAL-00001" summary="Добавлена lab7(ведётся работа)">
       <created>1556126978996</created>
@@ -874,14 +853,22 @@
       <option name="project" value="LOCAL" />
       <updated>1560198989338</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Объект нарисован">
+      <created>1560336975351</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1560336975351</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="965316000" />
+    <option name="totallyTimeSpent" value="982583000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22281879" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -893,7 +880,7 @@
       <window_info anchor="bottom" id="Database Console" order="0" sideWeight="0.49463087" weight="0.31478772" />
       <window_info anchor="bottom" id="Duplicate detector" order="1" weight="0.3286119" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.48322147" visible="true" weight="0.3338214" />
-      <window_info anchor="bottom" content_ui="combo" id="Debug" order="3" sideWeight="0.4590604" weight="0.38360175" />
+      <window_info anchor="bottom" content_ui="combo" id="Debug" order="3" sideWeight="0.4590604" weight="0.37335286" />
       <window_info anchor="bottom" id="Version Control" order="4" sideWeight="0.4986577" weight="0.4978038" />
       <window_info anchor="bottom" id="Terminal" order="5" weight="0.329429" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -933,7 +920,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="--" />
     <MESSAGE value="Почти полностью добавлена работа коллекции с БД" />
     <MESSAGE value="Добавлены токены" />
     <MESSAGE value="Улучшена авторизация, информация о подключённых/отключённых клиентах рассылается всем.&#10;Множество мелких улучшений" />
@@ -958,7 +944,8 @@
     <MESSAGE value="Добавлен китайский язык" />
     <MESSAGE value="Добавлена поддержка китайского языка" />
     <MESSAGE value="Визуал: Начало" />
-    <option name="LAST_COMMIT_MESSAGE" value="Визуал: Начало" />
+    <MESSAGE value="Объект нарисован" />
+    <option name="LAST_COMMIT_MESSAGE" value="Объект нарисован" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -971,7 +958,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/Server/src/RequestsHandler.java</url>
-          <line>195</line>
+          <line>201</line>
           <properties />
           <option name="timeStamp" value="224" />
         </line-breakpoint>
@@ -995,39 +982,21 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/Server/src/DataBaseManager.java</url>
-          <line>127</line>
+          <line>111</line>
           <properties />
-          <option name="timeStamp" value="269" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/Server/src/CollectionManager.java</url>
-          <line>87</line>
-          <properties />
-          <option name="timeStamp" value="312" />
+          <option name="timeStamp" value="340" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/Client/src/Handler.java</url>
-          <line>60</line>
+          <line>56</line>
           <properties />
-          <option name="timeStamp" value="319" />
+          <option name="timeStamp" value="342" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/Client/src/Handler.java</url>
-          <line>69</line>
+          <url>file://$PROJECT_DIR$/Server/src/RequestsHandler.java</url>
+          <line>67</line>
           <properties />
-          <option name="timeStamp" value="321" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/Client/src/GUI.java</url>
-          <line>1030</line>
-          <properties />
-          <option name="timeStamp" value="332" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/Client/src/GUI.java</url>
-          <line>1051</line>
-          <properties />
-          <option name="timeStamp" value="335" />
+          <option name="timeStamp" value="343" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -1182,13 +1151,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/lib/postgresql-42.2.5.jar!/org/postgresql/jdbc/PgResultSet.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="1776" selection-start-line="1776" selection-end-line="1776" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server/src/Server.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="118">
@@ -1208,24 +1170,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Server/src/META-INF/MANIFEST.MF">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/res/bundle_zh_CN.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="26" column="24" selection-start-line="26" selection-start-column="24" selection-end-line="26" selection-end-column="24" />
-          <folding>
-            <element signature="e#129#130#0" expanded="true" />
-            <element signature="e#160#161#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/res/bundle_sv.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="26" column="18" selection-start-line="26" selection-start-column="18" selection-end-line="26" selection-end-column="18" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Common/src/Location.java">
       <provider selected="true" editor-type-id="text-editor" />
@@ -1300,37 +1244,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/src/CollectionManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="93" selection-start-line="93" selection-end-line="93" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/res/bundle_en_AU.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="83" selection-start-line="83" selection-end-line="83" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/res/bundle_ru.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="81" lean-forward="true" selection-start-line="81" selection-end-line="81" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/res/bundle_sl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="80" column="31" lean-forward="true" selection-start-line="80" selection-start-column="31" selection-end-line="80" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/javax/swing/JComponent.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="177">
@@ -1378,33 +1291,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/Sender.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1156">
-          <caret line="74" selection-start-line="74" selection-end-line="74" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/df89af4f-8ea5-48c8-9544-15aa22ea83d6/console.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="26" column="44" selection-start-line="26" selection-start-column="44" selection-end-line="26" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/WinniePooh.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3111">
-          <caret line="187" selection-start-line="187" selection-end-line="187" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Client/src/Auth.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1360">
@@ -1415,10 +1301,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/postgresql-42.2.5.jar!/org/postgresql/jdbc/PgResultSet.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="67">
+          <caret line="1392" column="16" selection-start-line="1392" selection-start-column="16" selection-end-line="1392" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/df89af4f-8ea5-48c8-9544-15aa22ea83d6/console.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="35" column="18" selection-start-line="35" selection-start-column="18" selection-end-line="35" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Common/src/Creature.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2499">
-          <caret line="174" selection-start-line="174" selection-end-line="174" />
+        <state relative-caret-position="50">
+          <caret line="127" selection-start-line="127" selection-end-line="127" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1873#1874#0" expanded="true" />
@@ -1432,14 +1332,15 @@
             <element signature="e#2540#2541#0" expanded="true" />
             <element signature="e#2568#2569#0" expanded="true" />
             <element signature="e#4774#4775#0" expanded="true" />
+            <element signature="e#4802#4803#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/src/Handler.java">
+    <entry file="file://$PROJECT_DIR$/Client/src/Sender.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="850">
-          <caret line="54" column="46" selection-start-line="54" selection-end-line="55" />
+        <state relative-caret-position="135">
+          <caret line="98" column="20" selection-start-line="98" selection-start-column="20" selection-end-line="98" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1448,20 +1349,92 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Client/src/GUI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17544">
-          <caret line="1050" column="25" selection-start-line="1050" selection-start-column="25" selection-end-line="1050" selection-end-column="25" />
+        <state relative-caret-position="104">
+          <caret line="815" column="44" lean-forward="true" selection-start-line="815" selection-start-column="44" selection-end-line="815" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#32461#32462#0" expanded="true" />
-            <element signature="e#32509#32510#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server/src/RequestsHandler.java">
+    <entry file="file://$PROJECT_DIR$/Client/src/Handler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1224">
-          <caret line="78" column="67" selection-start-line="78" selection-start-column="67" selection-end-line="78" selection-end-column="67" />
+        <state relative-caret-position="288">
+          <caret line="133" column="5" selection-start-line="133" selection-start-column="5" selection-end-line="133" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/src/WinniePooh.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="74">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#6621#6622#0" expanded="true" />
+            <element signature="e#6647#6648#0" expanded="true" />
+            <element signature="e#6610#6611#0" expanded="true" />
+            <element signature="e#6694#6695#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/res/bundle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="98" column="27" selection-start-line="98" selection-start-column="27" selection-end-line="98" selection-end-column="27" />
+          <folding>
+            <element signature="e#123#124#0" expanded="true" />
+            <element signature="e#154#155#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/res/bundle_ru.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="254">
+          <caret line="83" column="84" selection-start-line="83" selection-start-column="84" selection-end-line="83" selection-end-column="84" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/res/bundle_sl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="83" column="76" selection-start-line="83" selection-start-column="76" selection-end-line="83" selection-end-column="76" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/res/bundle_sv.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="271">
+          <caret line="84" column="86" selection-start-line="84" selection-start-column="86" selection-end-line="84" selection-end-column="86" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/res/bundle_en_AU.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="254">
+          <caret line="83" column="75" selection-start-line="83" selection-start-column="75" selection-end-line="83" selection-end-column="75" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Client/res/bundle_zh_CN.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="83" column="52" selection-start-line="83" selection-start-column="52" selection-end-line="83" selection-end-column="52" />
+          <folding>
+            <element signature="e#129#130#0" expanded="true" />
+            <element signature="e#160#161#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/src/CollectionManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="87" column="36" selection-start-line="87" selection-start-column="36" selection-end-line="87" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1470,21 +1443,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Server/src/DataBaseManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="329">
-          <caret line="105" lean-forward="true" selection-start-line="105" selection-end-line="105" />
+        <state relative-caret-position="173">
+          <caret line="135" column="50" lean-forward="true" selection-start-line="135" selection-start-column="50" selection-end-line="135" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Client/res/bundle.java">
+    <entry file="file://$PROJECT_DIR$/Server/src/RequestsHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="101" selection-start-line="101" selection-end-line="101" />
+        <state relative-caret-position="105">
+          <caret line="77" column="67" selection-start-line="77" selection-start-column="67" selection-end-line="77" selection-end-column="67" />
           <folding>
-            <element signature="e#123#124#0" expanded="true" />
-            <element signature="e#154#155#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

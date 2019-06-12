@@ -79,6 +79,8 @@ public class bundle_sl extends ListResourceBundle {
             {"kek", "Niste povezani<br>LOL"},
             {"color", "Barva"},
             {"clear", "Jasno"},
-
+            {"CreaturesDoesntChanged", "Bitja se niso spremenila"},
+            {"ChangedFailedCreatureExists", "Spremenjeno ni uspelo: obstaja bitje"},
+            {"AddedFailedCreatureExists", "Dodano ni uspelo: obstaja bitje"}
     };
 }

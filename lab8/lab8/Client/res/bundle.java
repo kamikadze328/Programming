@@ -97,8 +97,8 @@ public class bundle extends ListResourceBundle {
             {"color", "Color"},
             {"clear", "Clear"},
             {"all", "All"},
-
             {"CreaturesDoesntChanged", "Creatures didnt't changed"},
-
+            {"ChangedFailedCreatureExists", "Changed Failed: Creature Exists"},
+            {"AddedFailedCreatureExists", "Added Failed: Creature Exists"},
     };
 }

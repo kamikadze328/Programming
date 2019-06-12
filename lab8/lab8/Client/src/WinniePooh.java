@@ -10,6 +10,9 @@ public class WinniePooh extends JButton {
     private GUI frame;
     RightHand rightHand;
     Balloon balloon;
+    private boolean isBalloon = true;
+    private boolean isHand = false;
+
 
     WinniePooh(Creature creature, GUI frame) {
         this.creature = creature;
@@ -17,7 +20,7 @@ public class WinniePooh extends JButton {
         this.rightHand = new RightHand(creature, frame);
         this.balloon = new Balloon(creature, frame);
         s = creature.getSize();
-//        setBorder();
+        setBorder(null);
         setEnabled(false);
         rebound();
         this.setToolTipText(creature.getName());
@@ -32,7 +35,7 @@ public class WinniePooh extends JButton {
         Color brown = new Color(107, 63, 13);
         Color darkBrown = new Color(43, 26, 7);
         AffineTransform old = g.getTransform();
-        g.setRenderingHint ( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //ears
         g.setColor(darkBrown);
         g.fillOval(s * 62 / 100, s * 17 / 100, s * 60 / 100, s * 60 / 100);
@@ -85,36 +88,40 @@ public class WinniePooh extends JButton {
     }
 
     private void rebound() {
-        int x = (frame.graphicsPanel.getWidth() - 99) * creature.getX() / 1000;
-        int y = (frame.graphicsPanel.getHeight() - 99) * creature.getY() / 1000;
-        this.setBounds(x, y, s * 7 / 2, s * 7 / 2);
+        int x = (frame.graphicsPanel.getWidth() - 150) * creature.getX() / 1000;
+        int y = (frame.graphicsPanel.getHeight() - 150) * creature.getY() / 1000;
+        this.setBounds(x, y, s * 25 / 10, s * 337 / 100);
     }
 
-    /*void transition() {
-        double ratio = (double) diff / (double) range;
-        if (!isGoingWhite) {
-            int red = (int) Math.abs((ratio * Color.WHITE.getRed()) + ((1 - ratio) * sea.getColor().getRgbColor().getRed()));
-            int green = (int) Math.abs((ratio * Color.WHITE.getGreen()) + ((1 - ratio) * sea.getColor().getRgbColor().getGreen()));
-            int blue = (int) Math.abs((ratio * Color.WHITE.getBlue()) + ((1 - ratio) * sea.getColor().getRgbColor().getBlue()));
-            color = new Color(red, green, blue);
-            diff--;
-            if (diff == 0) {
-                setNormalColor();
-            }
-        } else {
-            int red = (int) Math.abs((ratio * sea.getColor().getRgbColor().getRed()) + ((1 - ratio) * Color.WHITE.getRed()));
-            int green = (int) Math.abs((ratio * sea.getColor().getRgbColor().getGreen()) + ((1 - ratio) * Color.WHITE.getGreen()));
-            int blue = (int) Math.abs((ratio * sea.getColor().getRgbColor().getBlue()) + ((1 - ratio) * Color.WHITE.getBlue()));
-            color = new Color(red, green, blue);
-            if (diff == 0) {
-                isGoingWhite = false;
-                range = 30;
-                diff = 30;
+    void transition() {
+        while (true) {
+             balloon.y--;
+            if (!isHand) {
+                rightHand.degree--;
+                if (rightHand.degree < -50)
+                    isHand = true;
             } else {
-                diff--;
+                rightHand.degree++;
+                if (rightHand.degree > 50)
+                    isHand = false;
+            }
+            if (rightHand.degree == 50 && !isBalloon) {
+                balloon.setNormal();
+                rightHand.setNormal();
+                break;
+            }
+            try {
+                frame.graphicsPanel.revalidate();
+                frame.graphicsPanel.repaint();
+                Thread.sleep(7);
+            } catch (Exception ignored) {
+            }
+            if (balloon.y + s * 6 / 2 < 0) {
+                isBalloon = false;
             }
         }
-    }*/
+    }
+
 
     /*void setNormalColor() {
         diff = 40;
@@ -136,6 +143,8 @@ class RightHand extends JButton {
     private int s;
     private Creature creature;
     private GUI frame;
+    int degree = 50;
+
 
     RightHand(Creature creature, GUI frame) {
         this.creature = creature;
@@ -155,18 +164,20 @@ class RightHand extends JButton {
         g.setRenderingHint ( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
         Color darkBrown = new Color(43, 26, 7);
         g.setColor(darkBrown);
-        g.rotate(Math.toRadians(50), s/3+s*28/100, s/4+s*4/10);
+        g.rotate(Math.toRadians(degree), s/3+s*28/100, s/4+s*4/10);
         g.fillOval(s/3, s/4, s, s * 60 / 100);
     }
 
     private void rebound() {
-        int x = (frame.graphicsPanel.getWidth() - 99) * creature.getX() / 1000+ s*170/100;
-        int y = (frame.graphicsPanel.getHeight() - 99) * creature.getY() / 1000+s*110/100;
-        this.setBounds(x, y, s*125/100, s*12/10);
+        int x = (frame.graphicsPanel.getWidth() - 150) * creature.getX() / 1000+ s*170/100;
+        int y = (frame.graphicsPanel.getHeight() - 150) * creature.getY() / 1000 + s*110/100;
+        this.setBounds(x, y, s*135/100, s*12/10);
+    }
+    void setNormal(){
+        degree = 50;
     }
 
     class setInfoOnClick extends MouseAdapter {
-
         @Override
         public void mouseClicked(MouseEvent e) {
             frame.cancel();
@@ -179,16 +190,19 @@ class Balloon extends JButton {
     private int s;
     private Creature creature;
     private GUI frame;
+    int y;
+    private int x;
 
     Balloon(Creature creature, GUI frame) {
         this.creature = creature;
         this.frame = frame;
         s = creature.getSize();
+        y = (frame.graphicsPanel.getHeight()-150) * creature.getY() / 1000 - s;
+        x = s/10;
         color = creature.getColor().getRgbColor();
         setBorder(null);
         setEnabled(false);
         rebound();
-        this.addMouseListener(new setInfoOnClick());
     }
 
     @Override
@@ -197,26 +211,18 @@ class Balloon extends JButton {
         Graphics2D g = (Graphics2D) g1;
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(color);
-        int y = (frame.graphicsPanel.getHeight()-99) * creature.getY() / 1000- s;
-        g.fillOval(s/10, y, s*12/10, s*15/10);
+        g.fillOval(x, y, s*12/10, s*15/10);
         g.setColor(Color.BLACK);
-        g.drawLine(s/10 + s*6/10, y+s*3/2, s/10 + s*6/10, y+s*6/2);
+        g.drawLine(x + s*6/10, y+s*3/2, x + s*6/10, y+s*6/2);
         g.setColor(color);
-        g.fillPolygon(new int[]{s / 10 + s * 6 / 10, s / 10 + s * 6 / 10 - s / 10, s / 10 + s * 6 / 10 + s / 10}, new int[]{y + s * 298 / 200, y + s * 3 / 2 + s / 9, y + s * 3 / 2 + s / 9},3);
+        g.fillPolygon(new int[]{x + s * 6 / 10, x + s * 6 / 10 - x, x + s * 6 / 10 + x}, new int[]{y + s * 298 / 200, y + s * 3 / 2 + s / 9, y + s * 3 / 2 + s / 9},3);
 
     }
 
     private void rebound() {
-        int x = (frame.graphicsPanel.getWidth() - 99) * creature.getX() / 1000 + s * 22/10;
-        this.setBounds(x, 0, s*2, frame.graphicsPanel.getHeight());
+        this.setBounds((frame.graphicsPanel.getWidth() - 150) * creature.getX() / 1000 + s * 22/10, 0, s*13/10, frame.graphicsPanel.getHeight());
     }
-
-    class setInfoOnClick extends MouseAdapter {
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            frame.cancel();
-            frame.setCreatureInfo(creature);
-        }
+    void setNormal(){
+        y = (frame.graphicsPanel.getHeight()-150) * creature.getY() / 1000- s;
     }
 }

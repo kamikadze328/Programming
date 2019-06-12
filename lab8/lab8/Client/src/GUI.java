@@ -21,6 +21,7 @@ class GUI extends JFrame {
     private JTable table;
     private boolean clearSelection;
     private boolean isTable = true;
+    boolean isExit = false;
     private boolean isnChange = false;
     private CopyOnWriteArrayList<Creature> creatureList = new CopyOnWriteArrayList<>();
     private CopyOnWriteArrayList<Creature> filteredList = new CopyOnWriteArrayList<>();
@@ -269,9 +270,7 @@ class GUI extends JFrame {
         changeButton.setEnabled(false);
         changeButton.addActionListener(args0 -> {
             printText("", false);
-                new Thread(() -> checkInput("change")).start();
-
-
+            new Thread(() -> checkInput("change")).start();
 
 
         });
@@ -692,12 +691,15 @@ class GUI extends JFrame {
     }
 
     void exit() {
+        isExit = true;
         this.setVisible(false);
         try {
             sender.exit();
-        }catch (NullPointerException ignored){}
-        this.dispose();
-        new Auth();
+            this.dispose();
+            new Auth();
+        } catch (NullPointerException ignored) {
+        }
+
     }
 
     static void setConnectionInfo(boolean isWorking) {
@@ -745,9 +747,10 @@ class GUI extends JFrame {
         else infoText.setForeground(Color.GREEN);
         infoText.setText(bundle.getString(message));
     }
+
     void printTextToConsole(int i) {
         infoText.setForeground(Color.RED);
-        infoText.setText(bundle.getString("windowWillBeClosed") + " "+i);
+        infoText.setText(bundle.getString("windowWillBeClosed") + " " + i);
     }
 
     private void printText(String message, boolean isError) {
@@ -808,23 +811,28 @@ class GUI extends JFrame {
 
     synchronized void refreshCollection(CopyOnWriteArrayList<Creature> tempCr) {
         CopyOnWriteArrayList<Creature> newCreature = new CopyOnWriteArrayList<>(tempCr);
-        CopyOnWriteArrayList<Creature> changedCr;
-        if (creatureList.size() > 0) {
-            changedCr = new CopyOnWriteArrayList<>();
+        CopyOnWriteArrayList<Creature> changedCr = new CopyOnWriteArrayList<>();
+        if (creatureList.size() > 0)
             for (Creature crtemp : tempCr) {
+                boolean find = false;
                 for (Creature cr : creatureList) {
-                    if (cr.equalsOnly(crtemp) && !cr.equals(crtemp))
-                        changedCr.add(crtemp);
+                    if (cr.equalsOnly(crtemp)) {
+                        find = true;
+                        if (!cr.equals(crtemp)) {
+                            changedCr.add(crtemp);
+                        }
+                        break;
+                    }
                 }
+                if (!find)
+                    changedCr.add(crtemp);
             }
-            changedCr.addAll(tempCr);
-        }
-
         creatureList.clear();
         creatureList = newCreature;
         refreshTable(creatureList);
         refreshGraphics(creatureList);
-
+        if (changedCr.size() > 0)
+            new Thread(() -> animation(changedCr)).start();
         if (isTable) {
             isFiltered = false;
             checkFilters();
@@ -841,6 +849,22 @@ class GUI extends JFrame {
         clearSelection = false;
         table.repaint();
         table.revalidate();
+    }
+
+    private void animation(CopyOnWriteArrayList<Creature> list) {
+        ArrayList<WinniePooh> changed = new ArrayList<>();
+        for (WinniePooh wp : winniePoohList)
+            for (Creature cr : list)
+                if (wp.creature.equalsId(cr)) {
+                    changed.add(wp);
+                    break;
+                }
+        changed.forEach(winniePooh -> new Thread(() -> {
+            winniePooh.transition();
+            graphicsPanel.revalidate();
+            graphicsPanel.repaint();
+        }).start());
+
     }
 
     private void refreshGraphics(CopyOnWriteArrayList<Creature> list) {
@@ -872,12 +896,14 @@ class GUI extends JFrame {
         graphicsPanel.revalidate();
         graphicsPanel.repaint();
     }
-    private void remove(WinniePooh c){
+
+    private void remove(WinniePooh c) {
         graphicsPanel.remove(c.rightHand);
         graphicsPanel.remove(c.balloon);
         graphicsPanel.remove(c);
     }
-    private void add(WinniePooh c){
+
+    private void add(WinniePooh c) {
         graphicsPanel.add(c);
         graphicsPanel.add(c.balloon);
         graphicsPanel.add(c.rightHand);
@@ -1054,7 +1080,7 @@ class GUI extends JFrame {
                         else if (mbNewCreature.size() > 1)
                             sender.changeCreature(mbNewCreature);
                         else printTextToConsole("CreaturesDoesntChanged", true);
-                        if(mbNewCreature.size()>0) cancel();
+                        if (mbNewCreature.size() > 0) cancel();
                     } else if (creature.equals(chosenCreature))
                         printTextToConsole("CreaturesDoesntChanged", true);
                     else {
@@ -1120,7 +1146,7 @@ class GUI extends JFrame {
         xFromSlider.setValue(cr.getX());
         yFromSlider.setValue(cr.getY());
         sizeFromSlider.setValue(cr.getSize());
-        if(isTable||this.color.name().equals(cr.getColor().name())) {
+        if (isTable || this.color.name().equals(cr.getColor().name())) {
             nameValue.setEditable(true);
             familyValue.setEditable(true);
             hungerValue.setEditable(true);

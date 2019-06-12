@@ -79,9 +79,9 @@ public class bundle_en_AU extends ListResourceBundle {
             {"kek", "You are not connected<br>LOL"},
             {"color", "Color"},
             {"clear", "Clear"},
-
-            {"CreaturesDoesntChanged", "Creatures didnt't changed"}
-
+            {"CreaturesDoesntChanged", "Creatures didnt't changed"},
+            {"ChangedFailedCreatureExists", "Changed Failed: Creature Exists"},
+            {"AddedFailedCreatureExists", "Added Failed: Creature Exists"},
     };
 }
 

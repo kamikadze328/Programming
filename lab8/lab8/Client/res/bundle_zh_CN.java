@@ -65,7 +65,6 @@ public class bundle_zh_CN extends ListResourceBundle {
             {"added", "建了"},
             {"tryAgain", "服务器不可用,再试一次"},
             {"incorrectDate", "日期格式"},
-
             {"ChangedSuccess", "成功改变了"},
             {"ChangedFailing", "未能改变"},
             {"ChangedFailingDontYours", "未能改变:这不是你的生物!"},
@@ -80,5 +79,8 @@ public class bundle_zh_CN extends ListResourceBundle {
             {"kek", "连接丢失了<br>哈哈"},
             {"color", "颜色"},
             {"clear", "清除"},
+            {"CreaturesDoesntChanged", "生物没有改变"},
+            {"ChangedFailedCreatureExists", "更改失败：生物存在"},
+            {"AddedFailedCreatureExists", "添加失败：生物存在"},
     };
 }

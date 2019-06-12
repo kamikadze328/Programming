@@ -65,11 +65,12 @@ public class RequestsHandler extends Thread {
                                             break;
 
                                         case "add":
-                                            if (manager.add(creature, token)) {
-                                                answer = "AddedSuccess";
-                                                changed = true;
-                                            } else
-                                                answer = "AddedFailing";
+                                                if (manager.add(creature, token)) {
+                                                    answer = "AddedSuccess";
+                                                    changed = true;
+                                                } else
+                                                    answer = "AddedFailing";
+
                                             break;
 
                                         case "change":
@@ -153,8 +154,13 @@ public class RequestsHandler extends Thread {
                             } catch (IOException ignored) {
                             } catch (SQLException e) {
                                 try {
-                                    oos.writeObject("SQLException");
-                                    e.printStackTrace();
+                                    //add повторяющееся значение ключа нарушает ограничение уникальности "creatures_pkey" {Character@1529}D -> Ключ "(name, family)=(lol, kek)" уже существует.
+                                    if (e.getMessage().contains("уже существует"))
+                                        oos.writeObject("AddedFailedCreatureExists");
+                                    else {
+                                        oos.writeObject("SQLException");
+                                        e.printStackTrace();
+                                    }
                                 } catch (IOException ignored) {
                                 }
                             }

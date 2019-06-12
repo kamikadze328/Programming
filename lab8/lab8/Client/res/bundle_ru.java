@@ -79,9 +79,8 @@ public class bundle_ru extends ListResourceBundle {
             {"kek", "Вы никуда не подключены<br>ЛОЛ"},
             {"color", "Цвет"},
             {"clear", "Очистить"},
-
-            {"CreaturesDoesntChanged", "Существа не изменились"}
-
-
+            {"CreaturesDoesntChanged", "Существа не изменились"},
+            {"ChangedFailedCreatureExists", "Не удалось изменить: Существо уже есть!"},
+            {"AddedFailedCreatureExists", "Не удалось добавить: Существо уже есть!"}
     };
 }

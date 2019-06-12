@@ -45,9 +45,11 @@ public class Handler extends Thread {
                                     gui.printTextToConsole(request, false);
                                     break;
                                 case "AddedFailing":
+                                case "AddedFailedCreatureExists":
                                 case "RemovedFailingDontYours":
                                 case "ChangedFailed":
                                 case "ChangedFailingDontYours":
+                                case "ChangedFailedCreatureExists":
                                 case "SavedFailing":
                                 case "loadFileError":
                                 case "JSONError":
@@ -117,7 +119,7 @@ public class Handler extends Thread {
             Thread.currentThread().interrupt();
         }
     }
-    private void exit(){
+    private void exit() {
         int count = 5;
         while (count > -1) {
             gui.printTextToConsole(count);
@@ -127,6 +129,7 @@ public class Handler extends Thread {
             }
             count--;
         }
-        gui.exit();
+        if (!gui.isExit)
+            gui.exit();
     }
 }

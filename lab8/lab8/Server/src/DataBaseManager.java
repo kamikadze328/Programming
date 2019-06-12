@@ -73,9 +73,13 @@ class DataBaseManager {
             pst.setInt(8, forAction.getY());
             pst.setInt(9, forAction.getSize());
             pst.setString(10, forAction.getColor().toString());
-            int row = pst.executeUpdate();
-            LinkedList<String> inventory = forAction.getInventory();
-            for (String s : inventory) addInventory(s, name, family);
+            int row;
+
+                row = pst.executeUpdate();
+                LinkedList<String> inventory = forAction.getInventory();
+                for (String s : inventory) addInventory(s, name, family);
+
+
             return row > 0;
         }
     }
@@ -128,12 +132,21 @@ class DataBaseManager {
                         String answer = removeCreature(oldCreature, token);
                         if (answer.contains("Success")) {
                             newCreature.setCreationTime(OffsetDateTime.ofInstant(Instant.ofEpochMilli(time.getTime()), ZoneId.systemDefault()));
-                            if (addCreature(newCreature, token))
-                                return "ChangedSuccess";
-                            else while (!addCreature(oldCreature, token)) {}
-                            return "ChangedFailed";
-                        } else if(answer.contains("DontYours"))
+                            try {
+                                if (addCreature(newCreature, token))
+                                    return "ChangedSuccess";
+                                else while (!addCreature(oldCreature, token)) {
+                                }
+                                return "ChangedFailed";
+                            }catch (SQLException e){
+                                if(e.getMessage().contains("уже существует")) {
+                                    while (!addCreature(oldCreature, token)) {}
+                                    return "ChangedFailedCreatureExists";
+                                }else throw e;
+                            }
+                        } else if (answer.contains("DontYours"))
                             return "ChangedFailingDontYours";
+
                     }
                 }
             }
