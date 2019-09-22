@@ -146,7 +146,6 @@ class GUI extends JFrame {
         yValue.setEditable(false);
         sizeValue.setEditable(false);
 
-
         JMenuBar menuBar = new JMenuBar();
         JMenuItem en_item = new JMenuItem("Australian");
         JMenuItem ru_item = new JMenuItem("Русский");

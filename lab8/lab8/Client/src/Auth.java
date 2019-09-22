@@ -171,10 +171,15 @@ class Auth {
             cancelButton.setVisible(false);
             tokenText.setVisible(false);
             passwordField.setVisible(true);
+            passwordField.setEditable(true);
             passwordText.setVisible(true);
+            passwordText.setEnabled(true);
             signUpButton.setVisible(true);
+            signUpButton.setEnabled(true);
             logInButton.setVisible(true);
+            logInButton.setEnabled(true);
             loginText.setVisible(true);
+            loginText.setEnabled(true);
             loginField.setText("");
             wait.setVisible(false);
         });
